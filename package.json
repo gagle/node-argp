@@ -1,0 +1,19 @@
+{
+	"name": "argp",
+	"version": "0.0.0",
+	"description": "Command line options parser",
+	"keywords": ["cli", "options", "parser"],
+	"author": {
+		"name": "Gabriel Llamas",
+		"email": "gagle@outlook.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/gagle/node-argp.git"
+	},
+	"engines": {
+		"node": ">=0.10"
+	},
+	"license": "MIT",
+	"main": "lib"
+}
