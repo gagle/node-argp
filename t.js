@@ -14,7 +14,7 @@ var opts = argp
 			//<script>: message...
 			if (argument === "fail") argp.fail ("fail() test");
 		})
-		.on ("option", function (option, value){ //option and value are strings; value can be null
+		.on ("option", function (option, value){ //option and value are strings; value can be null if it takes an argument and is optional
 			console.log (option);
 			utils.inspect (argp.options (), { depth: null }); //Returns an array with all the defined options
 		})
@@ -26,28 +26,19 @@ var opts = argp
 		.configure ({
 			//false: options are parsed first, then the arguments
 			//true: options and arguments are parsed in the same order they come
-			//Note: options and arguments can override each other if they have the same name
-			//Default is false
-			inOrder: false,
-			//Default is 80 columns
-			columns: 80,
-			errors: {
-				//Default values
-				argumentNotDefined: false,
-				optionNotDefined: true,
-				duplicateOptions: false,
-				duplicateArguments: false
-			},
+			//Options and arguments can override each other if they have the same name
+			inOrder: false, //Default is false
+			columns: 80, //Default is 80
+			//No error with duplicate options
+			undefinedArguments: true, //Allows to write any argument
+			undefinedOptions: false, //Does not allow to write undefined options
 			//-h, --help and --usage are default options
 			//Short and long names can be changed:
 			//var arr = argp.options ()
 			//arr[arr.length - 2].short = "?"; //help option
 			//arr[arr.length - 1].short = "u"; //usage option
-			defaultOptions: {
-				//Default values, set to false to remove them
-				help: true,
-				usage: true
-			}
+			showHelp: true, //Default is true
+			showUsage: true //Default is true
 		})
 		//Adds the option -v, --version
 		.version ("v0.0.1")
@@ -71,30 +62,22 @@ var opts = argp
 		.group ("Basic options") //Internally it creates a numeric id
 		//Defined options
 		.option ({
-			//Internally it adds the group property
-			//group: ...,
-			//long and short are optional by at least one must be defined
 			long: "dot",
 			short: "d",
-			//The option value
-			//Default is null
-			argument: {
-				string: "NUM",
-				//Default value
-				//Default is null
-				value: null
-				//Default is false
-				optional: false
-			},
-			description: "Show NUM dots on the screen.",
-			//Default is false
-			hidden: false,
-			//--no-dot
-			//Default is false
-			negate: false,
-			//Transforms the value to specific needs
-			//Default is null
+			string: "NUM", //If the string is null it's a flag and "reviver", "value"
+										 //and "optional" are ignored and "negate" can be configured
+										 //Default is null so all the options are flags by default
+										 //Example of flags:
+										 //.option({ short: "f1", description: "..." })
+										 //.option({ short: "f2", long: "flag2", negate: true }) -> --no-flag2
+			description: "Show NUM dots on the screen.", //Default is null
+			value: 1, //Default value, default is null
+			optional: false, //Default is false
+			hidden: false, //Default is false
 			reviver: function (value){
+				//Transforms the value
+				//Useful to parse comma-separated values, dates, etc
+				//Default is null
 				return value;
 			}
 		})
