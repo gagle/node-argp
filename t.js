@@ -7,7 +7,10 @@ var utils = require ("utils");
 //node debug <script> ...
 
 var opts = argp
-		.on ("argument", function (argument){
+		//With the obj parameter we can define "alias", for example a flag "-f" that
+		//the same as "-a 3". When the flag "-f" is found it can just do: "obj.a = 3"
+		.on ("argument", function (obj, argument){
+			//obj is the final object with al the options/arguments already parsed
 			//argument is a string
 			console.log (argument);
 			console.log (argp.arguments ()); //Returns an array with all the defined arguments
@@ -15,7 +18,8 @@ var opts = argp
 			//<script>: message...
 			if (argument === "fail") argp.fail ("fail() test");
 		})
-		.on ("option", function (option, value){
+		.on ("option", function (obj, option, value){
+			//obj is the final object with al the options/arguments already parsed
 			//option is a string
 			//value is undefined if the option is a flag or the value returned by the
 			//replacer; it can be null if is optional
@@ -66,6 +70,7 @@ var opts = argp
 		.group ("Basic options") //Internally it creates a numeric id
 		//Defined options
 		.option ({
+			//If long and short are defined, the long name is used to save the value in the final object
 			long: "dot",
 			short: "d",
 			string: "NUM", //If the string is null it's a flag and "reviver", "value"
