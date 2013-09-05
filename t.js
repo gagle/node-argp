@@ -8,7 +8,9 @@ var utils = require ("utils");
 
 var opts = argp
 		//With the obj parameter we can define aliases, for example a flag "-f" that
-		//the same as "-a 3". When the flag "-f" is found it can just do: "obj.a = 3"
+		//is the same as "-a 3". When the flag "-f" is found it can just do:
+		//In the "argument" event: if (argument === "f") obj.a = 3
+		//In the "end" event: if (argument.f) obj.a = 3
 		.on ("argument", function (obj, argument){
 			//obj is the final object with al the options/arguments already parsed
 			//argument is a string
@@ -26,7 +28,8 @@ var opts = argp
 			console.log (option);
 			utils.inspect (argp.options (), { depth: null }); //Returns an array with all the defined options
 		})
-		.on ("end", function (){
+		.on ("end", function (obj){
+			//obj is the final object with al the options/arguments already parsed
 			//Called when all the options and arguments are parsed, just before parse() returns
 			//This is the place to clean up and prepare information
 			console.log ("end");
