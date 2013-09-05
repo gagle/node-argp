@@ -3,7 +3,7 @@ argp
 
 _Node.js project_
 
-#### Command line options parser ####
+#### Command-line option parser ####
 
 Version: 0.0.0
 
