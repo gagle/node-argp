@@ -80,6 +80,9 @@ var opts = argp
 			//Default is null
 			argument: {
 				string: "NUM",
+				//Default value
+				//Default is null
+				value: null
 				//Default is false
 				optional: false
 			},
