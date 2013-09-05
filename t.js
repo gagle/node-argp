@@ -7,7 +7,7 @@ var utils = require ("utils");
 //node debug <script> ...
 
 var opts = argp
-		//With the obj parameter we can define "alias", for example a flag "-f" that
+		//With the obj parameter we can define aliases, for example a flag "-f" that
 		//the same as "-a 3". When the flag "-f" is found it can just do: "obj.a = 3"
 		.on ("argument", function (obj, argument){
 			//obj is the final object with al the options/arguments already parsed
@@ -27,7 +27,7 @@ var opts = argp
 			utils.inspect (argp.options (), { depth: null }); //Returns an array with all the defined options
 		})
 		.on ("end", function (){
-			//Called when all the options and arguments are parsed, just before parse returns
+			//Called when all the options and arguments are parsed, just before parse() returns
 			//This is the place to clean up and prepare information
 			console.log ("end");
 		})
@@ -73,12 +73,12 @@ var opts = argp
 			//If long and short are defined, the long name is used to save the value in the final object
 			long: "dot",
 			short: "d",
-			string: "NUM", //If the string is null it's a flag and "reviver", "value"
-										 //and "optional" are ignored and "negate" can be configured
-										 //Default is null so all the options are flags by default
-										 //Example of flags:
-										 //.option({ short: "f1", description: "..." })
-										 //.option({ short: "f2", long: "flag2", negate: true }) -> --no-flag2
+			argument: "NUM", //If the argument is null then it's a flag and "reviver", "value"
+											 //and "optional" are ignored and "negate" can be configured
+											 //Default is null so all the options are flags by default
+											 //Example of flags:
+											 //.option({ short: "f1", description: "..." })
+											 //.option({ short: "f2", long: "flag2", negate: true }) -> --no-flag2
 			description: "Show NUM dots on the screen.", //Default is null
 			value: 1, //Default value, default is null
 			optional: false, //Default is false
