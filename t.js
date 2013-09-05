@@ -3,18 +3,22 @@ var utils = require ("utils");
 
 //All operations are synchronous
 
-//argp.nodeDebug it's true if the node process is started in debug mode:
+//argp.debug it's true if the node process is started in debug mode:
 //node debug <script> ...
 
 var opts = argp
-		.on ("argument", function (argument){ //argument is a string
+		.on ("argument", function (argument){
+			//argument is a string
 			console.log (argument);
 			console.log (argp.arguments ()); //Returns an array with all the defined arguments
 			//fail() prints a message to stderr and exits. Messages are prefixed like so:
 			//<script>: message...
 			if (argument === "fail") argp.fail ("fail() test");
 		})
-		.on ("option", function (option, value){ //option and value are strings; value can be null if it takes an argument and is optional
+		.on ("option", function (option, value){
+			//option is a string
+			//value is undefined if the option is a flag or the value returned by the
+			//replacer; it can be null if is optional
 			console.log (option);
 			utils.inspect (argp.options (), { depth: null }); //Returns an array with all the defined options
 		})
@@ -41,7 +45,7 @@ var opts = argp
 			showUsage: true //Default is true
 		})
 		//Adds the option -v, --version
-		.version ("v0.0.1")
+		.version ("v0.0.1") //Typically: .version("v" + require("package.json").version)
 		//By default, the usage description is:
 		//<filename> [OPTIONS...]
 		//followed by all the defined arguments surrounded by []:
