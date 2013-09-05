@@ -55,7 +55,7 @@ var opts = argp
 		//<filename> [OPTIONS...]
 		//followed by all the defined arguments surrounded by []:
 		//<filename> [OPTIONS...] [arg1] [arg2]
-		//With the usage() function it can be changed and add multiple usages:
+		//With the usage() function it can be changed and add multiple uses:
 		//Usage: my-script hack nasa
 		//       my-script goto jail
 		.usage ("my-script hack nasa")
