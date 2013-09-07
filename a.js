@@ -13,9 +13,9 @@ var opts = argp
 		})
 		.configure ({
 			//undefinedOptions: true
+			undefinedArguments: false
 		})
-		.option ({ long: "ab", negate: true })
-		.option ({ long: "acda" })
+		.argument ("a")
 		.parse ();
 		
 //console.log (util.inspect (opts, { depth: null }));

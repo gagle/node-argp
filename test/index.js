@@ -73,7 +73,7 @@ var tests = {
 		assert.doesNotThrow (function (){
 			opts = new Argp ().configure ({ undefinedOptions: true }).parse ();
 		});
-		assert.strictEqual (opts.a, true);
+		assert.strictEqual (opts.a, undefined);
 		assert.doesNotThrow (function (){
 			opts = new Argp ().option ({ long: "a", negate: true }).parse ();
 		});
@@ -160,6 +160,24 @@ var tests = {
 					.parse ();
 		});
 		assert.strictEqual (opts.ab, true);
+	},
+	"arguments": function (){
+		process.argv = ["node", __filename, "a"];
+		assert.throws (function (){
+			new Argp ()
+					.configure ({ undefinedArguments: false })
+					.parse ();
+		});
+		assert.doesNotThrow (function (){
+			opts = new Argp ()
+					.argument ("a")
+					.parse ();
+		});
+		assert.strictEqual (opts.a, true);
+		assert.doesNotThrow (function (){
+			opts = new Argp ().parse ();
+		});
+		assert.strictEqual (opts.a, undefined);
 	}
 };
 
