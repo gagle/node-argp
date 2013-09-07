@@ -1,5 +1,5 @@
 var argp = require ("./lib");
-var utils = require ("utils");
+var util = require ("util");
 
 //All operations are synchronous
 
@@ -26,12 +26,13 @@ var opts = argp
 			//value is undefined if the option is a flag or the value returned by the
 			//replacer; it can be null if is optional
 			console.log (option);
-			utils.inspect (argp.options (), { depth: null }); //Returns an array with all the defined options
+			console.log (util.inspect (argp.options (), { depth: null })); //Returns an array with all the defined options
 		})
 		.on ("end", function (obj){
 			//obj is the final object with al the options/arguments already parsed
 			//Called when all the options and arguments are parsed, just before parse() returns
 			//This is the place to clean up and prepare information
+			if (obj.ellipsis) obj.dots = 3;
 			console.log ("end");
 		})
 		.configure ({
@@ -45,14 +46,17 @@ var opts = argp
 			undefinedOptions: false, //Does not allow to write undefined options
 			//-h, --help and --usage are default options
 			//Short and long names can be changed:
-			//var arr = argp.options ()
-			//arr[arr.length - 2].short = "?"; //help option
-			//arr[arr.length - 1].short = "u"; //usage option
+			//var options = argp.options ()
+			//options.help.short = "?"; //help option
+			//options.usage.short = "u"; //usage option
 			showHelp: true, //Default is true
 			showUsage: true //Default is true
 		})
 		//Adds the option -v, --version
 		.version ("v0.0.1") //Typically: .version("v" + require("package.json").version)
+		.description ("Show some dots on the screen.")
+		//Contact email
+		.email ("a@b.c")
 		//By default, the usage description is:
 		//<filename> [OPTIONS...]
 		//followed by all the defined arguments surrounded by []:
@@ -62,7 +66,6 @@ var opts = argp
 		//       my-script goto jail
 		.usage ("my-script hack nasa")
 		.usage ("my-script goto jail")
-		.description ("Show some dots on the screen.")
 		//Defined arguments
 		//Argument definitions can be configured at any time, they don't need to be
 		//set before the options
@@ -74,15 +77,15 @@ var opts = argp
 		//Defined options
 		.option ({
 			//If long and short are defined, the long name is used to save the value in the final object
-			long: "dot",
 			short: "d",
+			long: "dots",
 			argument: "NUM", //If the argument is null then it's a flag and "reviver", "value"
 											 //and "optional" are ignored and "negate" can be configured
 											 //Default is null so all the options are flags by default
 											 //Example of flags:
 											 //.option({ short: "f1", description: "..." })
 											 //.option({ short: "f2", long: "flag2", negate: true }) -> --no-flag2
-			description: "Show NUM dots on the screen.", //Default is null
+			description: "Show NUM dots on the screen", //Default is null
 			value: 1, //Default value, default is null
 			optional: false, //Default is false
 			hidden: false, //Default is false
@@ -93,15 +96,21 @@ var opts = argp
 				return value;
 			}
 		})
+		//At anytime we can add text. Text lines are not indented.
+		.text ("The following option is an alias. An ellipsis has 3 dots.")
+		.option ({
+			long: "ellipsis",
+			description: "Shows 3 dots"
+		})
 		//This group applies to --help, --usage and --version
 		.group ("Informational options")
 		//Footer information
-		.footer ("Bye!")
-		//Only one call to parse is allowed, subsequent calls throw an error
+		.text ("Bye!")
 		.parse ();
 
 //At this point all the data is ready to be used
-//opts.dot
+//opts.dots
+//opts.ellipsis
 //opts.build
 //opts.fail
-utils.inspect (opts, { depth: null });
+console.log (util.inspect (opts, { depth: null }));
