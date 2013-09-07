@@ -7,6 +7,7 @@ console.error = function (){};
 process.exit = function (){
 	throw new Error ();
 };
+var opts;
 
 var tests = {
 	"long, undefined flag": function (){
@@ -29,7 +30,6 @@ var tests = {
 	},
 	"long, flag": function (){
 		process.argv = ["node", __filename, "--a"];
-		var opts;
 		assert.doesNotThrow (function (){
 			opts = new Argp ().option ({ long: "a" }).parse ();
 		});
@@ -37,7 +37,6 @@ var tests = {
 	},
 	"long, multiple flags": function (){
 		process.argv = ["node", __filename, "--a", "--b"];
-		var opts;
 		assert.doesNotThrow (function (){
 			opts = new Argp ()
 					.option ({ long: "a" })
@@ -51,7 +50,6 @@ var tests = {
 	},
 	"long, negated flag": function (){
 		process.argv = ["node", __filename, "--no-a"];
-		var opts;
 		assert.doesNotThrow (function (){
 			opts = new Argp ().option ({ long: "a", negate: true }).parse ();
 		});
@@ -59,7 +57,6 @@ var tests = {
 	},
 	"long, multiple negated flags": function (){
 		process.argv = ["node", __filename, "--no-a", "--no-b"];
-		var opts;
 		assert.doesNotThrow (function (){
 			opts = new Argp ()
 					.option ({ long: "a", negate: true })
@@ -73,7 +70,6 @@ var tests = {
 	},
 	"long, undefinedOptions flag": function (){
 		process.argv = ["node", __filename, "--a"];
-		var opts;
 		assert.doesNotThrow (function (){
 			opts = new Argp ().configure ({ undefinedOptions: true }).parse ();
 		});
@@ -108,7 +104,6 @@ var tests = {
 					.option ({ long: "a", argument: true })
 					.parse ();
 		});
-		var opts;
 		assert.doesNotThrow (function (){
 			opts = new Argp ()
 					.option ({ long: "a", argument: true, optional: true, value: "b" })
@@ -123,7 +118,6 @@ var tests = {
 					.option ({ long: "a", argument: true })
 					.parse ();
 		});
-		var opts;
 		assert.doesNotThrow (function (){
 			opts = new Argp ()
 					.option ({ long: "a", argument: true, optional: true, value: "b" })
@@ -138,13 +132,34 @@ var tests = {
 					.option ({ long: "a" })
 					.parse ();
 		});
-		assert.strictEqual (opts.a, true);
 		assert.doesNotThrow (function (){
 			opts = new Argp ()
 					.option ({ long: "a", argument: true })
 					.parse ();
 		});
 		assert.strictEqual (opts.a, "b");
+	},
+	"long, abbreviation": function (){
+		process.argv = ["node", __filename, "--a"];
+		assert.throws (function (){
+			new Argp ()
+					.option ({ long: "ab" })
+					.option ({ long: "abc" })
+					.parse ();
+		});
+		assert.doesNotThrow (function (){
+			opts = new Argp ()
+					.option ({ long: "ab", negate: true })
+					.option ({ long: "abc" })
+					.parse ();
+		});
+		assert.strictEqual (opts.abc, true);
+		assert.doesNotThrow (function (){
+			opts = new Argp ()
+					.option ({ long: "ab" })
+					.parse ();
+		});
+		assert.strictEqual (opts.ab, true);
 	}
 };
 
