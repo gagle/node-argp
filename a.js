@@ -12,10 +12,10 @@ var opts = argp
 			console.log ("end");
 		})
 		.configure ({
-			//undefinedOptions: true
-			undefinedArguments: false
+			undefinedOptions: true
+			//undefinedArguments: false
 		})
-		.argument ("a")
+		//.option ({ long: "a", argument:"." })
 		.parse ();
 		
 //console.log (util.inspect (opts, { depth: null }));

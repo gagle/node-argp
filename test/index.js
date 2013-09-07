@@ -96,6 +96,12 @@ var tests = {
 					.parse ();
 		});
 		assert.strictEqual (opts.a, true);
+		process.argv = ["node", __filename, "--a b"];
+		assert.doesNotThrow (function (){
+			opts = new Argp ().configure ({ undefinedOptions: true }).parse ();
+		});
+		assert.strictEqual (opts.a, undefined);
+		assert.strictEqual (opts.b, undefined);
 	},
 	"long, value with --": function (){
 		process.argv = ["node", __filename, "--a", "--"];
