@@ -111,10 +111,10 @@ var tests = {
 		var opts;
 		assert.doesNotThrow (function (){
 			opts = new Argp ()
-					.option ({ long: "a", argument: true, optional: true, value: 1 })
+					.option ({ long: "a", argument: true, optional: true, value: "b" })
 					.parse ();
 		});
-		assert.strictEqual (opts.a, 1);
+		assert.strictEqual (opts.a, "b");
 	},
 	"long, value, last token": function (){
 		process.argv = ["node", __filename, "--a"];
@@ -126,10 +126,25 @@ var tests = {
 		var opts;
 		assert.doesNotThrow (function (){
 			opts = new Argp ()
-					.option ({ long: "a", argument: true, optional: true, value: 1 })
+					.option ({ long: "a", argument: true, optional: true, value: "b" })
 					.parse ();
 		});
-		assert.strictEqual (opts.a, 1);
+		assert.strictEqual (opts.a, "b");
+	},
+	"long, value in the same token": function (){
+		process.argv = ["node", __filename, "--a=b"];
+		assert.throws (function (){
+			new Argp ()
+					.option ({ long: "a" })
+					.parse ();
+		});
+		assert.strictEqual (opts.a, true);
+		assert.doesNotThrow (function (){
+			opts = new Argp ()
+					.option ({ long: "a", argument: true })
+					.parse ();
+		});
+		assert.strictEqual (opts.a, "b");
 	}
 };
 
