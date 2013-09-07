@@ -15,7 +15,7 @@ var opts = argp
 			undefinedOptions: true
 			//undefinedArguments: false
 		})
-		//.option ({ long: "a", argument:"." })
+		//.option ({ long: "a", argument: "." })
 		.parse ();
 		
 //console.log (util.inspect (opts, { depth: null }));
