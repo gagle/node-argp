@@ -41,10 +41,6 @@ var opts = argp
 			console.log ("end");
 		})
 		.configure ({
-			//false: options are parsed first, then the arguments
-			//true: options and arguments are parsed in the same order they come
-			//Options and arguments can override each other if they have the same name
-			inOrder: false, //Default is false
 			columns: 80, //Default is 80
 			//No error with duplicate options
 			undefinedArguments: true, //Allows to write any argument
@@ -63,9 +59,7 @@ var opts = argp
 		//Contact email
 		.email ("a@b.c")
 		//By default, the usage description is:
-		//<filename> [OPTIONS...]
-		//followed by all the defined arguments surrounded by []:
-		//<filename> [OPTIONS...] [arg1] [arg2]
+		//<filename> [OPTIONS...] [ARGUMENTS...]
 		//With the usage() function it can be changed and add multiple uses:
 		//Usage: my-script hack nasa
 		//       my-script goto jail
@@ -78,7 +72,7 @@ var opts = argp
 		.argument ("fail")
 		//Options and group definitions have an insertion order
 		//Options can be grouped
-		.group ("Basic options") //Internally it creates a numeric id
+		.group ("Basic options")
 		//Defined options
 		.option ({
 			//If long and short are defined, the long name is used to save the value in the final object

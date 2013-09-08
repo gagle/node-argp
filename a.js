@@ -12,7 +12,7 @@ var opts = argp
 			undefinedOptions: true
 			//undefinedArguments: false
 		})
-		.option ({ long: "a", argument: "." })
+		.option ({ short: "a" })
 		.parse ();
 		
 console.log (util.inspect (opts, { depth: null }));

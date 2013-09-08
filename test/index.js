@@ -3,7 +3,7 @@
 var assert = require ("assert");
 var Argp = require ("../lib").constructor;
 
-console.error = function (){};
+/*console.error = function (){};
 process.exit = function (){
 	throw new Error ();
 };
@@ -177,6 +177,12 @@ var tests = {
 					.parse ();
 		});
 		assert.strictEqual (opts.a, "bb");
+	},
+	"short, undefined": function (){
+		process.argv = ["node", __filename, "-a"];
+		assert.throws (function (){
+			new Argp ().parse ();
+		});
 	},
 	"arguments": function (){
 		process.argv = ["node", __filename, "a"];
