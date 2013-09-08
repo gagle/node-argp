@@ -107,12 +107,12 @@ var tests = {
 		process.argv = ["node", __filename, "--a", "--"];
 		assert.throws (function (){
 			new Argp ()
-					.option ({ long: "a", argument: true })
+					.option ({ long: "a", argument: "a" })
 					.parse ();
 		});
 		assert.doesNotThrow (function (){
 			opts = new Argp ()
-					.option ({ long: "a", argument: true, optional: true, value: "b" })
+					.option ({ long: "a", argument: "a", optional: true, value: "b" })
 					.parse ();
 		});
 		assert.strictEqual (opts.a, "b");
@@ -121,12 +121,12 @@ var tests = {
 		process.argv = ["node", __filename, "--a"];
 		assert.throws (function (){
 			new Argp ()
-					.option ({ long: "a", argument: true })
+					.option ({ long: "a", argument: "a" })
 					.parse ();
 		});
 		assert.doesNotThrow (function (){
 			opts = new Argp ()
-					.option ({ long: "a", argument: true, optional: true, value: "b" })
+					.option ({ long: "a", argument: "a", optional: true, value: "b" })
 					.parse ();
 		});
 		assert.strictEqual (opts.a, "b");
@@ -140,7 +140,7 @@ var tests = {
 		});
 		assert.doesNotThrow (function (){
 			opts = new Argp ()
-					.option ({ long: "a", argument: true })
+					.option ({ long: "a", argument: "a" })
 					.parse ();
 		});
 		assert.strictEqual (opts.a, "b");
@@ -166,6 +166,17 @@ var tests = {
 					.parse ();
 		});
 		assert.strictEqual (opts.ab, true);
+	},
+	"long, reviver": function (){
+		process.argv = ["node", __filename, "--a", "b"];
+		assert.doesNotThrow (function (){
+			opts = new Argp ()
+					.option ({ long: "a", argument: "a", reviver: function (value){
+						return value + "b";
+					}})
+					.parse ();
+		});
+		assert.strictEqual (opts.a, "bb");
 	},
 	"arguments": function (){
 		process.argv = ["node", __filename, "a"];

@@ -11,20 +11,25 @@ var opts = argp
 		//is the same as "-a 3". When the flag "-f" is found it can just do:
 		//In the "argument" event: if (argument === "f") obj.a = 3
 		//In the "end" event: if (argument.f) obj.a = 3
-		.on ("argument", function (obj, argument){
+		.on ("argument", function (obj, argument, ignore){
 			//obj is the final object with al the options/arguments already parsed
 			//argument is a string
+			//ignore is a function, if it's executed the argument is ignored an does
+			//not modify the final object
 			console.log (argument);
 			console.log (argp.arguments ()); //Returns an array with all the defined arguments
 			//fail() prints a message to stderr and exits. Messages are prefixed like so:
 			//<script>: message...
 			if (argument === "fail") argp.fail ("fail() test");
 		})
-		.on ("option", function (obj, option, value){
+		.on ("option", function (obj, long, option, value, ignore){
 			//obj is the final object with al the options/arguments already parsed
+			//long is true if the option has a long name, otherwise false
 			//option is a string
 			//value is undefined if the option is a flag or the value returned by the
 			//replacer; it can be null if is optional
+			//ignore is a function, if it's executed the argument is ignored an does
+			//not modify the final object
 			console.log (option);
 			console.log (util.inspect (argp.options (), { depth: null })); //Returns an array with all the defined options
 		})
