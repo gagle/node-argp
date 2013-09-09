@@ -60,11 +60,11 @@ var opts = argp
 		.email ("a@b.c")
 		//By default, the usage description is:
 		//<filename> [OPTIONS...] [ARGUMENTS...]
-		//With the usage() function it can be changed and add multiple uses:
-		//Usage: my-script hack nasa
-		//       my-script goto jail
-		.usage ("my-script hack nasa")
-		.usage ("my-script goto jail")
+		//With the usage() function the [ARGUMENTS...] part can be changed and add multiple uses:
+		//Usage: my-script [OPTIONS...] hack nasa
+		//       my-script [OPTIONS...] goto jail
+		.usage ("hack nasa")
+		.usage ("goto jail")
 		//Defined arguments
 		//Argument definitions can be configured at any time, they don't need to be
 		//set before the options
