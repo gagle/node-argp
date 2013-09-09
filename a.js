@@ -13,9 +13,9 @@ var opts = argp
 			//allowUndefinedArguments: false
 		})
 		.option ({ short: "a", argument: "NUM", optional: true })
-		.text ("Lies and more lies motherfucker!")
+		.text ("some text some text")
 		.option ({ long: "b", argument: "NUM", optional: false })
-		.option ({ long: "cc", short: "c", description: "jajaja" })
+		.option ({ long: "cc", short: "c", description: "cccccccc" })
 		.group ("Informational options")
 		//.version ("v0.0.0")
 		.argument ("asd")
