@@ -18,11 +18,13 @@ var argv = argp
 		.option ({ long: "cc", short: "c", description: "cccccccc" })
 		.group ("Informational options")
 		//.version ("v0.0.0")
-		.argument ("asd")
-		//.usage ("asdadasdadasd")
-		//.usage ("wwwwwwwwwwww")
-		.description ("Does something magic that I still don't know.")
+		.argument ("asdetertrqweqwe")
+		.argument ("qwedfgdfgdfg")
+		.argument ("dfgdfgdfg")
+		.description ("Does something magic that I still don't know asd asdasdasdasdas asd asd asasd asda sassda dasd asd")
 		.email ("a@b.c")
+		.usage ("sdasd ad adasd asdas asd asasas asdas asd asd asdas asd asdas asd asdas")
+		.usage ("sdasd ad adasd asdas asd asasas asdas asd asd asdas asd asdas asd asdas asd 123")
 		.argv ();
 
 console.log (argv);

@@ -15,6 +15,9 @@
 	"engines": {
 		"node": ">=0.10"
 	},
+	"dependencies": {
+		"line-wrap": "*"
+	},
 	"devDependencies": {
 		"optimist": "*"
 	},
