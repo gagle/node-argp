@@ -1,19 +1,19 @@
 var argp = require ("./lib");
 var util = require ("util");
 
-var opts = argp
+var argv = argp
 		.on ("argument", function (obj, argument){
-			console.log (argument);
+			//console.log (argument);
 		})
 		.on ("option", function (obj, long, option, value){
-			console.log (long, option, value);
+			//console.log (long, option, value);
 		})
 		.configure ({
 			//allowUndefinedOptions: false
 			//allowUndefinedArguments: false
 		})
 		.option ({ short: "a", argument: "NUM", optional: true })
-		.text ("some text some text")
+		//.text ("some text some text")
 		.option ({ long: "b", argument: "NUM", optional: false })
 		.option ({ long: "cc", short: "c", description: "cccccccc" })
 		.group ("Informational options")
@@ -21,8 +21,8 @@ var opts = argp
 		.argument ("asd")
 		//.usage ("asdadasdadasd")
 		//.usage ("wwwwwwwwwwww")
-		.description ("hey go!")
+		.description ("Does something magic that I still don't know.")
 		.email ("a@b.c")
-		.parse ();
-		
-console.log (util.inspect (opts, { depth: null }));
+		.argv ();
+
+console.log (argv);
