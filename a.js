@@ -8,7 +8,7 @@ var argv = argp
 		.on ("option", function (obj, long, option, value){
 			//console.log (long, option, value);
 		})
-		.configure ({
+		.configuration ({
 			//allowUndefinedOptions: false
 			//allowUndefinedArguments: false
 		})
@@ -25,6 +25,7 @@ var argv = argp
 		.email ("a@b.c")
 		.usage ("sdasd ad adasd asdas asd asasas asdas asd asd asdas asd asdas asd asdas")
 		.usage ("sdasd ad adasd asdas asd asasas asdas asd asd asdas asd asdas asd asdas asd 123")
+		.version ("v0.0.0")
 		.argv ();
 
 console.log (argv);

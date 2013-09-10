@@ -40,7 +40,7 @@ var opts = argp
 			if (obj.ellipsis) obj.dots = 3;
 			console.log ("end");
 		})
-		.configure ({
+		.configuration ({
 			columns: 80, //Default is 80
 			//No error with duplicate options
 			undefinedArguments: true, //Allows to write any argument

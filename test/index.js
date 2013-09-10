@@ -1,16 +1,209 @@
 "use strict";
-
+//TODO hacer que undefined --a --b y -a -b sea a:true, b:true
+//TODO separar los argumentos en la propiedad _arguments y poner _debug en lugar de dejarlo en argp.debug
+//TODO poner tambien _filename para referirse al script inicial
 var assert = require ("assert");
 var Argp = require ("../lib").constructor;
 
-/*console.error = function (){};
+var argv = function (arr){
+	process.argv = ["node", __filename].concat (arr);
+};
+
+var n = function (){
+	return new Argp ().configuration ({ showHelp: false, showUsage: false });
+};
+
+console.error = function (){};
+
 process.exit = function (){
 	throw new Error ();
 };
+
 var opts;
 
 var tests = {
-	"long, undefined flag": function (){
+	"nothing": function (){
+		assert.doesNotThrow (function (){
+			argv ([]);
+			opts = new Argp ().argv ();
+			assert.deepEqual (opts, {
+				help: false,
+				usage: false
+			});
+			
+			opts = new Argp ().configuration ({ showHelp: false, showUsage: false })
+					.argv ();
+			assert.deepEqual (opts, {});
+		});
+	},
+	"miscellaneous": function (){
+		assert.doesNotThrow (function (){
+			argv (["--a", "-", "-b", "-", "-"]);
+			opts = n ().argv ();
+			assert.deepEqual (opts, {
+				a: "-",
+				b: "-",
+				"-": true
+			});
+			
+			argv (["--"]);
+			opts = n ().argv ();
+			assert.deepEqual (opts, {});
+			
+			argv (["--", "-", "--"]);
+			opts = n ().argv ();
+			assert.deepEqual (opts, {
+				"-": true,
+				"--": true
+			});
+		});
+	},
+	"no configuration, long": function (){
+		assert.doesNotThrow (function (){
+			argv (["--a"]);
+			opts = n ().argv ();
+			assert.deepEqual (opts, {
+				a: true
+			});
+			
+			argv (["--a", "--b"]);
+			opts = n ().argv ();
+			assert.deepEqual (opts, {
+				a: true,
+				b: true
+			});
+			
+			argv (["--a", "--b", "--c"]);
+			opts = n ().argv ();
+			assert.deepEqual (opts, {
+				a: true,
+				b: true,
+				c: true
+			});
+			
+			argv (["--a", "--b-c", "--1", 2]);
+			opts = n ().argv ();
+			assert.deepEqual (opts, {
+				a: true,
+				"b-c": true,
+				"1": "2"
+			});
+			
+			argv (["--a=--b", "--b=c", "--1"]);
+			opts = n ().argv ();
+			assert.deepEqual (opts, {
+				a: "--b",
+				b: "c",
+				"1": true
+			});
+			
+			argv (["--a", "b", "--c", "d"]);
+			opts = n ().argv ();
+			assert.deepEqual (opts, {
+				a: "b",
+				c: "d"
+			});
+			
+			argv (["--no-a", "--b", 1]);
+			opts = n ().argv ();
+			assert.deepEqual (opts, {
+				a: false,
+				b: "1"
+			});
+		});
+	},
+	"no configuration, short": function (){
+		assert.doesNotThrow (function (){
+			argv (["-a"]);
+			opts = n ().argv ();
+			assert.deepEqual (opts, {
+				a: true
+			});
+			
+			argv (["-a", "-b"]);
+			opts = n ().argv ();
+			assert.deepEqual (opts, {
+				a: true,
+				b: true
+			});
+			
+			argv (["-a", "-b", "-c"]);
+			opts = n ().argv ();
+			assert.deepEqual (opts, {
+				a: true,
+				b: true,
+				c: true
+			});
+			
+			argv (["-a", "-b-c", "-1", 2]);
+			opts = n ().argv ();
+			assert.deepEqual (opts, {
+				a: true,
+				"b-c": true,
+				"1": "2"
+			});
+			
+			argv (["-abc", "d", "-e"]);
+			opts = n ().argv ();console.log(opts)
+			assert.deepEqual (opts, {
+				a: true,
+				b: true,
+				c: "d",
+				e: true
+			});
+		});
+	},
+	"no configuration, arguments": function (){
+		assert.doesNotThrow (function (){
+			argv (["a"]);
+			opts = n ().argv ();
+			assert.deepEqual (opts, {
+				a: true
+			});
+			
+			argv (["a", "b"]);
+			opts = n ().argv ();
+			assert.deepEqual (opts, {
+				a: true,
+				b: true
+			});
+			
+			argv (["-a", "b", "c"]);
+			opts = n ().argv ();
+			assert.deepEqual (opts, {
+				a: "b",
+				c: true
+			});
+			
+			argv (["a", "-b", "c"]);
+			opts = n ().argv ();
+			assert.deepEqual (opts, {
+				a: true,
+				b: "c"
+			});
+			
+			argv (["-a", "--", "b", "c"]);
+			opts = n ().argv ();
+			assert.deepEqual (opts, {
+				a: true,
+				b: true,
+				c: true
+			});
+		});
+	},
+	/*"arguments": function (){
+		
+	},
+	"long": function (){
+	
+	},
+	"short": function (){
+	
+	},
+	"mix": function (){
+	
+	}
+	/*"long, undefined flag": function (){
 		process.argv = ["node", __filename, "--a"];
 		assert.throws (function (){
 			new Argp ().parse ();
@@ -201,7 +394,7 @@ var tests = {
 			opts = new Argp ().parse ();
 		});
 		assert.strictEqual (opts.a, undefined);
-	}
+	}*/
 };
 
 for (var test in tests){
