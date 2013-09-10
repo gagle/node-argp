@@ -87,7 +87,6 @@ var opts = argp
 			description: "Show NUM dots on the screen", //Default is null
 			value: 1, //Default value, default is null
 			optional: false, //Default is false
-			hidden: false, //Default is false
 			reviver: function (value){
 				//Transforms the value
 				//Useful to parse comma-separated values, dates, etc

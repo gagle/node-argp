@@ -12,7 +12,7 @@ var argv = argp
 			//allowUndefinedOptions: false
 			//allowUndefinedArguments: false
 		})
-		.option ({ short: "a", argument: "NUM", hidden: true, optional: true })
+		.option ({ short: "a", argument: "NUM", optional: true })
 		//.text ("some text some text")
 		.option ({ long: "b", argument: "NUM", optional: false, description: "asda sdas asdas asd asd asdasasd asd asd asdas asd adas asdasdas asd asdas asd asd asda asd asdasd asdas asd asd asd asda sd" })
 		.option ({ long: "cc", short: "c", description: "cccccccc" })
