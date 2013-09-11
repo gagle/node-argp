@@ -1,5 +1,5 @@
 "use strict";
-//TODO hacer que undefined --a --b y -a -b sea a:true, b:true
+
 var assert = require ("assert");
 var Argp = require ("../lib").constructor;
 
