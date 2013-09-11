@@ -34,13 +34,11 @@ var tests = {
 			opts = new Argp ().argv ();
 			assert.deepEqual (opts, {
 				_debug: debug,
-				_filename: __filename,
-				help: false,
-				usage: false
+				_filename: __filename
 			});
 			
-			opts = new Argp ().configuration ({ showHelp: false, showUsage: false })
-					.argv ();
+			opts = new Argp ().body (function (){})
+					.configuration ({ showHelp: false, showUsage: false }).argv ();
 			assert.deepEqual (opts, {
 				_debug: debug,
 				_filename: __filename
@@ -49,11 +47,18 @@ var tests = {
 	},
 	"miscellaneous": function (){
 		assert.doesNotThrow (function (){
-			argv (["--a", "-", "-b", "-", "-"]);
+			argv (["--a", "-", "-b", "-", "-", "-1"]);
 			opts = n ().argv ();
 			equal (opts, {
 				a: "-",
 				b: "-",
+				"-": true,
+				"1": true
+			});
+			
+			argv (["-"]);
+			opts = n ().argv ();
+			equal (opts, {
 				"-": true
 			});
 			
@@ -106,6 +111,13 @@ var tests = {
 				c: true
 			});
 			
+			argv (["--a", "b", "--c", "d"]);
+			opts = n ().argv ();
+			equal (opts, {
+				a: "b",
+				c: "d"
+			});
+			
 			argv (["--a", "--b-c", "--1", 2]);
 			opts = n ().argv ();
 			equal (opts, {
@@ -120,13 +132,6 @@ var tests = {
 				a: "--b",
 				b: "c",
 				"1": true
-			});
-			
-			argv (["--a", "b", "--c", "d"]);
-			opts = n ().argv ();
-			equal (opts, {
-				a: "b",
-				c: "d"
 			});
 			
 			argv (["--no-a", "--b", 1]);
@@ -160,21 +165,31 @@ var tests = {
 				c: true
 			});
 			
+			argv (["-a", "b", "-c", "d"]);
+			opts = n ().argv ();
+			equal (opts, {
+				a: "b",
+				c: "d"
+			});
+			
 			argv (["-a", "-b-c", "-1", 2]);
 			opts = n ().argv ();
 			equal (opts, {
 				a: true,
-				"b-c": true,
+				"b": true,
+				"-": true,
+				"c": true,
 				"1": "2"
 			});
 			
-			argv (["-abc", "d", "-e"]);
-			opts = n ().argv ();console.log(opts)
+			argv (["-abc", "d", "-ef"]);
+			opts = n ().argv ();
 			equal (opts, {
 				a: true,
 				b: true,
 				c: "d",
-				e: true
+				e: true,
+				f: true
 			});
 		});
 	},
