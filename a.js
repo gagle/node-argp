@@ -5,8 +5,8 @@ var argv = argp
 		.on ("argument", function (obj, argument){
 			//console.log (argument);
 		})
-		.on ("option", function (obj, long, option, value){
-			//console.log (long, option, value);
+		.on ("option", function (obj, option, value, long){
+			//console.log (option, value, long);
 		})
 		.configuration ({
 			//allowUndefinedOptions: false
