@@ -236,13 +236,13 @@ var tests = {
 	"configuration, no undefined": function (){
 		assert.throws (function (){
 			argv (["-a"]);
-			opts = new Argp ().configuration ({ allowUndefinedOptions: false })
+			new Argp ().configuration ({ allowUndefinedOptions: false })
 					.argv ();
 		});
 		
 		assert.throws (function (){
 			argv (["a"]);
-			opts = new Argp ().configuration ({ allowUndefinedArguments: false })
+			new Argp ().configuration ({ allowUndefinedArguments: false })
 					.argv ();
 		});
 	},
@@ -264,210 +264,91 @@ var tests = {
 			});
 		});
 	},
-	/*"arguments": function (){
+	"configuration, long": function (){
+		assert.doesNotThrow (function (){
+			argv (["--a"]);
+			opts = n ().body (function (body){
+				body.option ({ long: "a" });
+			}).argv ();
+			equal (opts, {
+				a: true
+			});
+			
+			argv (["--a"]);
+			opts = n ().body (function (body){
+				body.option ({ long: "a", negate: true });
+			}).argv ();
+			equal (opts, {
+				a: true
+			});
+			
+			argv (["--no-a"]);
+			opts = n ().body (function (body){
+				body.option ({ long: "a", negate: true });
+			}).argv ();
+			equal (opts, {
+				a: false
+			});
+			
+			argv (["--a", "b"]);
+			opts = n ().body (function (body){
+				body.option ({ long: "a" });
+			}).argv ();
+			equal (opts, {
+				a: true,
+				b: true
+			});
+			
+			argv (["--a", "b"]);
+			opts = n ().body (function (body){
+				body.option ({ long: "a", argument: "a" });
+			}).argv ();
+			equal (opts, {
+				a: "b"
+			});
+			
+			argv (["--a=b", "--b"]);
+			opts = n ().body (function (body){
+				body.option ({ long: "a", argument: "a" });
+			}).argv ();
+			equal (opts, {
+				a: "b",
+				"b": true
+			});
+		});
 		
+		assert.throws (function (){
+			argv (["--a=b"]);
+			n ().body (function (body){
+				body.option ({ long: "a" });
+			}).argv ();
+		});
+		
+		assert.throws (function (){
+			argv (["--a"]);
+			n ().body (function (body){
+				body.option ({ long: "a", argument: "a" });
+			}).argv ();
+		});
+		
+		assert.throws (function (){
+			argv (["--a", "--b"]);
+			n ().body (function (body){
+				body.option ({ long: "a", argument: "a" });
+			}).argv ();
+		});
 	},
-	"long": function (){
-	
-	},
-	"short": function (){
-	
-	},
-	"mix": function (){
-	
+	"configuration, arguments": function (){
+		assert.doesNotThrow (function (){
+			argv (["--c", "a", "c"]);
+			opts = n ().argument ("a").argv ();
+			equal (opts, {
+				c: "c",
+				a: true
+			});
+			
+		});
 	}
-	/*"long, undefined flag": function (){
-		process.argv = ["node", __filename, "--a"];
-		assert.throws (function (){
-			new Argp ().parse ();
-		});
-		assert.throws (function (){
-			new Argp ().option ({ long: "a", negate: true }).parse ();
-		});
-	},
-	"long, undefined negated flag": function (){
-		process.argv = ["node", __filename, "--no-a"];
-		assert.throws (function (){
-			new Argp ().parse ();
-		});
-		assert.throws (function (){
-			new Argp ().option ({ long: "a" }).parse ();
-		});
-	},
-	"long, flag": function (){
-		process.argv = ["node", __filename, "--a"];
-		assert.doesNotThrow (function (){
-			opts = new Argp ().option ({ long: "a" }).parse ();
-		});
-		assert.strictEqual (opts.a, true);
-	},
-	"long, multiple flags": function (){
-		process.argv = ["node", __filename, "--a", "--b"];
-		assert.doesNotThrow (function (){
-			opts = new Argp ()
-					.option ({ long: "a" })
-					.option ({ long: "b" })
-					.option ({ long: "c" })
-					.parse ();
-		});
-		assert.strictEqual (opts.a, true);
-		assert.strictEqual (opts.b, true);
-		assert.strictEqual (opts.c, false);
-	},
-	"long, negated flag": function (){
-		process.argv = ["node", __filename, "--no-a"];
-		assert.doesNotThrow (function (){
-			opts = new Argp ().option ({ long: "a", negate: true }).parse ();
-		});
-		assert.strictEqual (opts.a, false);
-	},
-	"long, multiple negated flags": function (){
-		process.argv = ["node", __filename, "--no-a", "--no-b"];
-		assert.doesNotThrow (function (){
-			opts = new Argp ()
-					.option ({ long: "a", negate: true })
-					.option ({ long: "b", negate: true })
-					.option ({ long: "c", negate: true })
-					.parse ();
-		});
-		assert.strictEqual (opts.a, false);
-		assert.strictEqual (opts.a, false);
-		assert.strictEqual (opts.a, true);
-	},
-	"long, undefinedOptions flag": function (){
-		process.argv = ["node", __filename, "--a"];
-		assert.doesNotThrow (function (){
-			opts = new Argp ().configure ({ undefinedOptions: true }).parse ();
-		});
-		assert.strictEqual (opts.a, undefined);
-		assert.doesNotThrow (function (){
-			opts = new Argp ().option ({ long: "a", negate: true }).parse ();
-		});
-		assert.strictEqual (opts.a, true);
-		assert.doesNotThrow (function (){
-			opts = new Argp ()
-					.configure ({ undefinedOptions: true })
-					.option ({ long: "a", negate: true })
-					.parse ();
-		});
-		assert.strictEqual (opts.a, true);
-		assert.doesNotThrow (function (){
-			opts = new Argp ().option ({ long: "a" }).parse ();
-		});
-		assert.strictEqual (opts.a, true);
-		assert.doesNotThrow (function (){
-			opts = new Argp ()
-					.configure ({ undefinedOptions: true })
-					.option ({ long: "a" })
-					.parse ();
-		});
-		assert.strictEqual (opts.a, true);
-		process.argv = ["node", __filename, "--a b"];
-		assert.doesNotThrow (function (){
-			opts = new Argp ().configure ({ undefinedOptions: true }).parse ();
-		});
-		assert.strictEqual (opts.a, undefined);
-		assert.strictEqual (opts.b, undefined);
-	},
-	"long, value with --": function (){
-		process.argv = ["node", __filename, "--a", "--"];
-		assert.throws (function (){
-			new Argp ()
-					.option ({ long: "a", argument: "a" })
-					.parse ();
-		});
-		assert.doesNotThrow (function (){
-			opts = new Argp ()
-					.option ({ long: "a", argument: "a", optional: true, value: "b" })
-					.parse ();
-		});
-		assert.strictEqual (opts.a, "b");
-	},
-	"long, value, last token": function (){
-		process.argv = ["node", __filename, "--a"];
-		assert.throws (function (){
-			new Argp ()
-					.option ({ long: "a", argument: "a" })
-					.parse ();
-		});
-		assert.doesNotThrow (function (){
-			opts = new Argp ()
-					.option ({ long: "a", argument: "a", optional: true, value: "b" })
-					.parse ();
-		});
-		assert.strictEqual (opts.a, "b");
-	},
-	"long, value in the same token": function (){
-		process.argv = ["node", __filename, "--a=b"];
-		assert.throws (function (){
-			new Argp ()
-					.option ({ long: "a" })
-					.parse ();
-		});
-		assert.doesNotThrow (function (){
-			opts = new Argp ()
-					.option ({ long: "a", argument: "a" })
-					.parse ();
-		});
-		assert.strictEqual (opts.a, "b");
-	},
-	"long, abbreviation": function (){
-		process.argv = ["node", __filename, "--a"];
-		assert.throws (function (){
-			new Argp ()
-					.option ({ long: "ab" })
-					.option ({ long: "abc" })
-					.parse ();
-		});
-		assert.doesNotThrow (function (){
-			opts = new Argp ()
-					.option ({ long: "ab", negate: true })
-					.option ({ long: "abc" })
-					.parse ();
-		});
-		assert.strictEqual (opts.abc, true);
-		assert.doesNotThrow (function (){
-			opts = new Argp ()
-					.option ({ long: "ab" })
-					.parse ();
-		});
-		assert.strictEqual (opts.ab, true);
-	},
-	"long, reviver": function (){
-		process.argv = ["node", __filename, "--a", "b"];
-		assert.doesNotThrow (function (){
-			opts = new Argp ()
-					.option ({ long: "a", argument: "a", reviver: function (value){
-						return value + "b";
-					}})
-					.parse ();
-		});
-		assert.strictEqual (opts.a, "bb");
-	},
-	"short, undefined": function (){
-		process.argv = ["node", __filename, "-a"];
-		assert.throws (function (){
-			new Argp ().parse ();
-		});
-	},
-	"arguments": function (){
-		process.argv = ["node", __filename, "a"];
-		assert.throws (function (){
-			new Argp ()
-					.configure ({ undefinedArguments: false })
-					.parse ();
-		});
-		assert.doesNotThrow (function (){
-			opts = new Argp ()
-					.argument ("a")
-					.parse ();
-		});
-		assert.strictEqual (opts.a, true);
-		assert.doesNotThrow (function (){
-			opts = new Argp ().parse ();
-		});
-		assert.strictEqual (opts.a, undefined);
-	}*/
 };
 
 for (var test in tests){
