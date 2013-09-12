@@ -290,6 +290,14 @@ var tests = {
 				a: false
 			});
 			
+			argv (["--no-a"]);
+			opts = n ().body (function (body){
+				body.option ({ long: "a" });
+			}).argv ();
+			equal (opts, {
+				a: false
+			});
+			
 			argv (["--a", "b"]);
 			opts = n ().body (function (body){
 				body.option ({ long: "a" });
@@ -307,13 +315,37 @@ var tests = {
 				a: "b"
 			});
 			
+			argv (["--a"]);
+			opts = n ().body (function (body){
+				body.option ({ long: "a", argument: "a", optional: true });
+			}).argv ();
+			equal (opts, {
+				a: null
+			});
+			
 			argv (["--a=b", "--b"]);
 			opts = n ().body (function (body){
 				body.option ({ long: "a", argument: "a" });
 			}).argv ();
 			equal (opts, {
 				a: "b",
-				"b": true
+				b: true
+			});
+			
+			argv (["--a", "b"]);
+			opts = n ().body (function (body){
+				body.option ({ long: "abc", argument: "a" });
+			}).argv ();
+			equal (opts, {
+				abc: "b"
+			});
+			
+			argv (["--no-a"]);
+			opts = n ().body (function (body){
+				body.option ({ long: "abc", negate: true });
+			}).argv ();
+			equal (opts, {
+				abc: false
 			});
 		});
 		
@@ -337,6 +369,144 @@ var tests = {
 				body.option ({ long: "a", argument: "a" });
 			}).argv ();
 		});
+		
+		assert.throws (function (){
+			argv (["--a"]);
+			n ().body (function (body){
+				body.option ({ long: "a12" });
+				body.option ({ long: "a34" });
+			}).argv ();
+		});
+	},
+	"configuration, short": function (){
+		assert.doesNotThrow (function (){
+			argv (["-a"]);
+			opts = n ().body (function (body){
+				body.option ({ short: "a" });
+			}).argv ();
+			equal (opts, {
+				a: true
+			});
+			
+			argv (["-a"]);
+			opts = n ().body (function (body){
+				body.option ({ short: "a", negate: true });
+			}).argv ();
+			equal (opts, {
+				a: true
+			});
+			
+			argv (["-a", "b"]);
+			opts = n ().body (function (body){
+				body.option ({ short: "a" });
+			}).argv ();
+			equal (opts, {
+				a: true,
+				b: true
+			});
+			
+			argv (["-a", "b"]);
+			opts = n ().body (function (body){
+				body.option ({ short: "a", argument: "a" });
+			}).argv ();
+			equal (opts, {
+				a: "b"
+			});
+			
+			argv (["-a"]);
+			opts = n ().body (function (body){
+				body.option ({ short: "a", argument: "a", optional: true });
+			}).argv ();
+			equal (opts, {
+				a: null
+			});
+			
+			argv (["-ab", "-b"]);
+			opts = n ().body (function (body){
+				body.option ({ short: "a", argument: "a" });
+			}).argv ();
+			equal (opts, {
+				a: "b",
+				b: true
+			});
+			
+			argv (["-abc", "b"]);
+			opts = n ().body (function (body){
+				body.option ({ short: "a" });
+				body.option ({ short: "b" });
+			}).argv ();
+			equal (opts, {
+				a: true,
+				b: true,
+				c: "b"
+			});
+			
+			argv (["-abc", "b"]);
+			opts = n ().body (function (body){
+				body.option ({ short: "a" });
+				body.option ({ short: "b" });
+				body.option ({ short: "c", argument: "a" });
+			}).argv ();
+			equal (opts, {
+				a: true,
+				b: true,
+				c: "b"
+			});
+			
+			argv (["-abc", "b"]);
+			opts = n ().body (function (body){
+				body.option ({ short: "a", argument: "a", optional: true });
+				body.option ({ short: "b", argument: "a", optional: true });
+				body.option ({ short: "c", argument: "a" });
+			}).argv ();
+			equal (opts, {
+				a: null,
+				b: null,
+				c: "b"
+			});
+			
+			argv (["-ab"]);
+			opts = n ().body (function (body){
+				body.option ({ short: "a", argument: "a", optional: true });
+				body.option ({ short: "b" });
+			}).argv ();
+			equal (opts, {
+				a: null,
+				b: true
+			});
+		});
+		
+		assert.throws (function (){
+			argv (["-ab"]);
+			n ().body (function (body){
+				body.option ({ short: "a", argument: "a" });
+				body.option ({ short: "b" });
+			}).argv ();
+		});
+		
+		assert.throws (function (){
+			argv (["-ab"]);
+			n ().body (function (body){
+				body.option ({ short: "a", argument: "a" });
+				body.option ({ short: "b", argument: "a" });
+			}).argv ();
+		});
+		
+		assert.throws (function (){
+			argv (["-ab", "--c"]);
+			n ().body (function (body){
+				body.option ({ short: "a", argument: "a" });
+				body.option ({ short: "b", argument: "a" });
+			}).argv ();
+		});
+		
+		assert.throws (function (){
+			argv (["-abc"]);
+			n ().body (function (body){
+				body.option ({ short: "a" });
+				body.option ({ short: "b", argument: "a" });
+			}).argv ();
+		});
 	},
 	"configuration, arguments": function (){
 		assert.doesNotThrow (function (){
@@ -346,7 +516,6 @@ var tests = {
 				c: "c",
 				a: true
 			});
-			
 		});
 	}
 };
