@@ -16,8 +16,8 @@ var argv = argp
 		.configuration ({
 			showHelp: true
 		})
-		.on ("option", function (argv, option, value, long, ignore){
-			if (option === "ellipsis") argv.dot = 3;
+		.on ("end", function (argv){
+			if (argv.ellipsis) argv.dot = 3;
 		})
 		.body (function (body){
 			body
