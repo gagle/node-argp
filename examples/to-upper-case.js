@@ -1,0 +1,45 @@
+"use strict";
+
+var argp = require ("../lib");
+
+/*
+Transforms to upper case any phrase if the -u option is passed
+Start the script passing any phrase with the -u option:
+
+$ node to-upper-case.js this is a sample text with the -u option
+
+{
+	_debug: false,
+	_filename: <__filename>,
+	u: true,
+	phrase: "THIS IS A SAMPLE TEXT WITH THE OPTION"
+}
+*/
+
+argp
+		.on ("start", function (argv){
+			argv.phrase = [];
+		})
+		.on ("argument", function (argv, argument, ignore){
+			argv.phrase.push (argv.u ? argument.toUpperCase () : argument);
+			
+			//We don't want to store the words in the final object
+			ignore ();
+		})
+		.on ("option", function (argv, option, value, long, ignore){
+			//We only need the "-u" option, ignore the rest
+			if (option !== "u") ignore ();
+		})
+		.on ("end", function (argv){
+			argv.phrase = argv.phrase.join (" ");
+			console.log (argv);
+		})
+		.configuration ({
+			//If "sort" is enabled, the options are emitted before any argument,
+			//this means that the -u option can appear at any position
+			sort: true
+		})
+		.body (function (body){
+			body.option ({ short: "u" })
+		})
+		.argv ();

@@ -10,7 +10,7 @@ var argv = function (arr){
 };
 
 var n = function (){
-	return new Argp ().configuration ({ showHelp: false, showUsage: false });
+	return new Argp ();
 };
 
 var equal = function (o, expected){
@@ -31,19 +31,20 @@ var tests = {
 	"no configuration, nothing": function (){
 		assert.doesNotThrow (function (){
 			argv ([]);
+			
 			opts = new Argp ().argv ();
+			assert.deepEqual (opts, {
+				_debug: debug,
+				_filename: __filename
+			});
+			
+			opts = new Argp ().configuration ({ showHelp: true, showUsage: true })
+					.argv ();
 			assert.deepEqual (opts, {
 				_debug: debug,
 				_filename: __filename,
 				help: false,
 				usage: false
-			});
-			
-			opts = new Argp ().body (function (){})
-					.configuration ({ showHelp: false, showUsage: false }).argv ();
-			assert.deepEqual (opts, {
-				_debug: debug,
-				_filename: __filename
 			});
 		});
 	},
@@ -251,7 +252,7 @@ var tests = {
 			argv ([]);
 			opts = n ().argument ("a").body (function (body){
 				body.option ({ long: "b", short: "x" });
-				body.option ({ short: "c", negate: true });
+				body.option ({ long: "c", negate: true });
 				body.option ({ short: "d", argument: "a", value: "a" });
 				body.option ({ short: "e", argument: "a", optional: true });
 			}).argv ();
@@ -388,14 +389,6 @@ var tests = {
 				a: true
 			});
 			
-			argv (["-a"]);
-			opts = n ().body (function (body){
-				body.option ({ short: "a", negate: true });
-			}).argv ();
-			equal (opts, {
-				a: true
-			});
-			
 			argv (["-a", "b"]);
 			opts = n ().body (function (body){
 				body.option ({ short: "a" });
@@ -473,6 +466,16 @@ var tests = {
 			equal (opts, {
 				a: null,
 				b: true
+			});
+		});
+		
+		assert.throws (function (){
+			argv (["-a"]);
+			opts = n ().body (function (body){
+				body.option ({ short: "a", negate: true });
+			}).argv ();
+			equal (opts, {
+				a: true
 			});
 		});
 		

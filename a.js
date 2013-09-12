@@ -2,10 +2,10 @@ var argp = require ("./lib");
 var util = require ("util");
 
 var argv = argp
-		.on ("argument", function (obj, argument){
+		.on ("argument", function (argv, argument){
 			//console.log (argument);
 		})
-		.on ("option", function (obj, option, value, long){
+		.on ("option", function (argv, option, value, long){
 			//console.log (option, value, long);
 		})
 		.configuration ({
