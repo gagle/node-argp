@@ -2,7 +2,7 @@
 	"name": "argp",
 	"version": "0.0.0",
 	"description": "Command-line option parser",
-	"keywords": ["cli", "options", "parser", "command", "arguments", "getopt",
+	"keywords": ["cli", "options", "parser", "commands", "arguments", "getopt",
 			"argp"],
 	"author": {
 		"name": "Gabriel Llamas",
@@ -16,7 +16,10 @@
 		"node": ">=0.10"
 	},
 	"devDependencies": {
-		"optimist": "*"
+		"commander": "*",
+		"nopt": "*",
+		"optimist": "*",
+		"speedy": "*"
 	},
 	"license": "MIT",
 	"main": "lib"
