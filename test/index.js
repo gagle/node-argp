@@ -28,13 +28,15 @@ process.exit = function (){
 var opts;
 
 var tests = {
-	"nothing": function (){
+	"no configuration, nothing": function (){
 		assert.doesNotThrow (function (){
 			argv ([]);
 			opts = new Argp ().argv ();
 			assert.deepEqual (opts, {
 				_debug: debug,
-				_filename: __filename
+				_filename: __filename,
+				help: false,
+				usage: false
 			});
 			
 			opts = new Argp ().body (function (){})
@@ -42,49 +44,6 @@ var tests = {
 			assert.deepEqual (opts, {
 				_debug: debug,
 				_filename: __filename
-			});
-		});
-	},
-	"miscellaneous": function (){
-		assert.doesNotThrow (function (){
-			argv (["--a", "-", "-b", "-", "-", "-1"]);
-			opts = n ().argv ();
-			equal (opts, {
-				a: "-",
-				b: "-",
-				"-": true,
-				"1": true
-			});
-			
-			argv (["-"]);
-			opts = n ().argv ();
-			equal (opts, {
-				"-": true
-			});
-			
-			argv (["--"]);
-			opts = n ().argv ();
-			equal (opts, {});
-			
-			argv (["--", "-", "--"]);
-			opts = n ().argv ();
-			equal (opts, {
-				"-": true,
-				"--": true
-			});
-			
-			argv (["--a", "--", "--b"]);
-			opts = n ().argv ();
-			equal (opts, {
-				a: true,
-				"--b": true
-			});
-			
-			argv (["-a", "--", "-b"]);
-			opts = n ().argv ();
-			equal (opts, {
-				a: true,
-				"-b": true
 			});
 		});
 	},
@@ -228,6 +187,80 @@ var tests = {
 				a: true,
 				b: true,
 				c: true
+			});
+		});
+	},
+	"no configuration, miscellaneous": function (){
+		assert.doesNotThrow (function (){
+			argv (["--a", "-", "-b", "-", "-", "-1"]);
+			opts = n ().argv ();
+			equal (opts, {
+				a: "-",
+				b: "-",
+				"-": true,
+				"1": true
+			});
+			
+			argv (["-"]);
+			opts = n ().argv ();
+			equal (opts, {
+				"-": true
+			});
+			
+			argv (["--"]);
+			opts = n ().argv ();
+			equal (opts, {});
+			
+			argv (["--", "-", "--"]);
+			opts = n ().argv ();
+			equal (opts, {
+				"-": true,
+				"--": true
+			});
+			
+			argv (["--a", "--", "--b"]);
+			opts = n ().argv ();
+			equal (opts, {
+				a: true,
+				"--b": true
+			});
+			
+			argv (["-a", "--", "-b"]);
+			opts = n ().argv ();
+			equal (opts, {
+				a: true,
+				"-b": true
+			});
+		});
+	},
+	"configuration, no undefined": function (){
+		assert.throws (function (){
+			argv (["-a"]);
+			opts = new Argp ().configuration ({ allowUndefinedOptions: false })
+					.argv ();
+		});
+		
+		assert.throws (function (){
+			argv (["a"]);
+			opts = new Argp ().configuration ({ allowUndefinedArguments: false })
+					.argv ();
+		});
+	},
+	"configuration, nothing, default values": function (){
+		assert.doesNotThrow (function (){
+			argv ([]);
+			opts = n ().argument ("a").body (function (body){
+				body.option ({ long: "b", short: "x" });
+				body.option ({ short: "c", negate: true });
+				body.option ({ short: "d", argument: "a", value: "a" });
+				body.option ({ short: "e", argument: "a", optional: true });
+			}).argv ();
+			equal (opts, {
+				a: false,
+				b: false,
+				c: true,
+				d: "a",
+				e: null
 			});
 		});
 	},
