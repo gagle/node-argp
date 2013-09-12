@@ -29,7 +29,7 @@ argp
 		.argv ();
 
 /*
-All the lines are wrapped at 80 columns. The limit can be changed setting the
+All the lines are wrapped at 80 columns. The limit can be changed with the
 "columns" property:
 
 .configuration ({
