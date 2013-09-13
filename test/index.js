@@ -1,4 +1,4 @@
-"use strict";//TODO testear con !allowUndefinedX
+"use strict";
 
 var assert = require ("assert");
 var Argp = require ("../lib").constructor;
@@ -237,6 +237,18 @@ var tests = {
 	"configuration, no undefined": function (){
 		assert.throws (function (){
 			argv (["-a"]);
+			new Argp ().configuration ({ allowUndefinedOptions: false })
+					.argv ();
+		});
+		
+		assert.throws (function (){
+			argv (["--a"]);
+			new Argp ().configuration ({ allowUndefinedOptions: false })
+					.argv ();
+		});
+		
+		assert.throws (function (){
+			argv (["--no-a"]);
 			new Argp ().configuration ({ allowUndefinedOptions: false })
 					.argv ();
 		});
