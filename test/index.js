@@ -1,4 +1,4 @@
-"use strict";
+"use strict";//TODO testear con !allowUndefinedX
 
 var assert = require ("assert");
 var Argp = require ("../lib").constructor;

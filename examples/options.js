@@ -4,9 +4,6 @@ process.argv = ["node", __filename];
 
 var argp = require ("../lib");
 
-//It doesn"t make any sense to define the options and don't parse the options
-//--help or --usage, but here it is
-
 var argv = argp
 		.argument ("arg1")
 		.argument ("arg2")
@@ -24,9 +21,9 @@ var argv = argp
 					
 					//Option with a mandatory value and null as default value
 					//The argument string it's used in the --help and --usage options.
-					//Because we don't need any of these two commands (again, it's silly;
-					//--usage is less used but --help is essential) the argument can be
-					//set to a truthy value, ie: true
+					//Because we don't need any of these two commands (showHelp and
+					//showUsage are disabled) the argument can be set to a truthy value,
+					//ie: true
 					.option ({ short: "c", argument: "C" })
 					
 					//Option with a mandatory value and "dddd" as default value
