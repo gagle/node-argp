@@ -35,7 +35,8 @@ argp
 		})
 		.configuration ({
 			//If "sort" is enabled, the options are emitted before any argument,
-			//this means that the -u option can appear at any position
+			//this means that the -u option can appear at any position (before or
+			//after an argument) and it will be emitted before any argument
 			sort: true
 		})
 		.body (function (body){
