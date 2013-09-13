@@ -15,6 +15,8 @@ You don't even need to configure anything, just write:
 var argv = require ("argp").argv ();
 ```
 
+`argp` also works when Node.js is in debug mode. 
+
 #### Installation ####
 
 ```
