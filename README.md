@@ -25,8 +25,16 @@ npm install argp
 
 #### Documentation ####
 
-__Full example explained__
+- [Full example explained](#example)
 
+#### Objects ####
+
+- [Argp](#argp)
+
+---
+
+<a name="example"></a>
+__Full example explained__
 
 Take a look at the [examples](https://github.com/gagle/node-argp/tree/master/examples) for further details, specially the [options.js](https://github.com/gagle/node-argp/blob/master/examples/options.js) example to see how to configure the different types of options.
 
@@ -107,3 +115,95 @@ var argv = argp
 		//Parse the options
 		argv ();
 ```
+
+---
+
+<a name="argp_object"></a>
+__Argp__
+
+The module returns an instance of `Argp`. It inherits from an EventEmitter.
+
+__Events__
+
+- [argument](#event_argument)
+- [end](#event_end)
+- [option](#event_option)
+- [start](#event_start)
+
+__Methods__
+
+- [Argp#argument(str) : Argp](#argp_argument)
+- [Argp#arguments() : Object](#argp_arguments)
+- [Argp#argv() : Object](#argp_argv)
+- [Argp#body(fn) : Argp](#argp_body)
+- [Argp#configuration(o) : Argp](#argp_configuration)
+- [Argp#description(str) : Argp](#argp_description)
+- [Argp#email(str) : Argp](#argp_email)
+- [Argp#options() : Argp](#argp_options)
+- [Argp#version(str) : Argp](#argp_version)
+
+__Objects__
+
+- [Body](#body)
+
+<a name="argp_argument"></a>
+__Argp#argument(str) : Argp__
+
+
+
+<a name="argp_argv"></a>
+__Argp#argv() : Object__
+
+
+
+<a name="argp_body"></a>
+__Argp#body(fn) : Argp__
+
+
+
+<a name="argp_configuration"></a>
+__Argp#configuration(o) : Argp__
+
+
+
+<a name="argp_description"></a>
+__Argp#description(str) : Argp__
+
+
+
+<a name="argp_email"></a>
+__Argp#email(str) : Argp__
+
+
+
+<a name="argp_version"></a>
+__Argp#version(str) : Argp__
+
+
+
+---
+
+<a name="body"></a>
+__Body__
+
+The `Body` instance is returned by [Argp#body()](#argp_body).
+
+__Methods__
+
+- [Body#group(str) : Body](#body_group)
+- [Body#option(o) : Body](#body_option)
+- [Body#text(str) : Body](#body_text)
+
+<a name="body_group"></a>
+__Body#group(str) : Body__
+
+
+
+<a name="body_option"></a>
+__Body#option(o) : Body__
+
+
+
+<a name="body_text"></a>
+__Body#text(str) : Body__
+
