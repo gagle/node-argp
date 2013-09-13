@@ -25,6 +25,9 @@ npm install argp
 
 __Full example explained__
 
+
+Take a look at the [examples](https://github.com/gagle/node-argp/tree/master/examples) for further detais, specially the [options](https://github.com/gagle/node-argp/blob/master/examples/options.js) example to see how to configure the different types of options.
+
 ```javascript
 var argp = require ("argp");
 
@@ -102,5 +105,3 @@ var argv = argp
 		//Parse the options
 		argv ();
 ```
-
-Take a look at the [examples](https://github.com/gagle/node-argp/tree/master/examples) for further detais, specially the [options](https://github.com/gagle/node-argp/blob/master/examples/options.js) example to see how to configure the different types of options.
