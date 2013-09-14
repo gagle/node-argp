@@ -1,10 +1,12 @@
 "use strict";
 
-process.argv = ["node", __filename];
-
 var argp = require ("../lib");
 
 var argv = argp
+		.configuration ({
+			showHelp: true,
+			showUsage: true
+		})
 		.argument ("arg1")
 		.argument ("arg2")
 		.body (function (body){
@@ -42,7 +44,10 @@ var argv = argp
 					.option ({ short: "g", argument: true, description: "gggg",
 							reviver: function (value){
 								return "-> " + value + " <-";
-							}});
+							}})
+					
+					//Hidden option, it won't appear in the --help and --usage messages
+					.option ({ short: "i", hidden: true });
 		})
 		.argv ();
 
@@ -59,7 +64,33 @@ console.log (argv);
 	e: null,
 	f: "ffff",
 	g: null,
+	i: false,
+	help: false,
+	usage: false,
 	arg1: false,
 	arg2: false
 }
+
+--------------------------------------------------------------------------------
+
+$ node options.js --help
+
+Usage: options.js [OPTIONS] [ARGUMENTS]
+
+  -a, --aaaa
+      --no-b
+  -c C
+      --d=true
+  -e[true]
+      --f[=true]
+  -g true                     gggg
+  -h, --help                  Display this help and exit
+      --usage                 Display a short usage message and exit
+
+--------------------------------------------------------------------------------
+
+$ node options.js --usage
+
+Usage: options.js [-ha] [-c C] [-e[true]] [-g true] [--aaaa] [--b] [--d=true]
+         [--f[=true]] [--help] [--usage] [arg1] [arg2]
 */
