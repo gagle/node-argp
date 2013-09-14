@@ -1,6 +1,8 @@
 v0.0.2 (14 Sep 2013)
 	Added automatic string conversion.
 	Added "hidden" option configuration.
+	When the input is parsed the first time "argv()" frees any resource; only
+			the final object is needed.
 	Minor bugfixes.
 
 v0.0.1 (13 Sep 2013)
