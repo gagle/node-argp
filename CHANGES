@@ -1,2 +1,7 @@
+v0.0.2 (14 Sep 2013)
+	Added automatic string conversion.
+	Added "hidden" option configuration.
+	Minor bugfixes.
+
 v0.0.1 (13 Sep 2013)
 	First release.

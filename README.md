@@ -5,7 +5,7 @@ _Node.js project_
 
 #### Command-line option parser ####
 
-Version: 0.0.1
+Version: 0.0.2
 
 Inspired by the extremly well-known [argp C library](http://www.gnu.org/software/libc/manual/html_node/Argp.html), this module provides a very handy and easy to use configuration to parse GUN-style command-line arguments. Help, usage and version messages are automatically generated, line-wrapped at 80 columns and fully customizable.
 
@@ -139,6 +139,7 @@ __Methods__
 - [Argp#configuration(o) : Argp](#argp_configuration)
 - [Argp#description(str) : Argp](#argp_description)
 - [Argp#email(str) : Argp](#argp_email)
+- [Argp#fail(str[, code]) : undefined](#argp_fail)
 - [Argp#options() : Argp](#argp_options)
 - [Argp#version(str) : Argp](#argp_version)
 
@@ -148,6 +149,11 @@ __Objects__
 
 <a name="argp_argument"></a>
 __Argp#argument(str) : Argp__
+
+
+
+<a name="argp_arguments"></a>
+__Argp#arguments() : Object__
 
 
 
@@ -173,6 +179,16 @@ __Argp#description(str) : Argp__
 
 <a name="argp_email"></a>
 __Argp#email(str) : Argp__
+
+
+
+<a name="argp_fail"></a>
+__Argp#fail(str[, code]) : undefined__
+
+
+
+<a name="argp_options"></a>
+__Argp#options() : Object__
 
 
 

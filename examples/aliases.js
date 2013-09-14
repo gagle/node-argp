@@ -27,8 +27,7 @@ var argv = argp
 						argument: "N",
 						optional: true,
 						value: 1,
-						description: "Print N dots, default is 1",
-						reviver: parseInt
+						description: "Print N dots, default is 1"
 					})
 					.option ({
 						long: "ellipsis",

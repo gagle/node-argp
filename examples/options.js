@@ -39,7 +39,6 @@ var argv = argp
 					//Option with a description and reviver
 					//The reviver receives the string value and returns the new value,
 					//it's like the json reviver function
-					//To parse numbers you can use: { revivier: parseInt }
 					.option ({ short: "g", argument: true, description: "gggg",
 							reviver: function (value){
 								return "-> " + value + " <-";

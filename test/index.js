@@ -28,17 +28,38 @@ process.exit = function (){
 var opts;
 
 var tests = {
+	"type conversion": function (){
+		assert.doesNotThrow (function (){
+			argv (["--a=undefined", "--b=null", "--c=true", "--d=false", "--e=12",
+					"--f=12.34", "--g=asd"]);
+			opts = n ().argv ();
+			assert.strictEqual (opts.a, undefined);
+			assert.strictEqual (opts.b, null);
+			assert.strictEqual (opts.c, true);
+			assert.strictEqual (opts.d, false);
+			assert.strictEqual (opts.e, 12);
+			assert.strictEqual (opts.f, 12.34);
+			assert.strictEqual (opts.g, "asd");
+		});
+	},
+	"empty required value": function (){
+		assert.doesNotThrow (function (){
+			argv (["--a="]);
+			opts = n ().argv ();
+			assert.strictEqual (opts.a, null);
+		});
+	},
 	"no configuration, nothing": function (){
 		assert.doesNotThrow (function (){
 			argv ([]);
 			
-			opts = new Argp ().argv ();
+			opts = n ().argv ();
 			assert.deepEqual (opts, {
 				_debug: debug,
 				_filename: __filename
 			});
 			
-			opts = new Argp ().configuration ({ showHelp: true, showUsage: true })
+			opts = n ().configuration ({ showHelp: true, showUsage: true })
 					.argv ();
 			assert.deepEqual (opts, {
 				_debug: debug,
@@ -426,16 +447,25 @@ var tests = {
 				a: null
 			});
 			
-			argv (["-ab", "-b"]);
+			argv (["-ab", "-c"]);
 			opts = n ().body (function (body){
 				body.option ({ short: "a", argument: "a" });
 			}).argv ();
 			equal (opts, {
 				a: "b",
-				b: true
+				c: true
 			});
 			
-			argv (["-abc", "b"]);
+			argv (["-abc", "-d"]);
+			opts = n ().body (function (body){
+				body.option ({ short: "a", argument: "a" });
+			}).argv ();
+			equal (opts, {
+				a: "bc",
+				d: true
+			});
+			
+			argv (["-abc", "d"]);
 			opts = n ().body (function (body){
 				body.option ({ short: "a" });
 				body.option ({ short: "b" });
@@ -443,7 +473,19 @@ var tests = {
 			equal (opts, {
 				a: true,
 				b: true,
-				c: "b"
+				c: "d"
+			});
+			
+			argv (["-abcd", "e"]);
+			opts = n ().body (function (body){
+				body.option ({ short: "a" });
+				body.option ({ short: "b" });
+			}).argv ();
+			equal (opts, {
+				a: true,
+				b: true,
+				c: true,
+				d: "e"
 			});
 			
 			argv (["-abc", "b"]);
