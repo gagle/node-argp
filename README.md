@@ -25,15 +25,17 @@ npm install argp
 
 #### Documentation ####
 
-- [Full example explained](#example)
+- [Full example explained](#full)
+- [Quick examples with no configuration](#quick)
+- [Configuring options](#options)
 
 #### Objects ####
 
-- [Argp](#argp)
+- [Argp](#argp_object)
 
 ---
 
-<a name="example"></a>
+<a name="full"></a>
 __Full example explained__
 
 Take a look at the [examples](https://github.com/gagle/node-argp/tree/master/examples) for further details, specially the [options.js](https://github.com/gagle/node-argp/blob/master/examples/options.js) example to see how to configure the different types of options.
@@ -92,7 +94,7 @@ var argv = argp
 		.description ("Sample app.")
 		//Display a contact email
 		.email ("a@b.c")
-		//Configure some arguments, this is only needed to show them in the --usage
+		//Configure some arguments, this is only needed to display them in the --usage
 		//message and arguments() function, and to set their default values to false
 		.argument ("arg1")
 		.argument ("arg2")
@@ -118,10 +120,154 @@ var argv = argp
 
 ---
 
+<a name="quick"></a>
+__Quick examples with no configuration__
+
+- `node script.js -a -b -c`  
+  `{ a: true, b: true, c: true }`
+- `node script.js a b c`  
+  `{ a: true, b: true, c: true }`
+- `node script.js -abc d`  
+  `{ a: true, b: true, c: "d" }`
+- `node script.js --a --b c --d=e`  
+  `{ a: true, b: "c", d: "e" }`
+- `node script.js --no-a b`  
+  `{ a: false, b: true }`
+- `node script.js --a -- -b --c d`  
+  `{ a: true, "-b": true, "--c": true, d: true }`
+
+---
+
+<a name="options"></a>
+__Configuring options__
+
+---
+
 <a name="argp_object"></a>
 __Argp__
 
 The module returns an instance of `Argp`. It inherits from an EventEmitter.
+
+The parser follows the GNU style: `-a`, `-abc`, `--a`, `--no-a`, `--a=b`, etc.
+
+If you don't want to configure anything simply require the module and call to `argv()`.
+
+
+```javascript
+var argv = require ("argp").argv ();
+```
+
+Note: If no configuration is provided you cannot join a short name with its value in the same token, eg: `-Dvalue`, all the characters following a dash, `-`, are interpreted as individual flags.
+
+The `argv()` function returns an object. It is cached, so you can require and call the function from any module at any time. All the internal stuff that is used to parse the options is freed, only the object that is returned remains in memory, so the module has a low memory footprint.
+
+The object that `argv()` returns has two special properties: `_debug` and `_filename`. `_debug` is a boolean and is true if the Node.js process has been started in debug mode, otherwise false. Debug mode: node debug \<script\>. `_filename` is the absolute path of the main script.
+
+If you are using this module it's because you want a fully customizable help message, so you should always enable it. The usage message is not really useful, you can ignore it if you prefer.
+
+All the text messages accept line break characters (`\n`). They will be indented according to the functionality of the caller function.
+
+That being said, the basic configuration steps are (all of them are optional):
+
+- Configure the global settings. By default it allows undefined options and arguments, if this is not your case disable them. If they are disabled the program prints an error message and exits with code 1. Lines are automatically wrapped at 80 columns.
+
+  Example enabling the help message and disabling undefined options and arguments. This is probably the most usual case.
+
+	```javascript
+	argp.configuration ({
+		showHelp: true,
+		allowUndefinedOptions: false,
+		allowUndefinedArguments: false
+	});
+	```
+
+- From highest to lowest relevance, set the description, version and email. If you use the `package.json` file you can take the information from there. If you set the version the __-v, --version__ option will be enabled. The description is displayed at the top of the help message and the email at the bottom.
+
+	```javascript
+	argp.description ("Random description.");
+	argp.version ("v1.2.3");
+	argp.email ("a@b.c");
+	```
+
+- If your program requires arguments like `build`, `install`, etc. add them, but they will be only displayed in the usage message. They are initialized to false and can be retrieved with the `arguments()` function. Not very useful if you allow undefined arguments.
+
+	```javascript
+	argp.argument ("build");
+	argp.argument ("install");
+	```
+
+- Finally, configure the options with the `body()` function. It requires a callback, executes it and returns as a parameter a `Body` instance. The options, groups and text are displayed in the same order they are configured. This allows you to fully customize the help message.
+
+	```javascript
+	argp.body (function (body){
+		body
+				.group ("Random group")
+				.option ({ short: "o", long: "outfile", value: ".", argument: "PATH",
+						description: "Destination PATH of the file" })
+				.option ({ long: "strict", description: "Enable strict parse mode" })
+				.text ("Random text.")
+				.group ("Informational options");
+	});
+	```
+	See how you can configure the options [here](#options);
+	
+- You can also listen to some events: `start`, `end`, `option`, `argument`. They are pretty useful and allows you to fully adapt this module to your needs.
+
+- Call to `argv()` and enjoy.
+
+	```
+	node script.js
+	
+	{
+		_debug: false,
+		_filename: <__filename>,
+		outfile: ".",
+		strict: false,
+		help: false,
+		version: false,
+		build: false,
+		install: false
+	}
+	```
+	```
+	node script.js -o
+	
+	t.js: Option '-o' requires an argument.
+	Try 't.js --help' for more information.
+	```
+	```
+	node script.js -o "random/path" --strict build
+	
+	{
+		_debug: false,
+		_filename: <__filename>,
+		outfile: "random/file",
+		strict: true,
+		help: false,
+		version: false,
+		build: true,
+		install: false
+	}
+	```
+	```
+	node script.js -h
+	
+	Usage: t.js [OPTIONS] [ARGUMENTS]
+
+	Random description.
+	
+	 Random group:
+	  -o, --outfile=PATH          Destination PATH of the file
+	      --strict                Enable strict parse mode
+	
+	Random text.
+	
+	 Informational options:
+	  -h, --help                  Display this help and exit
+	  -v, --version               Output version information and exit
+	
+	Report bugs to <a@b.c>.
+	```
 
 __Events__
 
