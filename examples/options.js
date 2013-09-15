@@ -52,7 +52,7 @@ var argv = argp
 					//it's like the json reviver function
 					.option ({ short: "k", argument: "K", description: "kkkk",
 							reviver: function (value){
-								return "-> " + value + " <-";
+								return value + "foo";
 							}})
 					
 					//Hidden option, it won't appear in the --help and --usage messages
