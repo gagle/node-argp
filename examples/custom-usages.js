@@ -23,7 +23,7 @@ $ node custom-usages.js --help
 Usage: custom-usages.js [OPTIONS] <input file> <output file>
        custom-usages.js [OPTIONS] [word [word [word]]]
 
-  -h, --help                  Display this help and exit
+  -h, --help                  Display this help message and exit
       --usage                 Display a short usage message and exit
 
 --------------------------------------------------------------------------------

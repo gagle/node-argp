@@ -29,6 +29,8 @@ argp
 		.version ("v1.2.3")
 		.description ("Sample app.")
 		.email ("a@b.c")
+		.footer ("The program exits with a status code of 0 if no error, " +
+				"otherwise 1.")
 		.argument ("arg1")
 		.argument ("arg2")
 		.body (function (body){
@@ -42,7 +44,7 @@ argp
 							"messages are line-wrapped at 80 columns and you can use \\n " +
 							"to split them in multiple lines...")
 					.text ("...or if you want to print a new paragraph use the text() " +
-							"function")
+							"function.")
 					.group ("Informational options")
 		})
 		.argv ();
@@ -64,7 +66,7 @@ to split them in multiple lines...
 ...or if you want to print a new paragraph use the text() function
 
  Informational options:
-  -h, --help                  Display this help and exit
+  -h, --help                  Display this help message and exit
   -v, --version               Output version information and exit
 
 Report bugs to <a@b.c>.

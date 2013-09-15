@@ -1,3 +1,7 @@
+v0.0.4 (15 Sep 2013)
+	Added "footer()".
+	The "fail()" function now prints the "try" message.
+
 v0.0.3 (15 Sep 2013)
 	An 80 columns length was hardcoded.
 

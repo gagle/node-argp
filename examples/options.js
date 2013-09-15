@@ -84,7 +84,7 @@ Usage: options.js [OPTIONS] [ARGUMENTS]
   -e[true]
       --f[=true]
   -g true                     gggg
-  -h, --help                  Display this help and exit
+  -h, --help                  Display this help message and exit
       --usage                 Display a short usage message and exit
 
 --------------------------------------------------------------------------------

@@ -9,7 +9,6 @@ argp
 		})
 		.version ("v1.2.3")
 		.description ("Sample app.")
-		.email ("a@b.c")
 		.argument ("arg1")
 		.argument ("arg2")
 		.body (function (body){
@@ -51,7 +50,7 @@ Sample app.
   -e[E]
       --f[=F]
   -g G                        gggg
-  -h, --help                  Display this help and exit
+  -h, --help                  Display this help message and exit
       --usage                 Display a short usage message and exit
   -v, --version               Output version information and exit
 
