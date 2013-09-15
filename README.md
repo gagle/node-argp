@@ -427,6 +427,30 @@ __Objects__
 
 - [Body](#body)
 
+---
+
+<a name="event_argument"></a>
+__argument__
+
+
+
+<a name="event_end"></a>
+__end__
+
+
+
+<a name="event_option"></a>
+__option__
+
+
+
+<a name="event_start"></a>
+__start__
+
+
+
+---
+
 <a name="argp_argument"></a>
 __Argp#argument(str) : Argp__
 
