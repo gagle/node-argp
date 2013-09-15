@@ -7,8 +7,6 @@ var argv = argp
 			showHelp: true,
 			showUsage: true
 		})
-		.argument ("arg1")
-		.argument ("arg2")
 		.body (function (body){
 			body
 					//Every option has an id that is used to save the option into the
@@ -82,16 +80,14 @@ $ node options.js
 	k: null,
 	l: false,
 	help: false,
-	usage: false,
-	arg1: false,
-	arg2: false
+	usage: false
 }
 
 --------------------------------------------------------------------------------
 
 $ node options.js --help
 
-Usage: options.js [OPTIONS] [ARGUMENTS]
+Usage: options.js [OPTIONS]
 
   -a, --aaaa
       --no-b
@@ -111,5 +107,5 @@ Usage: options.js [OPTIONS] [ARGUMENTS]
 $ node options.js --usage
 
 Usage: options.js [-ha] [-c C] [-d D] [-e E] [-f F] [-i[I]] [-k K] [--aaaa]
-         [--b] [--g=G] [--j[=J]] [--help] [--usage] [arg1] [arg2]
+         [--b] [--g=G] [--j[=J]] [--help] [--usage]
 */

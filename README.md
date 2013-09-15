@@ -101,14 +101,14 @@ var argv = argp
 		.body (function (body){
 			//The configuration has an insertion order
 			body
-					//Display a text string
+					//Display a text line
 					.text ("Random text")
-					//Display a group string
+					//Display a group line
 					.group ("Group 1")
-					//After a group label you typically want to display some options
+					//After a group line you typically want to display some options
 					.option ({ short: "a", long: "aa", description: "aaa" })
-					.option ({ short: "b", long: "bb", description: "bbb" })
-					//This group string will be displayed before --help, --usage and
+					.option ({ short: "b", long: "bb", type: Number, description: "bbb" })
+					//This group line will be displayed before --help, --usage and
 					//--version
 					.group ("Group 2");
 					
@@ -121,6 +121,8 @@ var argv = argp
 
 <a name="quick"></a>
 __Quick examples with no configuration__
+
+If the option is undefined, the type of the value is converted automatically from a string to a number, boolean, null or undefined.
 
 - `node script.js -a -b -c`  
   `{ a: true, b: true, c: true }`
@@ -140,7 +142,78 @@ __Quick examples with no configuration__
 <a name="options"></a>
 __Configuring options__
 
+They are configured using the `Argp#body()` and `Body#option()` functions. The order of configuration is important, they will be listed in the --help and --usage messages in the same order they are configured.
 
+Some important things you must know:
+
+1. Every option has an id. This id is used to store the option in the final object. It can be the short or the long name. The long name is prioritary over the short name, so if you configure an option with a short and long names, the long name will be used as the id.
+2. There are 2 types of entities: options and arguments. An option starts with `-` or `--` and an argument is a simple string. For example, `node script.js deploy --port 1337`, where `deploy` is an argument and `--port` is an option with value `1337`.
+3. There are 2 types of options: a flag and an option with a value. If the option requires a value the `argument` property must be defined. This property is a string and can be seen when the --help message is printed. For example, `--a[=NUM]`, where `NUM` is the argument property: `option({ short: "o", argument: "NUM" })`.
+4. By default, the options are strings. Configure the `type` property if the value is a number, boolean or array.
+
+Common properties:
+
+- __description__ - _String_  
+  The description.
+- __hidden__ - _Boolean_  
+  If true, the option is not displayed in the --help and --usage messages. Default is false.
+- __long__ - _String_  
+  The long name, eg: `--name`.
+- __short__ - _String_  
+  The short name, eg: `-a`.
+
+Flag:
+
+- __negate__ - _Boolean_  
+  If true, the flag is negated. Its default value is true and when set becomes false. Cannot negate a flag with a short, only the long name must be configured.
+
+	```javascript
+	body.option ({ long: "name", negate: true });
+	
+	/*
+	$ node script.js
+	{ a: true }
+	
+	$ node script.js --no-name
+	{ a: false }
+	*/
+	```
+
+Options with value:
+
+- __argument__ - _String_  
+  Must be configured if the option requires a value. The string is used when the --help message is printed.
+
+	```javascript
+	body.option ({ long: "name", argument: "STR" });
+	
+	/*
+	$ node script.js --help
+	...
+	      --name=STR
+	...
+	*/
+	```
+- __optional__ - _Boolean_  
+  If true, the value is optional. Default is false. If the option doesn't receive any value a default value is set and it depends on the `value` and `type` properties.
+
+	```javascript
+	body.option ({ long: "name", argument: "STR", optional: true });
+	
+	/*
+	$ node script.js --name
+	//Null because all the options are strings by default, and the default value of a string is null
+	{ name: null }
+	*/
+	```
+- __reviver__ - _Function_  
+  
+- __type__ - _String | Number | Boolean | Array_  
+  
+- __value__ - _Object_  
+  
+
+Look at and play with the [options.js](https://github.com/gagle/node-argp/blob/master/examples/options.js) example to see how the things are parsed.
 
 ---
 
