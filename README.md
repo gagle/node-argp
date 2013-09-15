@@ -207,11 +207,67 @@ Options with value:
 	*/
 	```
 - __reviver__ - _Function_  
-  
+  The function is executed when the option is parsed. It is similar to the reviver of the JSON.parse() function. This is the right place where you can validate the input data and `fail()` if is not valid. For example, if the option requires a number you can validate the range here.
+
+	```javascript
+	body.option ({ long: "name", argument: "STR", reviver: function (value){
+		return value + "bar";
+	}});
+	
+	/*
+	$ node script.js --name foo
+	{ name: "foobar" }
+	*/
+	```
+	```javascript
+	//The reviver is used to validate the range of the number
+	body.option ({ long: "name", argument: "STR", type: Number,
+			reviver: function (value){
+		//"value" is already a number
+		if (value < 1 || value > 3){
+			argp.fail ("Option 'name': invalid range");
+		}
+		return value;
+	}});
+	```
+	```javascript
+	//The reviver can be also used to allow only a few string values
+	body.option ({ long: "name", argument: "STR", reviver: function (value){
+		if (value !== "a" && value !== "b" && value !== "c"){
+			argp.fail ("Option 'name': invalid value");
+		}
+		return value;
+	}});
+	```
 - __type__ - _String | Number | Boolean | Array_  
+  The type of the value. Default is a String. If the type is an Array, comma-separated values are automatically stored into an array and each element is converted to the type it represents.
+
+	```javascript
+	body.option ({ long: "name", argument: "STR", type: Array });
+	
+	/*
+	$ node script.js --name 1,true,foo
+	{ name: [1, true, "foo"] }
+	*/
+	```
   
 - __value__ - _Object_  
-  
+  The default value.
+
+	```javascript
+	body.option ({ long: "name", argument: "STR", value: "bar", optional: true });
+	
+	/*
+	$ node script.js
+	{ name: "bar" }
+	
+	$ node script.js --name
+	{ name: "bar" }
+	
+	$ node script.js --name foo
+	{ name: "foo" }
+	*/
+	```
 
 Look at and play with the [options.js](https://github.com/gagle/node-argp/blob/master/examples/options.js) example to see how the things are parsed.
 
