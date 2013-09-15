@@ -500,6 +500,19 @@ var tests = {
 				c: "b"
 			});
 			
+			argv (["-abc", "d"]);
+			opts = n ().body (function (body){
+				body.option ({ short: "a" });
+				body.option ({ short: "b" });
+				body.option ({ short: "c" });
+			}).argv ();
+			equal (opts, {
+				a: true,
+				b: true,
+				c: true,
+				d: true
+			});
+			
 			argv (["-abc", "b"]);
 			opts = n ().body (function (body){
 				body.option ({ short: "a", argument: "a", optional: true });

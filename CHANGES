@@ -1,3 +1,6 @@
+v0.0.3 (15 Sep 2013)
+	An 80 columns length was hardcoded.
+
 v0.0.2 (14 Sep 2013)
 	Added automatic string conversion.
 	Added "hidden" option configuration.

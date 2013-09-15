@@ -5,7 +5,7 @@ _Node.js project_
 
 #### Command-line option parser ####
 
-Version: 0.0.2
+Version: 0.0.3
 
 Inspired by the extremly well-known [argp C library](http://www.gnu.org/software/libc/manual/html_node/Argp.html), this module provides a very handy and easy to use configuration to parse GUN-style command-line arguments. Help, usage and version messages are automatically generated, line-wrapped at 80 columns and fully customizable.
 
