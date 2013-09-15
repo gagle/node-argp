@@ -22,49 +22,65 @@ var argv = argp
 					.option ({ long: "b", negate: true })
 					
 					//Option with a mandatory value and null as default value
-					//The argument string it's used in the --help and --usage options.
-					//Because we don't need any of these two commands (showHelp and
-					//showUsage are disabled) the argument can be set to a truthy value,
-					//ie: true
 					.option ({ short: "c", argument: "C" })
 					
-					//Option with a mandatory value and "dddd" as default value
-					.option ({ long: "d", argument: true, value: "dddd" })
+					//Option with a Number type and 0 as default value
+					//By default the options are strings
+					.option ({ short: "d", argument: "D", type: Number })
+					
+					//Option with an Array type and [] as default value
+					//Array-type values must be comma-separated values, eg: --a 1,a,true
+					//Each element is converted automatically to the type it represents,
+					//the previous example is converted to { a: [1, "a", true] }
+					.option ({ short: "e", argument: "E", type: Array })
+					
+					//Option with a Boolean type and false as default value
+					//This type is not very useful because you can just use a flag, eg:
+					//--a true is converted to { a: true }
+					.option ({ short: "f", argument: "F", type: Boolean })
+					
+					//Option with a mandatory value and "gggg" as default value
+					.option ({ long: "g", argument: "G", value: "gggg" })
 					
 					//Option with an optional value and null as default value
-					.option ({ short: "e", argument: true, optional: true })
+					.option ({ short: "i", argument: "I", optional: true })
 					
-					//Option with an optional value and "ffff" as default value
-					.option ({ long: "f", argument: true, value: "ffff",
+					//Option with an optional value and "jjjj" as default value
+					.option ({ long: "j", argument: "J", value: "jjjj",
 							optional: true })
 					
 					//Option with a description and reviver
 					//The reviver receives the string value and returns the new value,
 					//it's like the json reviver function
-					.option ({ short: "g", argument: true, description: "gggg",
+					.option ({ short: "k", argument: "K", description: "kkkk",
 							reviver: function (value){
 								return "-> " + value + " <-";
 							}})
 					
 					//Hidden option, it won't appear in the --help and --usage messages
-					.option ({ short: "i", hidden: true });
+					.option ({ short: "l", hidden: true });
 		})
 		.argv ();
 
 console.log (argv);
 
 /*
+$ node options.js
+
 {
 	_debug: false,
 	_filename: <__filename>,
 	aaaa: false,
 	b: true,
 	c: null,
-	d: "dddd",
-	e: null,
-	f: "ffff",
-	g: null,
-	i: false,
+	d: 0,
+	e: [],
+	f: false,
+	g: "gggg",
+	i: null,
+	j: "jjjj",
+	k: null,
+	l: false,
 	help: false,
 	usage: false,
 	arg1: false,
@@ -80,10 +96,13 @@ Usage: options.js [OPTIONS] [ARGUMENTS]
   -a, --aaaa
       --no-b
   -c C
-      --d=true
-  -e[true]
-      --f[=true]
-  -g true                     gggg
+  -d D
+  -e E
+  -f F
+      --g=G
+  -i[I]
+      --j[=J]
+  -k K                        kkkk
   -h, --help                  Display this help message and exit
       --usage                 Display a short usage message and exit
 
@@ -91,6 +110,6 @@ Usage: options.js [OPTIONS] [ARGUMENTS]
 
 $ node options.js --usage
 
-Usage: options.js [-ha] [-c C] [-e[true]] [-g true] [--aaaa] [--b] [--d=true]
-         [--f[=true]] [--help] [--usage] [arg1] [arg2]
+Usage: options.js [-ha] [-c C] [-d D] [-e E] [-f F] [-i[I]] [-k K] [--aaaa]
+         [--b] [--g=G] [--j[=J]] [--help] [--usage] [arg1] [arg2]
 */

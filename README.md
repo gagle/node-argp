@@ -5,7 +5,7 @@ _Node.js project_
 
 #### Command-line option parser ####
 
-Version: 0.0.4
+Version: 0.0.5
 
 Inspired by the extremly well-known [argp C library](http://www.gnu.org/software/libc/manual/html_node/Argp.html), this module parses GNU-style command-line arguments. Help, usage and version messages are automatically generated, line-wrapped at 80 columns and fully customizable. The modules checks for errors and can be easily adapted to your needs. You don't even need to configure anything, the options will be parsed following the GNU rules:
 
@@ -128,8 +128,8 @@ __Quick examples with no configuration__
   `{ a: true, b: true, c: true }`
 - `node script.js -abc d`  
   `{ a: true, b: true, c: "d" }`
-- `node script.js --a --b c --d=e`  
-  `{ a: true, b: "c", d: "e" }`
+- `node script.js --a --b 1 --d=e`  
+  `{ a: true, b: 1, d: "e" }`
 - `node script.js --no-a b`  
   `{ a: false, b: true }`
 - `node script.js --a -- -b --c d`  

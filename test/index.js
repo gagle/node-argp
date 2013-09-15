@@ -28,7 +28,14 @@ process.exit = function (){
 var opts;
 
 var tests = {
-	"type conversion": function (){
+	"empty required value": function (){
+		assert.doesNotThrow (function (){
+			argv (["--a="]);
+			opts = n ().argv ();
+			assert.strictEqual (opts.a, null);
+		});
+	},
+	"type conversion, no configuration": function (){
 		assert.doesNotThrow (function (){
 			argv (["--a=undefined", "--b=null", "--c=true", "--d=false", "--e=12",
 					"--f=12.34", "--g=asd"]);
@@ -42,11 +49,45 @@ var tests = {
 			assert.strictEqual (opts.g, "asd");
 		});
 	},
-	"empty required value": function (){
+	"type conversion, configuration": function (){
 		assert.doesNotThrow (function (){
-			argv (["--a="]);
-			opts = n ().argv ();
-			assert.strictEqual (opts.a, null);
+			argv (["--a=b", "--b=", "--c=12.34", "--d=", "--e=true", "--f=",
+					"--g=1,true,a", "--h="]);
+			opts = n ().body (function (body){
+				body
+						.option ({ long: "a", argument: true })
+						.option ({ long: "b", argument: true })
+						.option ({ long: "c", argument: true, type: Number })
+						.option ({ long: "d", argument: true, type: Number })
+						.option ({ long: "e", argument: true, type: Boolean })
+						.option ({ long: "f", argument: true, type: Boolean })
+						.option ({ long: "g", argument: true, type: Array })
+						.option ({ long: "h", argument: true, type: Array })
+			}).argv ();
+			assert.strictEqual (opts.a, "b");
+			assert.strictEqual (opts.b, null);
+			assert.strictEqual (opts.c, 12.34);
+			assert.strictEqual (opts.d, 0);
+			assert.strictEqual (opts.e, true);
+			assert.strictEqual (opts.f, false);
+			assert.deepEqual (opts.g, [1, true, "a"]);
+			assert.deepEqual (opts.h, []);
+		});
+		
+		assert.throws (function (){
+			argv (["--a=b"]);
+			n ().body (function (body){
+				body
+						.option ({ long: "a", argument: true, type: Number })
+			}).argv ();
+		});
+		
+		assert.throws (function (){
+			argv (["--a=b"]);
+			n ().body (function (body){
+				body
+						.option ({ long: "a", argument: true, type: Boolean })
+			}).argv ();
 		});
 	},
 	"no configuration, nothing": function (){
@@ -99,13 +140,14 @@ var tests = {
 				c: "d"
 			});
 			
-			argv (["--a", "--b-c", "--1", 2]);
+			argv (["--a", "--b-c", "--1", "2"]);
 			opts = n ().argv ();
 			equal (opts, {
 				a: true,
 				"b-c": true,
-				"1": "2"
+				"1": 2
 			});
+			assert.strictEqual (opts["1"], 2);
 			
 			argv (["--a=--b", "--b=c", "--1"]);
 			opts = n ().argv ();
@@ -115,12 +157,13 @@ var tests = {
 				"1": true
 			});
 			
-			argv (["--no-a", "--b", 1]);
+			argv (["--no-a", "--b", "1"]);
 			opts = n ().argv ();
 			equal (opts, {
 				a: false,
-				b: "1"
+				b: 1
 			});
+			assert.strictEqual (opts.b, 1);
 		});
 	},
 	"no configuration, short": function (){
@@ -153,15 +196,16 @@ var tests = {
 				c: "d"
 			});
 			
-			argv (["-a", "-b-c", "-1", 2]);
+			argv (["-a", "-b-c", "-1", "2"]);
 			opts = n ().argv ();
 			equal (opts, {
 				a: true,
 				"b": true,
 				"-": true,
 				"c": true,
-				"1": "2"
+				"1": 2
 			});
+			assert.strictEqual (opts["1"], 2);
 			
 			argv (["-abc", "d", "-ef"]);
 			opts = n ().argv ();

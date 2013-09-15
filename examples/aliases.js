@@ -27,6 +27,7 @@ var argv = argp
 						argument: "N",
 						optional: true,
 						value: 1,
+						type: Number,
 						description: "Print N dots, default is 1"
 					})
 					.option ({

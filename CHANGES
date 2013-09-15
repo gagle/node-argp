@@ -1,3 +1,6 @@
+v0.0.5 (15 Sep 2013)
+	Added a "type" setting to the option configuration.
+
 v0.0.4 (15 Sep 2013)
 	Added "footer()".
 	The "fail()" function now prints the "try" message.

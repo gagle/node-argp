@@ -22,7 +22,7 @@ argp
 					.group ("Group 1")
 					.option ({ short: "a", long: "aa", description: "aaaa" })
 					.option ({ short: "b", long: "bb", description: "bbbb",
-							argument: "bb", optional: true, value: 5 })
+							argument: "bb", optional: true, value: 5, type: Number })
 					.text ("This is a random text.")
 		});
 
@@ -73,6 +73,7 @@ console.log (argp.options ());
 		argument: "bb",
 		optional: true,
 		value: 5,
+		type: [Function: Number],
 		flag: false,
 		id: "bb",
 		reviver: null
