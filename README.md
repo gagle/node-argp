@@ -7,13 +7,13 @@ _Node.js project_
 
 Version: 0.0.6
 
-Inspired by the extremly well-known [argp C library](http://www.gnu.org/software/libc/manual/html_node/Argp.html), this module parses GNU-style command-line arguments. Help, usage and version messages are automatically generated, line-wrapped at 80 columns and fully customizable. The modules checks for errors and can be easily adapted to your needs. You don't even need to configure anything, the options will be parsed following the GNU rules:
+Inspired by the extremly well-known [argp C library](http://www.gnu.org/software/libc/manual/html_node/Argp.html), this module parses GNU-style command-line arguments. Help, usage and version messages are automatically generated, line-wrapped at 80 columns and fully customizable. The module checks for errors and can be easily adapted to your needs. You don't even need to configure anything, the options will be parsed following the GNU rules:
 
 ```javascript
 var argv = require ("argp").argv ();
 ```
 
-`argp` also works when Node.js is in debug mode. 
+This module also works when Node.js is in debug mode.
 
 #### Installation ####
 
