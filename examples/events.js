@@ -9,7 +9,8 @@ var argp = require ("../lib");
 
 argp
 		.on ("start", function (argv){
-			//Emitted when the default values are set and before starting the read
+			//Emitted after the default values of the configured options and arguments
+			//have been set and before starting the read.
 			
 			//"argv" is the final object
 			
@@ -21,7 +22,7 @@ argp
 			//"argv" is the final object
 			//"argument" is the argument found
 			//"ignore" is a function that when called ignores the argument, hence it
-			//doesn't appear in the final object
+			//it isn't stored in the final object
 			
 			console.log ("ARGUMENT:", argument);
 		})
@@ -30,16 +31,15 @@ argp
 			
 			//"argv" is the final object
 			//"option" is the name of the option found
-			//"value" is the value of the option after using the reviver, if any
-			//"long" is a boolean; true if the option found has a long name,
-			//false if the option found has a short name
+			//"value" is the value of the option after calling the reviver, if any
+			//"long" is a boolean; true if the option is a long name, otherwise false
 			//"ignore" is a function that when called ignores the argument, hence it
-			//doesn't appear in the final object
+			//it isn't stored in the final object
 			
 			console.log ("OPTION:", option, value, long);
 		})
 		.on ("end", function (argv){
-			//Emitted just before the argv() function returns
+			//Emitted when all the options and arguments have been read
 			
 			//"argv" is the final object
 			

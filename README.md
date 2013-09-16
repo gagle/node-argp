@@ -74,8 +74,8 @@ var argv = argp
 		.configuration ({
 			//Wrap lines at 80 columns
 			columns: 80,
-			//If true, the options are emitted before any argument, otherwise the
-			//options and arguments are emitted in the same order they come
+			//If true, the options are parsed before the arguments. If false, the
+			//options and arguments are parsed in the same order they come
 			sort: true,
 			//Enable the option -h, --help
 			showHelp: true,
@@ -94,7 +94,7 @@ var argv = argp
 		.footer ("Random footer")
 		//Display a contact email at the end of the help message
 		.email ("a@b.c")
-		//Configure the body part: options, groups and text
+		//Configure the body part: options, arguments, groups and text
 		.body (function (body){
 			//The configuration has an insertion order
 			body
@@ -415,6 +415,8 @@ That being said, the basic configuration steps are (all of them are optional):
 
 __Events__
 
+With the events you can fully adapt this module to yours needs. For example, you can create [aliases.js](https://github.com/gagle/node-argp/blob/master/examples/aliases.js), read words without being surrounded with `"` ([to-upper-case.js](https://github.com/gagle/node-argp/blob/master/examples/to-upper-case.js)), etc. Loo at the [events.js](https://github.com/gagle/node-argp/blob/master/examples/events.js) example for further details.
+
 - [argument](#event_argument)
 - [end](#event_end)
 - [option](#event_option)
@@ -442,104 +444,156 @@ __Objects__
 <a name="event_argument"></a>
 __argument__
 
+Emitted when an argument is found.
 
+Parameters:
+
+- __argv__ - _Object_  
+  The final object.
+- __argument__ - _String_  
+  The name of the argument found.
+- __ignore__ - _Function_  
+  When the function is called the parser ignores the argument, hence it isn't stored in the final object.
 
 <a name="event_end"></a>
 __end__
 
+Emitted when all the options and arguments have been read.
 
+- __argv__ - _Object_  
+  The final object.
 
 <a name="event_option"></a>
 __option__
 
+Emitted when an option is found.
 
+- __argv__ - _Object_  
+  The final object.
+- __option__ - _String_  
+  The name of the option found.
+- __value__ - _String_  
+  The value of the option after calling the reviver, if any.
+- __long__ - _Boolean_  
+  True if the option is a long name, otherwise false.
+- __ignore__ - _Function_  
+  When the function is called the parser ignores the argument, hence it isn't stored in the final object.
 
 <a name="event_start"></a>
 __start__
 
+Emitted after the default values of the configured options and arguments have been set and before starting the read.
 
+- __argv__ - _Object_  
+  The final object.
 
 ---
 
 <a name="argp_arguments"></a>
 __Argp#arguments() : Object__
 
-
+Returns the configured arguments. Look at the [internal-data.js](https://github.com/gagle/node-argp/blob/master/examples/internal-data.js) example for further details.
 
 <a name="argp_argv"></a>
 __Argp#argv() : Object__
 
-
+Parses the `process.argv` array. It caches the result and also works when Node.js is in debug mode.
 
 <a name="argp_body"></a>
 __Argp#body(fn) : Argp__
 
-
+Configures the body of the help message and defines the options and arguments.
 
 <a name="argp_configuration"></a>
 __Argp#configuration(o) : Argp__
 
+Configures the parser.
 
+Options:
+
+- __allowUndefinedArguments__ - _Boolean_  
+	Allows undefined arguments. Default is true.
+- __allowUndefinedOptions__ - _Boolean_  
+	Allows undefined options. Default is true.
+- __columns__ - _Number_  
+	Maximum line length. By default lines are wrapped at 80 columns.
+- __showHelp__ - _Boolean_  
+	Enables the help option. Default is false.
+- __showUsage__ - _Boolean_  
+	Enables the usage option. Default is false.
+- __sort__ - _Boolean_  
+	If true, the options are parsed before the arguments. If false, the options and arguments are parsed in the same order they come.
+	
 
 <a name="argp_description"></a>
 __Argp#description(str) : Argp__
 
-
+Sets a description. The description is printed at the start of the help message, after the usage lines.
 
 <a name="argp_email"></a>
 __Argp#email(str) : Argp__
 
-
+Sets a contact email. The email is printed at the end of the help message.
 
 <a name="argp_fail"></a>
 __Argp#fail(str[, code]) : undefined__
 
-
+Prints a message to the stderr and exists the program. By default it exists with code 1.
 
 <a name="argp_footer"></a>
 __Argp#footer(str) : Argp__
 
-
+Sets a footer text. It is printed before the email.
 
 <a name="argp_options"></a>
 __Argp#options() : Object__
 
-
+Returns the configured options. Look at the [internal-data.js](https://github.com/gagle/node-argp/blob/master/examples/internal-data.js) example for further details.
 
 <a name="argp_version"></a>
 __Argp#version(str) : Argp__
 
-
+Sets the version. It enables the `-v, --version` option.
 
 ---
 
 <a name="body"></a>
 __Body__
 
-The `Body` instance is returned by [Argp#body()](#argp_body).
+The `Body` instance is returned by [Argp#body()](#argp_body). The options, arguments, groups and text are printed in the same order they are configured, this allows you to fully customize the help message.
+
+Look at [options.js](https://github.com/gagle/node-argp/blob/master/examples/options.js) example for further details.
 
 __Methods__
 
-- [Body#argument(name, configuration) : Body](#body_argument)
+- [Body#argument(name[, configuration]) : Body](#body_argument)
 - [Body#group(str) : Body](#body_group)
 - [Body#option(o) : Body](#body_option)
 - [Body#text(str) : Body](#body_text)
 
 <a name="body_argument"></a>
-__Body#argument(name, configuration) : Body__
+__Body#argument(name[, configuration]) : Body__
 
+Defines an argument.
 
+Options:
+
+- __description__ - _String_  
+  The description.
+- __hidden__ - _Boolean_  
+  If true, the option is not displayed in the --help and --usage messages. Default is false.
 
 <a name="body_group"></a>
 __Body#group(str) : Body__
 
-
+Prints a group line.
 
 <a name="body_option"></a>
 __Body#option(o) : Body__
 
-
+Defines an option. See [Configuring options](#options).
 
 <a name="body_text"></a>
 __Body#text(str) : Body__
 
+Prints a text line.

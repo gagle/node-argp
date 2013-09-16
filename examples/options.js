@@ -9,9 +9,14 @@ var argv = argp
 		})
 		.body (function (body){
 			body
-					//Every option has an id that is used to save the option into the
-					//final object. The id is the long name, and if it isn't defined, the
-					//short name.
+					//Argument
+					.argument ("arg1")
+					
+					//Argument with a description
+					.argument ("arg2", { description: "aaaa" })
+					
+					//Hidden argument
+					.argument ("arg3", { hidden: true })
 					
 					//Positive flag because it doesn't define the "argument" property
 					.option ({ short: "a", long: "aaaa" })
@@ -55,7 +60,7 @@ var argv = argp
 								return value + "foo";
 							}})
 					
-					//Hidden option, it won't appear in the --help and --usage messages
+					//Hidden option, it isn't printed in the --help and --usage messages
 					.option ({ short: "l", hidden: true });
 		})
 		.argv ();
@@ -80,14 +85,20 @@ $ node options.js
 	k: null,
 	l: false,
 	help: false,
-	usage: false
+	usage: false,
+	arg1: false,
+	arg2: false,
+	arg3: false
 }
 
 --------------------------------------------------------------------------------
 
 $ node options.js --help
 
-Usage: options.js [OPTIONS]
+Usage: options.js [OPTIONS] [ARGUMENTS]
+
+  arg1
+  arg2                        aaaa
 
   -a, --aaaa
       --no-b
@@ -107,5 +118,5 @@ Usage: options.js [OPTIONS]
 $ node options.js --usage
 
 Usage: options.js [-ha] [-c C] [-d D] [-e E] [-f F] [-i[I]] [-k K] [--aaaa]
-         [--b] [--g=G] [--j[=J]] [--help] [--usage]
+         [--b] [--g=G] [--j[=J]] [--help] [--usage] [arg1] [arg2]
 */
