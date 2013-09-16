@@ -31,12 +31,13 @@ argp
 		.email ("a@b.c")
 		.footer ("The program exits with a status code of 0 if no error, " +
 				"otherwise 1.")
-		.argument ("arg1")
-		.argument ("arg2")
 		.body (function (body){
 			//The configuration has an insertion order
 			body
 					.group ("Group 1")
+					.argument ("arg1", { description: "aaaa" })
+					.argument ("arg2", { description: "bbbb" })
+					.group ("Group 2")
 					.option ({ short: "a", long: "aa", description: "aaaa" })
 					.option ({ short: "b", long: "bb", description: "bbbb" })
 					.text ("This is a random text. You can add descriptive messages " +
@@ -55,6 +56,10 @@ Usage: fully-descriptive-help.js [OPTIONS] [ARGUMENTS]
 Sample app.
 
  Group 1:
+  arg1                        aaaa
+  arg2                        bbbb
+
+ Group 2:
   -a, --aa                    aaaa
   -b, --bb                    bbbb
 
@@ -63,11 +68,13 @@ text() function.
 Remember that all the messages are line-wrapped at 80 columns and you can use \n
 to split them in multiple lines...
 
-...or if you want to print a new paragraph use the text() function
+...or if you want to print a new paragraph use the text() function.
 
  Informational options:
   -h, --help                  Display this help message and exit
   -v, --version               Output version information and exit
+
+The program exits with a status code of 0 if no error, otherwise 1.
 
 Report bugs to <a@b.c>.
 */

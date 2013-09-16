@@ -9,10 +9,10 @@ argp
 		})
 		.version ("v1.2.3")
 		.description ("Sample app.")
-		.argument ("arg1")
-		.argument ("arg2")
 		.body (function (body){
 			body
+					.argument ("arg1")
+					.argument ("arg2")
 					.option ({ short: "a", long: "aaaa" })
 					.option ({ long: "b", negate: true })
 					.option ({ short: "c", argument: "C" })
@@ -43,6 +43,9 @@ Usage: help-usage-version.js [OPTIONS] [ARGUMENTS]
 
 Sample app.
 
+  arg1
+  arg2
+
   -a, --aaaa
       --no-b
   -c C
@@ -53,8 +56,6 @@ Sample app.
   -h, --help                  Display this help message and exit
       --usage                 Display a short usage message and exit
   -v, --version               Output version information and exit
-
-Report bugs to <a@b.c>.
 
 --------------------------------------------------------------------------------
 

@@ -1,3 +1,8 @@
+v0.0.6 (16 Sep 2013)
+	Options with a negative Number value are parsed correctly.
+	The "argument()" function has been moved from the Argp to the Body and now
+		accepts a second configuration parameter.
+
 v0.0.5 (15 Sep 2013)
 	Added a "type" setting to the option configuration.
 

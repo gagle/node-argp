@@ -1,9 +1,9 @@
 {
 	"name": "argp",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"description": "Command-line option parser",
 	"keywords": ["cli", "options", "parser", "commands", "arguments", "getopt",
-			"argp"],
+			"argp", "argparse"],
 	"author": {
 		"name": "Gabriel Llamas",
 		"email": "gagle@outlook.com"

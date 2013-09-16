@@ -10,28 +10,31 @@ options for informational purposes. For example, they can be used to change the
 
 argp
 		.configuration ({
-			showHelp: true
+			showHelp: true,
+			showUsage: true
 		})
 		.version ("v1.2.3")
-		.description ("Sample app.")
-		.email ("a@b.c")
-		.argument ("arg1")
-		.argument ("arg2")
 		.body (function (body){
 			body
-					.group ("Group 1")
+					.argument ("arg1")
+					.argument ("arg2")
 					.option ({ short: "a", long: "aa", description: "aaaa" })
 					.option ({ short: "b", long: "bb", description: "bbbb",
-							argument: "bb", optional: true, value: 5, type: Number })
-					.text ("This is a random text.")
+							argument: "bb", optional: true, value: 5, type: Number });
 		});
 
 console.log (argp.arguments ());
 
 /*
 {
-	arg1: true,
-	arg2: true
+	arg1: {
+		hidden: false,
+		description: null
+	},
+	arg2: {
+		hidden: false,
+		description: null
+	}
 }
 */
 
@@ -42,9 +45,19 @@ console.log (argp.options ());
 	help: {
 		short: "h",
 		long: "help",
-		description: "Display this help and exit",
+		description: "Display this help message and exit",
 		flag: true,
 		id: "help",
+		hidden: false,
+		negate: false,
+		value: false
+	},
+	usage: {
+		long: "usage",
+		description: "Display a short usage message and exit",
+		flag: true,
+		id: "usage",
+		hidden: false,
 		negate: false,
 		value: false
 	},
@@ -54,6 +67,7 @@ console.log (argp.options ());
 		description: "Output version information and exit",
 		flag: true,
 		id: "version",
+		hidden: false,
 		negate: false,
 		value: false
 	},
@@ -63,6 +77,7 @@ console.log (argp.options ());
 		description: "aaaa",
 		flag: true,
 		id: "aa",
+		hidden: false,
 		negate: false,
 		value: false
 	},
@@ -76,6 +91,7 @@ console.log (argp.options ());
 		type: [Function: Number],
 		flag: false,
 		id: "bb",
+		hidden: false,
 		reviver: null
 	}
 }

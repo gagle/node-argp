@@ -5,7 +5,7 @@ _Node.js project_
 
 #### Command-line option parser ####
 
-Version: 0.0.5
+Version: 0.0.6
 
 Inspired by the extremly well-known [argp C library](http://www.gnu.org/software/libc/manual/html_node/Argp.html), this module parses GNU-style command-line arguments. Help, usage and version messages are automatically generated, line-wrapped at 80 columns and fully customizable. The modules checks for errors and can be easily adapted to your needs. You don't even need to configure anything, the options will be parsed following the GNU rules:
 
@@ -94,21 +94,22 @@ var argv = argp
 		.footer ("Random footer")
 		//Display a contact email at the end of the help message
 		.email ("a@b.c")
-		//Configure some arguments
-		.argument ("arg1")
-		.argument ("arg2")
 		//Configure the body part: options, groups and text
 		.body (function (body){
 			//The configuration has an insertion order
 			body
-					//Display a text line
+					//Print a text line
 					.text ("Random text")
-					//Display a group line
+					//Print a group line
 					.group ("Group 1")
-					//After a group line you typically want to display some options
+					//After a group line you typically want to print some options or
+					//arguments
+					.argument ("arg1", { description: "aaa" })
+					.argument ("arg2")
+					.group ("Group 2")
 					.option ({ short: "a", long: "aa", description: "aaa" })
 					.option ({ short: "b", long: "bb", type: Number, description: "bbb" })
-					//This group line will be displayed before --help, --usage and
+					//This group line will be printed before --help, --usage and
 					//--version
 					.group ("Group 2");
 					
@@ -282,7 +283,6 @@ The parser follows the GNU-style rules: `-a`, `-abc`, `--a`, `--no-a`, `--a=b`, 
 
 If you don't want to configure anything simply require the module and call to `argv()`.
 
-
 ```javascript
 var argv = require ("argp").argv ();
 ```
@@ -298,6 +298,12 @@ If you are using this module it's because you want a fully customizable help mes
 All the text messages can be split up in multiple lines using `\n`. They will be indented according to the functionality of the caller function.
 
 That being said, the basic configuration steps are (all of them are optional):
+
+- Require the module.
+
+	```javascript
+	var argp = require ("argp");
+	```
 
 - Configure the global settings. By default it allows undefined options and arguments, if this is not your case disable them. If they are disabled the program prints an error message and exits with code 1. Lines are automatically wrapped at 80 columns.
 
@@ -320,19 +326,15 @@ That being said, the basic configuration steps are (all of them are optional):
 	argp.email ("a@b.c");
 	```
 
-- If your program requires arguments like `build`, `install`, etc. add them, but they will be only displayed in the usage message. They are initialized to false and can be retrieved with the `arguments()` function. Not very useful if you allow undefined arguments.
-
-	```javascript
-	argp.argument ("build");
-	argp.argument ("install");
-	```
-
-- Finally, configure the options with the `body()` function. The options, groups and text are displayed in the same order they are configured, this allows you to fully customize the help message.
+- Finally, configure the options and arguments with the `body()` function. The options, arguments, groups and text are printed in the same order they are configured, this allows you to fully customize the help message.
 
 	```javascript
 	argp.body (function (body){
 		body
-				.group ("Random group")
+				.group ("Random group 1")
+				.argument ("build", { description: "Build foo" });
+				.argument ("install", { description: "Install bar" });
+				.group ("Random group 2")
 				.option ({ short: "o", long: "outfile", value: ".", argument: "PATH",
 						description: "Destination PATH of the file" })
 				.option ({ long: "strict", description: "Enable strict parse mode" })
@@ -345,6 +347,11 @@ That being said, the basic configuration steps are (all of them are optional):
 - You can also listen to some events: `start`, `end`, `option` and `argument`. They are pretty useful and allows you to fully adapt this module to your needs.
 
 - Call to `argv()` and enjoy.
+
+	```javascript
+	var argv = argp.argv ();
+	console.log (argv);
+	```
 
 	```
 	node script.js
@@ -386,19 +393,23 @@ That being said, the basic configuration steps are (all of them are optional):
 	Usage: script.js [OPTIONS] [ARGUMENTS]
 
 	Random description.
-	
-	 Random group:
-	  -o, --outfile=PATH          Destination PATH of the file
-	      --strict                Enable strict parse mode
-	
+
+	 Random group 1:
+		build                       Build foo
+		install                     Install bar
+
+	 Random group 2:
+		-o, --outfile=PATH          Destination PATH of the file
+				--strict                Enable strict parse mode
+
 	Random text.
-	
+
 	 Informational options:
-	  -h, --help                  Display this help message and exit
-	  -v, --version               Output version information and exit
-	
+		-h, --help                  Display this help message and exit
+		-v, --version               Output version information and exit
+
 	Random footer.
-	
+
 	Report bugs to <a@b.c>.
 	```
 
@@ -411,7 +422,6 @@ __Events__
 
 __Methods__
 
-- [Argp#argument(str) : Argp](#argp_argument)
 - [Argp#arguments() : Object](#argp_arguments)
 - [Argp#argv() : Object](#argp_argv)
 - [Argp#body(fn) : Argp](#argp_body)
@@ -450,11 +460,6 @@ __start__
 
 
 ---
-
-<a name="argp_argument"></a>
-__Argp#argument(str) : Argp__
-
-
 
 <a name="argp_arguments"></a>
 __Argp#arguments() : Object__
@@ -515,9 +520,15 @@ The `Body` instance is returned by [Argp#body()](#argp_body).
 
 __Methods__
 
+- [Body#argument(name, configuration) : Body](#body_argument)
 - [Body#group(str) : Body](#body_group)
 - [Body#option(o) : Body](#body_option)
 - [Body#text(str) : Body](#body_text)
+
+<a name="body_argument"></a>
+__Body#argument(name, configuration) : Body__
+
+
 
 <a name="body_group"></a>
 __Body#group(str) : Body__
