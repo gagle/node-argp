@@ -415,7 +415,7 @@ That being said, the basic configuration steps are (all of them are optional):
 
 __Events__
 
-With the events you can fully adapt this module to yours needs. For example, you can create [aliases.js](https://github.com/gagle/node-argp/blob/master/examples/aliases.js), read words without being surrounded with `"` ([to-upper-case.js](https://github.com/gagle/node-argp/blob/master/examples/to-upper-case.js)), etc. Loo at the [events.js](https://github.com/gagle/node-argp/blob/master/examples/events.js) example for further details.
+With the events you can fully adapt this module to yours needs. For example, you can create [aliases.js](https://github.com/gagle/node-argp/blob/master/examples/aliases.js), read words without being surrounded with `"` ([to-upper-case.js](https://github.com/gagle/node-argp/blob/master/examples/to-upper-case.js)), etc. Look at the [events.js](https://github.com/gagle/node-argp/blob/master/examples/events.js) example for further details.
 
 - [argument](#event_argument)
 - [end](#event_end)
