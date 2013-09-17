@@ -13,19 +13,19 @@ Usual configurations look like this:
 
 ```javascript
 var argv = require ("argp")
-    .description ("Sample app.")
-    .email ("a@b.c")
-    .body ()
+		.description ("Sample app.")
+		.email ("a@b.c")
+		.body ()
 				//The object an argument definition and the text of the help message are
 				//configured at the same time
-        .group ("Arguments")
-        .argument ("arg", { description: "Sample argument" })
-        .group ("Options")
-        .option ({ short: "o", long: "opt", description: "Sample option" })
+				.group ("Arguments")
+				.argument ("arg", { description: "Sample argument" })
+				.group ("Options")
+				.option ({ short: "o", long: "opt", description: "Sample option" })
 				.help ()
 				.version ("v1.2.3")
-        .end ()
-    .argv ();
+				.end ()
+		.argv ();
 
 console.log (argv);
 
