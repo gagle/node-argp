@@ -432,7 +432,8 @@ __Methods__
 - [Argp#email(str) : Argp](#argp_email)
 - [Argp#fail(str[, code]) : undefined](#argp_fail)
 - [Argp#footer(str) : Argp](#argp_footer)
-- [Argp#options() : Argp](#argp_options)
+- [Argp#options() : Object](#argp_options)
+- [Argp#usage(str) : Argp](#argp_usage)
 - [Argp#version(str) : Argp](#argp_version)
 
 __Objects__
@@ -549,6 +550,11 @@ Sets a footer text. It is printed before the email.
 __Argp#options() : Object__
 
 Returns the configured options. Look at the [internal-data.js](https://github.com/gagle/node-argp/blob/master/examples/internal-data.js) example for further details.
+
+<a name="argp_usage"></a>
+__Argp#usage(str) : Argp__
+
+
 
 <a name="argp_version"></a>
 __Argp#version(str) : Argp__
