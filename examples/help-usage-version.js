@@ -56,7 +56,7 @@ Sample app.
 
 --------------------------------------------------------------------------------
 
-$ node help-usage-version.js --u # long options can be abbreviated, --usage
+$ node help-usage-version.js --usage
 
 Usage: help-usage-version.js [-hva] [-c C] [-e[E]] [-g G] [--aaaa] [--b] [--d=D]
          [--f[=F]] [--help] [--usage] [--version] [arg1] [arg2]

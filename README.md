@@ -7,13 +7,57 @@ _Node.js project_
 
 Version: 0.0.6
 
-Inspired by the extremly well-known [argp C library](http://www.gnu.org/software/libc/manual/html_node/Argp.html), this module parses GNU-style command-line options. Help, usage and version messages are automatically generated, line-wrapped at 80 columns and fully customizable. The module checks for errors and can be easily adapted to your needs. You don't even need to configure anything, the options will be parsed following the GNU rules:
+Inspired by the extremly well-known [argp C library](http://www.gnu.org/software/libc/manual/html_node/Argp.html), this module parses GNU-style command-line options. Help, usage and version messages are automatically generated and line-wrapped at 80 columns. The module checks for errors, can be easily adapted to your needs thanks to its evented system and also works when Node.js is in debug mode. The module is uncached and nulled once all the data has been parsed, so there's no memory footprint.
+
+Usual configurations look like this:
 
 ```javascript
-var argv = require ("argp").argv ();
-```
+var argv = require ("argp")
+    .description ("Sample app.")
+    .email ("a@b.c")
+    .body ()
+        //The object an argument definition and the text of the help message are
+				//configured at the same time
+        .group ("Arguments")
+        .argument ("arg", { description: "Sample argument" })
+        .group ("Options")
+        .option ({ short: "o", long: "opt", description: "Sample option" })
+				.help ()
+				.version ("v1.2.3")
+        .end ()
+    .argv ();
 
-This module also works when Node.js is in debug mode.
+console.log (argv);
+
+/*
+$ node script.js
+
+{
+  _debug: false,
+  _filename: \<__filename\>,
+  opt: false,
+  help: false,
+  version: false,
+  arg: false
+}
+
+$ node script.js --help
+
+Usage: t.js [OPTIONS] [ARGUMENTS]
+
+Sample app.
+
+ Arguments:
+  arg                         Sample argument
+
+ Options:
+  -o, --opt                   Sample option
+  -h, --help                  Display this help message and exit
+  -v, --version               Output version information and exit
+
+Report bugs to <a@b.c>.
+*/
+```
 
 #### Installation ####
 
@@ -23,13 +67,42 @@ npm install argp
 
 #### Documentation ####
 
-- [Full example explained](#full)
 - [Quick examples with no configuration](#quick)
+- [Full example explained](#full)
 - [Configuring options](#options)
 
 #### Objects ####
 
 - [Argp](#argp_object)
+
+---
+
+<a name="quick"></a>
+__Quick examples with no configuration__
+
+If the option has not been defined the type of the value is converted automatically from a string to a number, boolean, null or undefined.
+
+Allowing undefined arguments and options is as simple as this:
+
+```javascript
+var argv = require ("argv")
+    .allowUndefinedArguments ()
+    .allowUndefinedOptions ()
+    .argv ();
+```
+
+- `node script.js -a -b -c`  
+  `{ a: true, b: true, c: true }`
+- `node script.js a b c`  
+  `{ a: true, b: true, c: true }`
+- `node script.js -abc null`  
+  `{ a: true, b: true, c: null }`
+- `node script.js --a --b 1 --d=e`  
+  `{ a: true, b: 1, d: "e" }`
+- `node script.js --no-a b`  
+  `{ a: false, b: true }`
+- `node script.js --a -- -b --c d`  
+  `{ a: true, "-b": true, "--c": true, d: true }`
 
 ---
 
@@ -117,26 +190,6 @@ var argv = argp
 		//Parse the options
 		.argv ();
 ```
-
----
-
-<a name="quick"></a>
-__Quick examples with no configuration__
-
-If the option is undefined, the type of the value is converted automatically from a string to a number, boolean, null or undefined.
-
-- `node script.js -a -b -c`  
-  `{ a: true, b: true, c: true }`
-- `node script.js a b c`  
-  `{ a: true, b: true, c: true }`
-- `node script.js -abc d`  
-  `{ a: true, b: true, c: "d" }`
-- `node script.js --a --b 1 --d=e`  
-  `{ a: true, b: 1, d: "e" }`
-- `node script.js --no-a b`  
-  `{ a: false, b: true }`
-- `node script.js --a -- -b --c d`  
-  `{ a: true, "-b": true, "--c": true, d: true }`
 
 ---
 

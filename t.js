@@ -1,4 +1,6 @@
-console.log(require ("./lib")
+var argp = require ("./lib");
+
+var argv = argp
 		.columns (80)
 		.sort ()
 		.allowUndefinedArguments ()
@@ -26,7 +28,9 @@ console.log(require ("./lib")
 				.version ("v1.2.3") //Enables -v, --version
 				.text ("text")
 				.end ()
-		.argv ());
+		.argv ();
+
+console.log (argv);
 
 /*
 node t.js --help
