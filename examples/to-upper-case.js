@@ -33,11 +33,10 @@ argp
 			argv.phrase = argv.phrase.join (" ");
 			console.log (argv);
 		})
-		.configuration ({
-			//If "sort" is enabled, the options are parsed before the arguments
-			sort: true
-		})
-		.body (function (body){
-			body.option ({ short: "u" })
-		})
+		//If "sort" is enabled, the options are parsed before the arguments
+		.allowUndefinedArguments ()
+		.sort ()
+		.body ()
+				.option ({ short: "u" })
+				.end ()
 		.argv ();

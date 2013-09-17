@@ -5,7 +5,7 @@ process.argv = ["node", __filename, "-abc", "d", "--e=f", "g", "-i", "j", "--",
 
 var argp = require ("../lib");
 
-var argv = argp.argv ();
+var argv = argp.allowUndefinedOptions ().allowUndefinedArguments ().argv ();
 console.log (argv);
 
 /*

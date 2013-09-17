@@ -9,12 +9,14 @@ the usage() function.
 */
 
 argp
-		.configuration ({
-			showHelp: true,
-			showUsage: true
-		})
-		.usage ("<input file> <output file>")
-		.usage ("[word [word [word]]]")
+		.usages ([
+			"<input file> <output file>",
+			"[word [word [word]]]"
+		])
+		.body ()
+				.help ()
+				.usage ()
+				.end ()
 		.argv ();
 
 /*

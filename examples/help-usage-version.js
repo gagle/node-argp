@@ -3,28 +3,25 @@
 var argp = require ("../lib");
 
 argp
-		.configuration ({
-			showHelp: true,
-			showUsage: true
-		})
-		.version ("v1.2.3")
 		.description ("Sample app.")
-		.body (function (body){
-			body
-					.argument ("arg1")
-					.argument ("arg2")
-					.option ({ short: "a", long: "aaaa" })
-					.option ({ long: "b", negate: true })
-					.option ({ short: "c", argument: "C" })
-					.option ({ long: "d", argument: "D", value: "dddd" })
-					.option ({ short: "e", argument: "E", optional: true })
-					.option ({ long: "f", argument: "F", value: "ffff",
-							optional: true })
-					.option ({ short: "g", argument: "G", description: "gggg",
-							reviver: function (value){
-								return "-> " + value + " <-";
-							}});
-		})
+		.body ()
+				.argument ("arg1")
+				.argument ("arg2")
+				.option ({ short: "a", long: "aaaa" })
+				.option ({ long: "b", negate: true })
+				.option ({ short: "c", argument: "C" })
+				.option ({ long: "d", argument: "D", value: "dddd" })
+				.option ({ short: "e", argument: "E", optional: true })
+				.option ({ long: "f", argument: "F", value: "ffff",
+						optional: true })
+				.option ({ short: "g", argument: "G", description: "gggg",
+						reviver: function (value){
+							return value + "foo";
+						}})
+				.help ()
+				.usage ()
+				.version ("v1.2.3")
+				.end ()
 		.argv ();
 
 /*

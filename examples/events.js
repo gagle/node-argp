@@ -45,6 +45,8 @@ argp
 			
 			console.log ("END");
 		})
+		.allowUndefinedOptions ()
+		.allowUndefinedArguments ()
 		.argv ();
 
 /*

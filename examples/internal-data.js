@@ -9,19 +9,16 @@ options for informational purposes. For example, they can be used to change the
 */
 
 argp
-		.configuration ({
-			showHelp: true,
-			showUsage: true
-		})
-		.version ("v1.2.3")
-		.body (function (body){
-			body
-					.argument ("arg1")
-					.argument ("arg2")
-					.option ({ short: "a", long: "aa", description: "aaaa" })
-					.option ({ short: "b", long: "bb", description: "bbbb",
-							argument: "bb", optional: true, value: 5, type: Number });
-		});
+		.body ()
+				.argument ("arg1")
+				.argument ("arg2")
+				.option ({ short: "a", long: "aa", description: "aaaa" })
+				.option ({ short: "b", long: "bb", description: "bbbb",
+						argument: "bb", optional: true, value: 5, type: Number })
+				.help ()
+				.usage ()
+				.version ("v1.2.3")
+				.end ();
 
 console.log (argp.arguments ());
 
@@ -42,6 +39,29 @@ console.log (argp.options ());
 
 /*
 {
+	aa: {
+		short: "a",
+		long: "aa",
+		description: "aaaa",
+		flag: true,
+		id: "aa",
+		hidden: false,
+		negate: false,
+		value: false
+	},
+	bb: {
+		short: "b",
+		long: "bb",
+		description: "bbbb",
+		argument: "bb",
+		optional: true,
+		value: 5,
+		type: [Function: Number],
+		flag: false,
+		id: "bb",
+		hidden: false,
+		reviver: null
+	},
 	help: {
 		short: "h",
 		long: "help",
@@ -70,29 +90,6 @@ console.log (argp.options ());
 		hidden: false,
 		negate: false,
 		value: false
-	},
-	aa: {
-		short: "a",
-		long: "aa",
-		description: "aaaa",
-		flag: true,
-		id: "aa",
-		hidden: false,
-		negate: false,
-		value: false
-	},
-	bb: {
-		short: "b",
-		long: "bb",
-		description: "bbbb",
-		argument: "bb",
-		optional: true,
-		value: 5,
-		type: [Function: Number],
-		flag: false,
-		id: "bb",
-		hidden: false,
-		reviver: null
 	}
 }
 */

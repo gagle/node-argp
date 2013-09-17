@@ -13,28 +13,24 @@ of 3 or we can define an --ellipsis flag. When it is enabled it prints 3 dots.
 */
 
 var argv = argp
-		.configuration ({
-			showHelp: true
-		})
 		.on ("end", function (argv){
 			if (argv.ellipsis) argv.dot = 3;
 		})
-		.body (function (body){
-			body
-					.option ({
-						short: "d",
-						long: "dot",
-						argument: "N",
-						optional: true,
-						value: 1,
-						type: Number,
-						description: "Print N dots, default is 1"
-					})
-					.option ({
-						long: "ellipsis",
-						description: "Print 3 dots, same as --dots=3"
-					});
-		})
+		.body ()
+				.option ({
+					short: "d",
+					long: "dot",
+					argument: "N",
+					optional: true,
+					value: 1,
+					type: Number,
+					description: "Print N dots, default is 1"
+				})
+				.option ({
+					long: "ellipsis",
+					description: "Print 3 dots, same as --dots=3"
+				})
+				.end ()
 		.argv ();
 
 console.log (argv);
@@ -44,7 +40,6 @@ console.log (argv);
 	_debug: false,
 	_filename: <__filename>,
 	dot: 3,
-	ellipisis: true,
-	help: false
+	ellipisis: true
 }
 */

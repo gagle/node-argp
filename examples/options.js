@@ -3,66 +3,64 @@
 var argp = require ("../lib");
 
 var argv = argp
-		.configuration ({
-			showHelp: true,
-			showUsage: true
-		})
-		.body (function (body){
-			body
-					//Argument
-					.argument ("arg1")
-					
-					//Argument with a description
-					.argument ("arg2", { description: "aaaa" })
-					
-					//Hidden argument
-					.argument ("arg3", { hidden: true })
-					
-					//Positive flag because it doesn't define the "argument" property
-					.option ({ short: "a", long: "aaaa" })
-					
-					//Negative flag because it doesn't define the "argument" property
-					.option ({ long: "b", negate: true })
-					
-					//Option with a mandatory value and null as default value
-					.option ({ short: "c", argument: "C" })
-					
-					//Option with a Number type and 0 as default value
-					//By default the options are strings
-					.option ({ short: "d", argument: "D", type: Number })
-					
-					//Option with an Array type and [] as default value
-					//Array-type values must be comma-separated values, eg: --a 1,a,true
-					//Each element is converted automatically to the type it represents,
-					//the previous example is converted to { a: [1, "a", true] }
-					.option ({ short: "e", argument: "E", type: Array })
-					
-					//Option with a Boolean type and false as default value
-					//This type is not very useful because you can just use a flag, eg:
-					//--a true is converted to { a: true }
-					.option ({ short: "f", argument: "F", type: Boolean })
-					
-					//Option with a mandatory value and "gggg" as default value
-					.option ({ long: "g", argument: "G", value: "gggg" })
-					
-					//Option with an optional value and null as default value
-					.option ({ short: "i", argument: "I", optional: true })
-					
-					//Option with an optional value and "jjjj" as default value
-					.option ({ long: "j", argument: "J", value: "jjjj",
-							optional: true })
-					
-					//Option with a description and reviver
-					//The reviver receives the string value and returns the new value,
-					//it's like the json reviver function
-					.option ({ short: "k", argument: "K", description: "kkkk",
-							reviver: function (value){
-								return value + "foo";
-							}})
-					
-					//Hidden option, it isn't printed in the --help and --usage messages
-					.option ({ short: "l", hidden: true });
-		})
+		.body ()
+				//Argument
+				.argument ("arg1")
+				
+				//Argument with a description
+				.argument ("arg2", { description: "aaaa" })
+				
+				//Hidden argument
+				.argument ("arg3", { hidden: true })
+				
+				//Positive flag because it doesn't define the "argument" property
+				.option ({ short: "a", long: "aaaa" })
+				
+				//Negative flag because it doesn't define the "argument" property
+				.option ({ long: "b", negate: true })
+				
+				//Option with a mandatory value and null as default value
+				.option ({ short: "c", argument: "C" })
+				
+				//Option with a Number type and 0 as default value
+				//By default the options are strings
+				.option ({ short: "d", argument: "D", type: Number })
+				
+				//Option with an Array type and [] as default value
+				//Array-type values must be comma-separated values, eg: --a 1,a,true
+				//Each element is converted automatically to the type it represents,
+				//the previous example is converted to { a: [1, "a", true] }
+				.option ({ short: "e", argument: "E", type: Array })
+				
+				//Option with a Boolean type and false as default value
+				//This type is not very useful because you can just use a flag, eg:
+				//--a true is converted to { a: true }
+				.option ({ short: "f", argument: "F", type: Boolean })
+				
+				//Option with a mandatory value and "gggg" as default value
+				.option ({ long: "g", argument: "G", value: "gggg" })
+				
+				//Option with an optional value and null as default value
+				.option ({ short: "i", argument: "I", optional: true })
+				
+				//Option with an optional value and "jjjj" as default value
+				.option ({ long: "j", argument: "J", value: "jjjj",
+						optional: true })
+				
+				//Option with a description and reviver
+				//The reviver receives the string value and returns the new value,
+				//it's like the json reviver function
+				.option ({ short: "k", argument: "K", description: "kkkk",
+						reviver: function (value){
+							return value + "foo";
+						}})
+				
+				//Hidden option, it isn't printed in the --help and --usage messages
+				.option ({ short: "l", hidden: true })
+				
+				.help ()
+				.usage ()
+				.end ()
 		.argv ();
 
 console.log (argv);
