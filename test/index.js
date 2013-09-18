@@ -56,7 +56,7 @@ var tests = {
 	"type conversion, configuration": function (){
 		assert.doesNotThrow (function (){
 			argv (["--a=b", "--b=", "--c=12.34", "--d=", "--e=true", "--f=",
-					"--g=1,true,a", "--h=", "--i", "-12.34"]);
+					"--g=1,true,a", "--h=", "--i", "-12.34", "--j", "-1.2,foo"]);
 			opts = n ().body ()
 					.option ({ long: "a", argument: true })
 					.option ({ long: "b", argument: true })
@@ -67,6 +67,7 @@ var tests = {
 					.option ({ long: "g", argument: true, type: Array })
 					.option ({ long: "h", argument: true, type: Array })
 					.option ({ long: "i", argument: true, type: Number })
+					.option ({ long: "j", argument: true, type: Array })
 					.end ().argv ();
 			assert.strictEqual (opts.a, "b");
 			assert.strictEqual (opts.b, null);
@@ -79,6 +80,8 @@ var tests = {
 			assert.strictEqual (opts.g[2], "a");
 			assert.deepEqual (opts.h, []);
 			assert.strictEqual (opts.i, -12.34);
+			assert.strictEqual (opts.j[0], -1.2);
+			assert.strictEqual (opts.j[1], "foo");
 		});
 		
 		assert.throws (function (){
@@ -431,6 +434,21 @@ var tests = {
 			equal (opts, {
 				abc: false
 			});
+			
+			argv (["--a", "--b", "--c", "--d"]);
+			opts = n ().body ()
+					.option ({ long: "a", argument: true, optional: true })
+					.option ({ long: "b", argument: true, optional: true,
+							type: Number })
+					.option ({ long: "c", argument: true, optional: true,
+							type: Array })
+					.option ({ long: "d", argument: true, optional: true,
+							type: Boolean })
+					.end ().argv ();
+			assert.strictEqual (opts.a, null);
+			assert.strictEqual (opts.b, 0);
+			assert.deepEqual (opts.c, []);
+			assert.strictEqual (opts.d, false);
 		});
 		
 		assert.throws (function (){

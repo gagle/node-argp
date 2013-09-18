@@ -33,8 +33,8 @@ argp
 			argv.phrase = argv.phrase.join (" ");
 			console.log (argv);
 		})
+    .allowUndefinedArguments ()
 		//If "sort" is enabled, the options are parsed before the arguments
-		.allowUndefinedArguments ()
 		.sort ()
 		.body ()
 				.option ({ short: "u" })
