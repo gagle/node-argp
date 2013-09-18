@@ -168,6 +168,16 @@ Considerations:
 
 1. By default the options are flags. If the option requires a value, the `argument` property must be defined. This property is a string and can be seen when the --help message is printed. For example, `--a=NUM`, where `NUM` is the `argument` property.
 2. By default, the value of the options are strings. Configure the `type` property if the value is a number, boolean or array (comma-separated values).
+3. Each option has an id which is used to store the value into the final object. This id is the long name. If the long name has not been configured then the id is the short name.
+
+	```javascript
+	.option ({ short: "a", long: "aa" })
+	//{ aa: false }
+	.option ({ long: "aa" })
+	//{ aa: false }
+	.option ({ short: "a" })
+	//{ a: false }
+	```
 
 Common properties between flags an options with value:
 
