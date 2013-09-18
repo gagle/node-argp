@@ -73,8 +73,6 @@ var argv = require ("argp")
     //If no path is provided, it tries to read the "./package.json" file
     .readPackage ("path/to/package.json")
     .body ()
-        //The object an argument definition and the text of the help message are
-        //configured at the same time
         .group ("Arguments")
         .argument ("arg", { description: "Sample argument" })
         .group ("Options")
