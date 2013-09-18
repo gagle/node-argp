@@ -70,7 +70,7 @@ If you have a `package.json` file you can take from it the description, email an
 
 ```javascript
 var argv = require ("argp")
-    //If no path is provided, it tries to read "./package.json"
+    //If no path is provided, it tries to read the "./package.json" file
     .readPackage ("path/to/package.json")
     .body ()
         //The object an argument definition and the text of the help message are
@@ -539,6 +539,11 @@ Sets a contact email. The email is printed at the end of the help message.
 __Argp#fail(str[, code]) : undefined__
 
 Prints a message to the stderr and exists the program. By default it exists with code 1.
+
+<a name="argp_readpackage"></a>
+__Argp#readPackage([path]) : Argp__
+
+Reads a `package.json` file and configures the parser with the description, email and version. If no path is provided it uses the `./package.json` path. It's an `fs` synchronous operation.
 
 <a name="argp_options"></a>
 __Argp#options() : Object__
