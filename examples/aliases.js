@@ -2,8 +2,6 @@
 
 process.argv = ["node", __filename, "--ellipsis"];
 
-var argp = require ("../lib");
-
 /*
 Aliases are rarely used, that's why they cannot be configured explicitly.
 If you need aliases you can play with the events. Say we have a --dot option. By
@@ -12,7 +10,7 @@ of 3 or we can define an --ellipsis flag. When it is enabled it prints 3 dots.
 --ellipsis will we an alias.
 */
 
-var argv = argp
+var argv = require ("../lib")
 		.on ("end", function (argv){
 			if (argv.ellipsis) argv.dot = 3;
 		})

@@ -2,12 +2,10 @@
 
 process.argv = ["node", __filename, "-a", "b", "arg1", "--c=d", "arg2"];
 
-var argp = require ("../lib");
-
 //The events allow you to fully adapt the parser to your needs
 //See to-upper-case.js example
 
-argp
+require ("../lib")
 		.on ("start", function (argv){
 			//Emitted after the default values of the configured options and arguments
 			//have been set and before starting the read.

@@ -2,8 +2,6 @@
 
 process.argv = ["node", __filename, "-h"];
 
-var argp = require ("../lib");
-
 /*
 Things you can configure and show in the help message:
 - Version
@@ -20,7 +18,7 @@ The body is printed after the description and before the email, and it contains
 the options, arguments, groups and text.
 */
 
-argp
+require ("../lib")
 		.description ("Sample app.")
 		.email ("a@b.c")
 		.body ()

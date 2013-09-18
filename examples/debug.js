@@ -3,9 +3,7 @@
 //argp also works when node is in debug mode
 process.argv = ["node", "debug", "empty.js"];
 
-var argp = require ("../lib");
-
-var argv = argp.argv ();
+var argv = require ("../lib").argv ();
 console.log (argv);
 
 /*

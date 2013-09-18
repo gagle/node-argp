@@ -1,8 +1,6 @@
 "use strict";
 
-var argp = require ("../lib");
-
-argp
+require ("../lib")
 		.description ("Sample app.")
 		.body ()
 				.help ()

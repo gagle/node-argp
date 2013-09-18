@@ -1,8 +1,6 @@
 "use strict";
 
-var argp = require ("../lib");
-
-var argv = argp
+var argv = require ("../lib")
 		.body ()
 				//Argument
 				.argument ("arg1")

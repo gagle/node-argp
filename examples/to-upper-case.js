@@ -1,7 +1,5 @@
 "use strict";
 
-var argp = require ("../lib");
-
 /*
 Converts to upper case any phrase if the -u option is passed.
 
@@ -15,7 +13,7 @@ $ node to-upper-case.js this is a sample text with the -u option
 }
 */
 
-argp
+require ("../lib")
 		.on ("start", function (argv){
 			argv.phrase = [];
 		})

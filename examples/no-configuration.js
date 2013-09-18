@@ -2,10 +2,12 @@
 
 process.argv = ["node", __filename, "-abc", "d", "--e=f", "g", "-i", "j", "--",
 		"--k", "l"];
+		
+var argv = require ("../lib")
+		.allowUndefinedOptions ()
+		.allowUndefinedArguments ()
+		.argv ();
 
-var argp = require ("../lib");
-
-var argv = argp.allowUndefinedOptions ().allowUndefinedArguments ().argv ();
 console.log (argv);
 
 /*

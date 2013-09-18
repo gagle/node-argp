@@ -1,14 +1,12 @@
 "use strict";
 
-var argp = require ("../lib");
-
 /*
 By default when the help or usage messages are printed there is only one usage
 line. The [ARGUMENTS] part can be changed and multiple lines can be added with
 the usage() function.
 */
 
-argp
+require ("../lib")
 		.usages ([
 			"<input file> <output file>",
 			"[word [word [word]]]"
