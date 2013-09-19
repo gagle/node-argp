@@ -1,4 +1,14 @@
-v0.0.7 (xx Sep 2013)
+v0.0.8 (xx Sep 2013)
+	Fixed "readPackage()" with a missing default file.
+	Added "prefix" parameter to the "text()" function.
+	"usages()" now replaces the whole "usage" string.
+	Added "line()" function. It differs from "text()" in that it isn't a new
+			paragraph.
+	Renamed "text()" to "paragraph()".
+	Added "filter" parameter to "options()".
+	Minor improvements.
+
+v0.0.7 (18 Sep 2013)
 	The api has been refactored to be more fluent.
 	Some bugfixes.
 

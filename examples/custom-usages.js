@@ -8,8 +8,8 @@ the usage() function.
 
 require ("../lib")
 		.usages ([
-			"<input file> <output file>",
-			"[word [word [word]]]"
+			"custom-usages <input file> <output file>",
+			"custom-usages [word [word [word]]]"
 		])
 		.body ()
 				.help ()
@@ -20,8 +20,8 @@ require ("../lib")
 /*
 $ node custom-usages.js --help
 
-Usage: custom-usages.js [OPTIONS] <input file> <output file>
-       custom-usages.js [OPTIONS] [word [word [word]]]
+Usage: custom-usages <input file> <output file>
+       custom-usages [word [word [word]]]
 
   -h, --help                  Display this help message and exit
       --usage                 Display a short usage message and exit
@@ -30,7 +30,7 @@ Usage: custom-usages.js [OPTIONS] <input file> <output file>
 
 $ custom-usages.js --usage
 
-Usage: custom-usages.js [-h] [--help] [--usage] <input file> <output file>
-       custom-usages.js [-h] [--help] [--usage] [word [word [word]]]
+Usage: custom-usages <input file> <output file>
+       custom-usages [word [word [word]]]
 
 */
