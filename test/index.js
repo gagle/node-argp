@@ -107,6 +107,14 @@ var tests = {
 			equal (opts, {
 				aa: true
 			});
+			
+			argv (["--a", "b"]);
+			opts = n ().body ()
+					.option ({ long: "abc", argument: true })
+					.end ().argv ();
+			equal (opts, {
+				abc: "b"
+			});
 		});
 		
 		assert.throws (function (){
@@ -436,14 +444,6 @@ var tests = {
 			equal (opts, {
 				a: "b",
 				b: true
-			});
-			
-			argv (["--a", "b"]);
-			opts = n ().body ()
-					.option ({ long: "abc", argument: true })
-					.end ().argv ();
-			equal (opts, {
-				abc: "b"
 			});
 			
 			argv (["--no-a"]);
