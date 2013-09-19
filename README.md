@@ -568,8 +568,7 @@ Reads a `package.json` file and configures the parser with the description, emai
 <a name="argp_usages"></a>
 __Argp#usages(usages) : Argp__
 
-
-The `[ARGUMENTS]` part of the "usage" line in the --help and --usage messages can be changed. `usages` is an array of strings.
+Changes the "usage" line from --help and --usage options. `usages` is an array of strings.
 
 Look at the [custom-usages.js](https://github.com/gagle/node-argp/blob/master/examples/custom-usages.js) example for further details.
 
