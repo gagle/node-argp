@@ -621,14 +621,7 @@ __Methods__
 <a name="body_argument"></a>
 __Body#argument(name[, configuration]) : Body__
 
-Defines an argument.
-
-Options:
-
-- __description__ - _String_  
-  The description.
-- __hidden__ - _Boolean_  
-  If true, the option is not displayed in the --help and --usage messages. Default is false.
+Defines an argument. See [Configuring arguments](#arguments).
 
 <a name="body_end"></a>
 __Body#end() : Argp__
