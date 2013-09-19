@@ -48,7 +48,7 @@ var argv = require ("../lib")
 				//Option with a description and reviver
 				//The reviver receives the string value and returns the new value,
 				//it's like the json reviver function
-				.option ({ short: "k", argument: "K", description: "kkkk",
+				.option ({ short: "k", long: "kkkk", argument: "K", description: "kkkk",
 						reviver: function (value){
 							return value + "foo";
 						}})

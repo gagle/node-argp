@@ -166,8 +166,18 @@ __Configuring options__
 
 Considerations:
 
-1. By default the options are flags. If the option requires a value, the `argument` property must be defined. This property is a string and can be seen when the --help message is printed. For example, `--a=NUM`, where `NUM` is the `argument` property.
-2. By default, the value of the options are strings. Configure the `type` property if the value is a number, boolean or array (comma-separated values).
+1. By default the options are flags. If the option requires a value, the `argument` property must be defined. This property is a string and can be seen when the --help message is printed. For example,
+
+  ```bash
+  $ node script.js --help
+  ...
+    o, --opt=STR               Sample option
+  ...
+  ```
+  
+  Where `STR` is the `argument` property.
+
+2. By default, the value of the options is a string. Configure the `type` property if the value is a number, boolean or array (comma-separated values).
 3. Each option has an id which is used to store the value into the final object. This id is the long name. If the long name has not been configured then the id is the short name.
 
 	```javascript
@@ -179,7 +189,7 @@ Considerations:
 	//{ a: false }
 	```
 
-Common properties between flags an options with value:
+Common properties between flags and options with value:
 
 - __description__ - _String_  
   The description.
@@ -190,12 +200,13 @@ Common properties between flags an options with value:
 - __short__ - _String_  
   The short name, eg: `-a`. It must be an alphanumeric character.
 
-Flag:
+Flags:
 
 - __negate__ - _Boolean_  
-  If true, the flag is negated. Its default value is true and when it set it becomes false. Cannot negate a flag with a short name, only the long name must be configured.
+  If true, the flag is negated. The default value is true. Cannot negate a flag with a short name, only the long name can be configured.
 
 	```javascript
+	.option ({ short: "n", long: "name", negate: true }) //Error!
 	.option ({ long: "name", negate: true })
 	```
 	```bash
@@ -217,8 +228,8 @@ Options with value:
 	```bash
 	$ node script.js --help
 	...
-	      --name=STR
-	...
+       --name=STR
+  ...
 	```
 - __optional__ - _Boolean_  
   If true, the value is optional. Default is false. If the option doesn't receive any value the default value is set and it depends on the `value` and `type` properties.
@@ -231,15 +242,19 @@ Options with value:
 	.option ({ long: "name4", argument: "BOOL", optional: true, type: Boolean })
 	```
 	```bash
-	$ node script.js --name --name2 --name3
+	$ node script.js --name1 --name2 --name3
 	# "name1" is null because all the options are strings by default, and the default value of a string is null
 	# "name2" is 0 because the default value of a number is 0
 	# "name3" is [] because the default value of an array is []
 	# "name4" is false because the default value of a boolean is false
 	{ name1: null, name2: 0, name3: [], name4: false }
 	```
+	```bash
+	$ node script.js --name1 foo --name2 12 --name3 -12.34,foo,true --name4 true
+	{ name1: "foo", name2: 12, name3: [-12.34, "foo", true], name4: true }
+	```
 - __reviver__ - _Function_  
-  The function is executed when the option is parsed. It is similar to the reviver of the JSON.parse() function. This is the right place where you can validate the input data and `fail()` if is not valid. For example, if the option requires a number you can validate the range here.
+  The function is executed when the option is parsed. It is similar to the reviver of the `JSON.parse()` function. This is the right place where you can validate the input data and `fail()` if is not valid. For example, if the option requires a number you can validate the range here.
 
 	```javascript
 	.option ({ long: "name", argument: "STR", reviver: function (value){
@@ -262,7 +277,7 @@ Options with value:
 	}})
 	```
 	```javascript
-	//The reviver can be also used to allow only a few string values
+	//The reviver can be also used to allow only a few string values, a.k.a. choices.
 	.option ({ long: "name", argument: "STR", reviver: function (value){
     if (value !== "a" && value !== "b" && value !== "c"){
       argp.fail ("Option 'name': invalid choice");
@@ -308,7 +323,7 @@ __Full example explained__
 ```javascript
 /*
 Avoid storing the module in a variable because when the parser finishes it
-is removed from the cache. If you store a reference remember to dereference it
+is removed from the cache. If you store a reference remember to unreference it
 if you want a zero memory footprint.
 
 var argp = require ("argp")
@@ -318,7 +333,6 @@ argp = null;
 
 var argv = require ("./lib")
     //The evented system allows you to fully adapt the module to your needs
-    
     //The "start" and "end" events are useful when you need to initialize or
     //clean up things
     .on ("start", function (argv){
@@ -365,9 +379,9 @@ var argv = require ("./lib")
       "foo",
       "bar"
     ])
-    //Display a description at the top of the help message
+    //Print a description at the top of the help message
     .description ("Sample app.")
-    //Display a contact email at the end of the help message
+    //Print a contact email at the end of the help message
     .email ("a@b.c")
     //Configure the body
     .body ()
@@ -410,7 +424,7 @@ The module returns an instance of `Argp`. It inherits from an EventEmitter.
 
 The parser follows the GNU-style rules: `-a`, `-abc`, `--a`, `--no-a`, `--a=b`, etc.
 
-If you don't want to configure anything simply require the module and call to `argv()`.
+If you don't want to configure anything simply require the module, allow undefined arguments and options and call to `argv()`.
 
 ```javascript
 var argv = require ("argv")
@@ -421,11 +435,11 @@ var argv = require ("argv")
 
 Note: If no configuration is provided you cannot join a short name with its value in the same token, eg: `-Dvalue`, all the characters following a dash, `-`, are interpreted as individual flags.
 
-The object that `argv()` returns has two special properties: `_debug` and `_filename`. `_debug` is a boolean and it's true if the Node.js process has been started in debug mode, otherwise false (debug mode: `$ node debug <script>`). `_filename` is the absolute path of the main script.
+The object that `argv()` returns has 2 special properties: `_debug` and `_filename`. `_debug` is a boolean and it's true if the Node.js process has been started in debug mode, otherwise false (debug mode: `$ node debug <script>`). `_filename` is the absolute path of the main script.
 
 __Events__
 
-With the event system you can fully adapt this module to yours needs. For example, you can create [aliases.js](https://github.com/gagle/node-argp/blob/master/examples/aliases.js), read words without being surrounded with `"` ([to-upper-case.js](https://github.com/gagle/node-argp/blob/master/examples/to-upper-case.js)), do complex things ([mimic npm](https://github.com/gagle/node-argp/blob/master/examples/npm.js)), etc. Look at the [events.js](https://github.com/gagle/node-argp/blob/master/examples/events.js) example for further details.
+With the event system you can fully adapt this module to yours needs. For example, you can create [aliases.js](https://github.com/gagle/node-argp/blob/master/examples/aliases.js), read phases without being surrounded with `"` ([to-upper-case.js](https://github.com/gagle/node-argp/blob/master/examples/to-upper-case.js)), do complex things ([mimic npm](https://github.com/gagle/node-argp/blob/master/examples/npm.js)), etc. Look at the [events.js](https://github.com/gagle/node-argp/blob/master/examples/events.js) example for further details.
 
 - [argument](#event_argument)
 - [end](#event_end)
@@ -471,7 +485,7 @@ Parameters:
 <a name="event_end"></a>
 __end__
 
-Emitted when all the options and arguments have been read.
+Emitted when all the options and arguments have been parsed.
 
 - __argv__ - _Object_  
   The final object.
@@ -495,10 +509,10 @@ Emitted when an option is found.
 <a name="event_start"></a>
 __start__
 
-Emitted after the default values of the configured options and arguments have been set and before starting the read.
+Emitted just before the parser begins to read the input data.
 
 - __argv__ - _Object_  
-  The final object.
+  The final object. The default values are already set.
 
 ---
 
@@ -520,7 +534,7 @@ Returns the configured arguments. Look at the [internal-data.js](https://github.
 <a name="argp_argv"></a>
 __Argp#argv() : Object__
 
-Parses the `process.argv` array. It uncaches and nulls the module.
+Parses the `process.argv` array. It uncaches and nulls the module after parsing the input data.
 
 <a name="argp_body"></a>
 __Argp#body() : Argp__
@@ -535,12 +549,12 @@ Sets a maximum line length. By default lines are wrapped at 80 columns.
 <a name="argp_description"></a>
 __Argp#description(str) : Argp__
 
-Sets a description. The description is printed at the start of the help message, after the usage lines.
+Sets a description. The description is printed at the start of the --help message, after the usage lines.
 
 <a name="argp_email"></a>
 __Argp#email(str) : Argp__
 
-Sets a contact email. The email is printed at the end of the help message.
+Sets a contact email. The email is printed at the end of the --help message.
 
 <a name="argp_fail"></a>
 __Argp#fail(str[, code]) : undefined__
@@ -568,7 +582,7 @@ Reads a `package.json` file and configures the parser with the description, emai
 <a name="argp_usages"></a>
 __Argp#usages(usages) : Argp__
 
-Changes the "usage" line from --help and --usage options. `usages` is an array of strings.
+Changes the "usage" line from the --help and --usage messages. `usages` is an array of strings.
 
 Look at the [custom-usages.js](https://github.com/gagle/node-argp/blob/master/examples/custom-usages.js) example for further details.
 
@@ -582,7 +596,7 @@ If `sort()` is enabled, the options are parsed before the arguments, if not, the
 <a name="body"></a>
 __Body__
 
-The `Body` instance is returned by [Argp#body()](#argp_body). All the following functions print a message in the same order they are configured, this allows you to fully customize the help message very easily.
+The `Body` instance is returned by [Argp#body()](#argp_body). All the following functions print a message in the same order they are configured, this allows you to fully customize the --help message very easily.
 
 The difference among `group()`, `line()` and `paragraph()` are:
 

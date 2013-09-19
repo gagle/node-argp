@@ -98,6 +98,25 @@ var tests = {
 					.end ().argv ();
 		});
 	},
+	"abbreviations": function (){
+		assert.doesNotThrow (function (){
+			argv (["--a"]);
+			opts = n ().body ()
+					.option ({ long: "aa" })
+					.end ().argv ();
+			equal (opts, {
+				aa: true
+			});
+		});
+		
+		assert.throws (function (){
+			argv (["--a"]);
+			n ().body ()
+					.option ({ long: "a1" })
+					.option ({ long: "a2" })
+					.end ().argv ();
+		});
+	},
 	"no configuration, nothing": function (){
 		assert.doesNotThrow (function (){
 			argv ([]);
