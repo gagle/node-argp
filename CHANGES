@@ -1,4 +1,4 @@
-v0.0.8 (xx Sep 2013)
+v0.0.8 (19 Sep 2013)
 	Fixed "readPackage()" with a missing default file.
 	Added "prefix" parameter to the "text()" function.
 	"usages()" now replaces the whole "usage" string.

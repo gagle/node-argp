@@ -5,7 +5,7 @@ _Node.js project_
 
 #### Command-line option parser ####
 
-Version: 0.0.7
+Version: 0.0.8
 
 Inspired by the extremly well-known [argp C library](http://www.gnu.org/software/libc/manual/html_node/Argp.html), this module parses GNU-style command-line options. Help, usage and version messages are automatically generated and line-wrapped at 80 columns. The module checks for errors, can be easily adapted to your needs thanks to its evented system and also works when Node.js is in debug mode. The module is uncached and nulled once all the data has been parsed, so there's no memory footprint.
 
@@ -316,7 +316,7 @@ var argv = ...
 argp = null;
 */
 
-var argv = require ("argp")
+var argv = require ("./lib")
     //The evented system allows you to fully adapt the module to your needs
     
     //The "start" and "end" events are useful when you need to initialize or
@@ -343,7 +343,8 @@ var argv = require ("argp")
 			//"value" is the value of the option after calling the reviver, if any
 			//"long" is a boolean; true if the option is a long name, otherwise false
 			//"ignore" is a function that when called ignores the argument, hence it
-			//it isn't stored in the final object    })
+			//it isn't stored in the final object
+    })
     .on ("end", function (argv){
       //Emitted when all the options and arguments have been read
 			
@@ -370,12 +371,14 @@ var argv = require ("argp")
     .email ("a@b.c")
     //Configure the body
     .body ()
-        /The object an argument definition and the text of the help message are
+        //The object an argument definition and the text of the help message are
         //configured at the same time
         //The order of the configuration is important
         
-        //Print a text line
-        .text ("Random text")
+        //Print a paragraph
+        .paragraph ("Random paragraph")
+			  //Print a line
+        .line ("Random line")
         //Print a group line
         .group ("Group 1")
         //After a group line you typically want to print some options or
@@ -397,8 +400,6 @@ var argv = require ("argp")
     //Parse the options
     .argv ();
 ```
-
-You can take the description, email and version from a package.json
 
 ---
 
@@ -422,11 +423,9 @@ Note: If no configuration is provided you cannot join a short name with its valu
 
 The object that `argv()` returns has two special properties: `_debug` and `_filename`. `_debug` is a boolean and it's true if the Node.js process has been started in debug mode, otherwise false (debug mode: `$ node debug <script>`). `_filename` is the absolute path of the main script.
 
-All the text messages can be split up in multiple lines using `\n` or `\r\n`. They will be indented according to the functionality of the caller function.
-
 __Events__
 
-With the event system you can fully adapt this module to yours needs. For example, you can create [aliases.js](https://github.com/gagle/node-argp/blob/master/examples/aliases.js), read words without being surrounded with `"` ([to-upper-case.js](https://github.com/gagle/node-argp/blob/master/examples/to-upper-case.js)), etc. Look at the [events.js](https://github.com/gagle/node-argp/blob/master/examples/events.js) example for further details.
+With the event system you can fully adapt this module to yours needs. For example, you can create [aliases.js](https://github.com/gagle/node-argp/blob/master/examples/aliases.js), read words without being surrounded with `"` ([to-upper-case.js](https://github.com/gagle/node-argp/blob/master/examples/to-upper-case.js)), do complex things ([mimic npm](https://github.com/gagle/node-argp/blob/master/examples/npm.js)), etc. Look at the [events.js](https://github.com/gagle/node-argp/blob/master/examples/events.js) example for further details.
 
 - [argument](#event_argument)
 - [end](#event_end)
@@ -444,7 +443,7 @@ __Methods__
 - [Argp#description(str) : Argp](#argp_description)
 - [Argp#email(str) : Argp](#argp_email)
 - [Argp#fail(str[, code]) : undefined](#argp_fail)
-- [Argp#options() : Object](#argp_options)
+- [Argp#options([filter]) : Object](#argp_options)
 - [Argp#readPackage([path]) : Argp](#argp_readpackage)
 - [Argp#sort() : Argp](#argp_sort)
 - [Argp#usages(usages) : Argp](#argp_usage)
@@ -548,15 +547,23 @@ __Argp#fail(str[, code]) : undefined__
 
 Prints a message to the stderr and exists the program. By default it exists with code 1.
 
+<a name="argp_options"></a>
+__Argp#options([filter]) : Object__
+
+Returns the configured options. `filter` is an object which can be used to return the options with a short name or with a long name.
+
+```javascript
+.options ()
+.options ({ short: true })
+.options ({ long: true })
+```
+
+Look at the [internal-data.js](https://github.com/gagle/node-argp/blob/master/examples/internal-data.js) example for further details.
+
 <a name="argp_readpackage"></a>
 __Argp#readPackage([path]) : Argp__
 
 Reads a `package.json` file and configures the parser with the description, email and version. If no path is provided it uses the `./package.json` path. It's an `fs` synchronous operation.
-
-<a name="argp_options"></a>
-__Argp#options() : Object__
-
-Returns the configured options. Look at the [internal-data.js](https://github.com/gagle/node-argp/blob/master/examples/internal-data.js) example for further details.
 
 <a name="argp_usages"></a>
 __Argp#usages(usages) : Argp__
@@ -576,7 +583,15 @@ If `sort()` is enabled, the options are parsed before the arguments, if not, the
 <a name="body"></a>
 __Body__
 
-The `Body` instance is returned by [Argp#body()](#argp_body). The options, arguments, groups and text are printed in the same order they are configured, this allows you to fully customize the help message.
+The `Body` instance is returned by [Argp#body()](#argp_body). All the following functions print a message in the same order they are configured, this allows you to fully customize the help message very easily.
+
+The difference among `group()`, `line()` and `paragraph()` are:
+
+- `group()` is mainly used to introduce a list of things like arguments or options. The line has an indentation of 1 space and ends with `:`. A group line always starts in a new paragraph.
+- `line()` prints text in a new line (the text is prefixed with `\n`).
+- `paragraph()` prints text in a new paragraph (the text is prefixed with `\n\n`).
+
+All the text messages can be split up in multiple lines using `\n` or `\r\n`. They will be indented according to the functionality of the caller function.
 
 __Methods__
 
@@ -584,8 +599,9 @@ __Methods__
 - [Body#end() : Argp](#body_end)
 - [Body#group(str) : Body](#body_group)
 - [Body#help() : Body](#body_help)
+- [Body#line(str[, prefix]) : Body](#body_line)
 - [Body#option(o) : Body](#body_option)
-- [Body#text(str) : Body](#body_text)
+- [Body#paragraph(str[, prefix]) : Body](#body_paragraph)
 - [Body#usage() : Body](#body_usage)
 - [Body#version(str) : Body](#body_version)
 
@@ -616,15 +632,20 @@ __Body#help() : Body__
 
 Enables the `-h, --help` option.
 
+<a name="body_line"></a>
+__Body#line(str[, prefix]) : Body__
+
+Prints a line. The `prefix` is mainly used to indent the line with some spaces.
+
 <a name="body_option"></a>
 __Body#option(o) : Body__
 
 Defines an option. See [Configuring options](#options).
 
-<a name="body_text"></a>
-__Body#text(str) : Body__
+<a name="body_paragraph"></a>
+__Body#paragraph(str[, prefix]) : Body__
 
-Prints a text line.
+Prints a paragraph. The `prefix` is mainly used to indent the paragraph with some spaces.
 
 <a name="body_usage"></a>
 __Body#usage() : Body__

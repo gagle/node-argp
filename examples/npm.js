@@ -8,13 +8,14 @@ implements just the barebones.
 Try the following commands:
 	node npm -v
 	node npm --help
+	node npm foo -> error! unrecognized argument
 	node npm deprecate --help
 	node npm deprecate foo -> error! too few arguments
 	node npm deprecate foo bar baz -> error! too many arguments
 	node npm deprecate foo@0.0.1 "deprecated, if you know what I mean"
 */
 
-//For a better organization these objects can be stored in different modules
+//For a better organization, these objects can be stored in different modules
 var commands = {
 	deprecate: {
 		_first: true,
@@ -75,8 +76,20 @@ var command;
 
 var argv = require ("../lib")
 		.on ("argument", function (argv, argument, ignore){
-			//Each command knows what to do, we only need to forward the a
+			//Here we have a problem. We want to throw an error if the command is
+			//undefined, eg: build, but we also want to permit undefined arguments
+			//because each command receives random strings, like
+			//"npm install <module>".
+			
+			//So, the idea is the following: wait for a known command (deprecate,
+			//install) and then reconfigure the parser WHILE the input is being read
+			//in order to allow undefined arguments
+			
+			//If this function is executed then we can consider that this argument is
+			//defined, so we now just need to allow undefined arguments
+			
 			if (!command){
+				this.allowUndefinedArguments ();
 				command = argument;
 			}
 			
@@ -89,10 +102,10 @@ var argv = require ("../lib")
 			//When -h,--help, --usage and -v,--version are found the process exits
 			//automatically
 			//Because we want to use help and usage messages per command we have to
-			//ignore and add them manually and check them later
+			//ignore and add them manually, and check them later
 			
 			//First we get the option definition because we should use the "id"
-			//property to set values to defined options
+			//property to set the value
 			
 			var opt = this.options (long ? { long: true } : { short: true })[option];
 			//Not need to check if opt is falsy because if the option is undefined
@@ -107,8 +120,8 @@ var argv = require ("../lib")
 			}
 		})
 		.on ("end", function (argv){
-			//We also want to print a help and usage messages even if no command is
-			//passed, eg: npm --help
+			//We also want to print global help and usage messages even if no command
+			//is passed, eg: npm --help
 			
 			//This is a bit hacky because we are going to call to private functions:
 			//_printHelp(), _printUsage(), _printVersion()
@@ -125,8 +138,6 @@ var argv = require ("../lib")
 			//anymore
 			commands[command].onEnd (this);
 		})
-		//Deprecate and install commands receive undefined strings
-		.allowUndefinedArguments ()
 		.description ("npm is the package manager for the Node JavaScript " +
 				"platform. It puts modules in place so that node can find them, and " +
 				"manages dependency conflicts intelligently.\n\n" +

@@ -2,19 +2,14 @@
 
 var argp = require ("../lib");
 
-/*
-The arguments() and options() functions returns the configured arguments and
-options for informational purposes. For example, they can be used to change the
---help, --usage and --version descriptions.
-*/
-
 argp
 		.body ()
 				.argument ("arg1")
 				.argument ("arg2")
 				.option ({ short: "a", long: "aa", description: "aaaa" })
-				.option ({ short: "b", long: "bb", description: "bbbb",
-						argument: "bb", optional: true, value: 5, type: Number })
+				.option ({ long: "bb", description: "bbbb" })
+				.option ({ short: "c", description: "cccc",
+						argument: "cc", optional: true, value: 5, type: Number })
 				.help ()
 				.usage ()
 				.version ("v1.2.3")
@@ -50,15 +45,23 @@ console.log (argp.options ());
 		value: false
 	},
 	bb: {
-		short: "b",
 		long: "bb",
 		description: "bbbb",
-		argument: "bb",
+		flag: true,
+		id: "bb",
+		hidden: false,
+		negate: false,
+		value: false
+	},
+	c: {
+		short: "c",
+		description: "cccc",
+		argument: "cc",
 		optional: true,
 		value: 5,
 		type: [Function: Number],
 		flag: false,
-		id: "bb",
+		id: "c",
 		hidden: false,
 		reviver: null
 	},
@@ -90,6 +93,46 @@ console.log (argp.options ());
 		hidden: false,
 		negate: false,
 		value: false
+	}
+}
+*/
+
+console.log (argp.options ({ short: true }));
+
+/*
+{
+	a: {
+		...
+	},
+	c: {
+		...
+	},
+	h: {
+		...
+	},
+	v: {
+		...
+	}
+*/
+
+console.log (argp.options ({ long: true }));
+
+/*
+{
+	aa: {
+		...
+	},
+	bb: {
+		...
+	},
+	help: {
+		...
+	},
+	version: {
+		...
+	},
+	usage: {
+		...
 	}
 }
 */
