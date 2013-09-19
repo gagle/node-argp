@@ -66,7 +66,7 @@ Report bugs to <a@b.c>.
 */
 ```
 
-If you have a `package.json` file you can take from it the description, email and version using the `readPackage()` function. Take into account that this function calls a synchronous operation. Doesn't really matter because this module is the first thing you're going to execute.
+If you have a `package.json` file you can take from it the description, email and version using the `readPackage()` function. Take into account that this function calls a synchronous `fs` operation. Doesn't really matter because this module is the first thing you're going to execute.
 
 ```javascript
 var argv = require ("argp")
