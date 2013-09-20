@@ -1,9 +1,12 @@
+v0.1.0 (20 Sep 2013)
+	
+
 v0.0.8 (19 Sep 2013)
 	Fixed "readPackage()" with a missing default file.
 	Added "prefix" parameter to the "text()" function.
 	"usages()" now replaces the whole "usage" string.
 	Added "line()" function. It differs from "text()" in that it isn't a new
-			paragraph.
+		paragraph.
 	Renamed "text()" to "paragraph()".
 	Added "filter" parameter to "options()".
 	Minor improvements.
@@ -31,7 +34,7 @@ v0.0.2 (14 Sep 2013)
 	Added automatic string conversion.
 	Added "hidden" option configuration.
 	When the input is parsed the first time "argv()" frees any resource; only
-			the final object is needed.
+		the final object is needed.
 	Minor bugfixes.
 
 v0.0.1 (13 Sep 2013)

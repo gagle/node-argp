@@ -78,7 +78,7 @@ $ node options.js
 	g: "gggg",
 	i: null,
 	j: "jjjj",
-	k: null,
+	kkkk: null,
 	l: false,
 	help: false,
 	usage: false,
@@ -91,7 +91,7 @@ $ node options.js
 
 $ node options.js --help
 
-Usage: options.js [OPTIONS] [ARGUMENTS]
+Usage: options [OPTIONS] [ARGUMENTS]
 
   arg1
   arg2                        aaaa
@@ -105,7 +105,7 @@ Usage: options.js [OPTIONS] [ARGUMENTS]
       --g=G
   -i[I]
       --j[=J]
-  -k K                        kkkk
+  -k, --kkkk=K                kkkk
   -h, --help                  Display this help message and exit
       --usage                 Display a short usage message and exit
 
@@ -113,6 +113,6 @@ Usage: options.js [OPTIONS] [ARGUMENTS]
 
 $ node options.js --usage
 
-Usage: options.js [-ha] [-c C] [-d D] [-e E] [-f F] [-i[I]] [-k K] [--aaaa]
-         [--b] [--g=G] [--j[=J]] [--help] [--usage] [arg1] [arg2]
+Usage: options [-ha] [-c C] [-d D] [-e E] [-f F] [-i[I]] [-k K] [--aaaa] [--b]
+         [--g=G] [--j[=J]] [--kkkk=K] [--help] [--usage] [arg1] [arg2]
 */
