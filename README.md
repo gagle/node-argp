@@ -5,7 +5,7 @@ _Node.js project_
 
 #### Command-line option parser ####
 
-Version: 0.0.8
+Version: 0.0.9
 
 Inspired by the extremly well-known [argp C library](http://www.gnu.org/software/libc/manual/html_node/Argp.html), this module parses GNU-style command-line options. Help, usage and version messages are automatically generated and line-wrapped at 80 columns. The module checks for errors, can be easily adapted to your needs thanks to its evented system and also works when Node.js is in debug mode. The module is uncached and nulled once all the data has been parsed, so there's no memory footprint.
 
@@ -606,9 +606,12 @@ The difference among `group()`, `line()` and `paragraph()` are:
 
 All the text messages can be split up in multiple lines using `\n` or `\r\n`. They will be indented according to the functionality of the caller function.
 
+Look at [fully-descriptive-help.js](https://github.com/gagle/node-argp/blob/master/examples/fully-descriptive-help.js) for further details.
+
 __Methods__
 
 - [Body#argument(name[, configuration]) : Body](#body_argument)
+- [Body#columns(column1, column2) : Argp](#body_columns)
 - [Body#end() : Argp](#body_end)
 - [Body#group(str) : Body](#body_group)
 - [Body#help() : Body](#body_help)
@@ -622,6 +625,11 @@ __Methods__
 __Body#argument(name[, configuration]) : Body__
 
 Defines an argument. See [Configuring arguments](#arguments).
+
+<a name="body_columns"></a>
+__Body#columns(column1, column2) : Argp__
+
+Prints a line with 2 columns. This functionality is used to print the options and arguments.
 
 <a name="body_end"></a>
 __Body#end() : Argp__

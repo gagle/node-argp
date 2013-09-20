@@ -22,6 +22,8 @@ require ("../lib")
 				.line ("Line messages differs from paragraph messages in that")
 				.line ("they begin in a new line (\\n) and paragraphs")
 				.line ("begin in a new paragraph (\\n\\n)")
+				.paragraph ("Do you still need more printing functions? Check this:")
+				.columns ("  this is column 1", "This is a multiline in\ncolumn 2")
 				.group ("Informational options")
 				.help ()
 				.version ("v1.2.3")
@@ -52,6 +54,10 @@ to split them in multiple lines...
 Line messages differs from paragraph messages in that
 they begin in a new line (\n) and paragraphs
 begin in a new paragraph (\n\n)
+
+Do you still need more printing functions? Check this:
+  this is column 1            This is a multiline in
+                                column 2
 
  Informational options:
   -h, --help                  Display this help message and exit

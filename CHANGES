@@ -1,5 +1,6 @@
-v0.1.0 (20 Sep 2013)
-	
+v0.0.9 (20 Sep 2013)
+	Added "columns()".
+	Minor bugfixes.
 
 v0.0.8 (19 Sep 2013)
 	Fixed "readPackage()" with a missing default file.
