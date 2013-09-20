@@ -611,7 +611,7 @@ Look at [fully-descriptive-help.js](https://github.com/gagle/node-argp/blob/mast
 __Methods__
 
 - [Body#argument(name[, configuration]) : Body](#body_argument)
-- [Body#columns(column1, column2) : Argp](#body_columns)
+- [Body#columns(column1, column2) : Body](#body_columns)
 - [Body#end() : Argp](#body_end)
 - [Body#group(str) : Body](#body_group)
 - [Body#help() : Body](#body_help)
@@ -627,7 +627,7 @@ __Body#argument(name[, configuration]) : Body__
 Defines an argument. See [Configuring arguments](#arguments).
 
 <a name="body_columns"></a>
-__Body#columns(column1, column2) : Argp__
+__Body#columns(column1, column2) : Body__
 
 Prints a line with 2 columns. This functionality is used to print the options and arguments.
 
