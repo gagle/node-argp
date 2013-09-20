@@ -168,12 +168,12 @@ Considerations:
 
 1. By default the options are flags. If the option requires a value, the `argument` property must be defined. This property is a string and can be seen when the --help message is printed. For example,
 
-  ```bash
-  $ node script.js --help
-  ...
-    o, --opt=STR               Sample option
-  ...
-  ```
+	```bash
+	$ node script.js --help
+	...
+	  o, --opt=STR               Sample option
+	...
+	```
   
   Where `STR` is the `argument` property.
 
