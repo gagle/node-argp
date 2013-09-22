@@ -484,6 +484,27 @@ var tests = {
 			equal (opts, {
 				a: true
 			});
+			
+			argv (["--a", "b"]);
+			opts = n ().body ()
+					.option ({ long: "a", argument: true, choices: ["b"] })
+					.end ().argv ();
+			equal (opts, {
+				a: "b"
+			});
+			
+			argv (["--a", "1"]);
+			opts = n ().body ()
+					.option ({ long: "a", argument: true, type: Number, choices: [1] })
+					.end ().argv ();
+			assert.strictEqual (opts.a, 1);
+			
+			argv (["--a"]);
+			opts = n ().body ()
+					.option ({ long: "a", argument: true, type: Number, optional: true,
+							choices: [1] })
+					.end ().argv ();
+			assert.strictEqual (opts.a, 0);
 		});
 		
 		assert.throws (function (){
@@ -512,6 +533,13 @@ var tests = {
 			n ().body ()
 					.option ({ long: "a12" })
 					.option ({ long: "a34" })
+					.end ().argv ();
+		});
+		
+		assert.throws (function (){
+			argv (["--a=2"]);
+			n ().body ()
+					.option ({ long: "a", argument: true, type: Number, choices: [1] })
 					.end ().argv ();
 		});
 	},

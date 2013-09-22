@@ -3,6 +3,7 @@ v0.0.10 (xx Sep 2013)
 	Code inside the "end" event was preventing the instance from being gc'ed.
 	Allowed negated flags with a short name.
 	Added aliases.
+	Added choices.
 	Minor improvements.
 
 v0.0.9 (20 Sep 2013)
