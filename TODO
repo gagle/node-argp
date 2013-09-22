@@ -1,0 +1,44 @@
+Lots of examples: http://git-scm.com/docs
+Recap:
+	- Option: flags/values, short/long names.
+			-s, --long
+	- Argument: individual names.
+			login, install, build
+
+- Test global modules, .slice(1)?
+- Allow negated flags with a short name.
+- In the --usage message, group the options with short and long name.
+		[-abc] [-f|--force] [--foo]
+- Add commands. A command is formed by an argument followed by options and
+	arguments.
+		git push origin master -f
+		"push" is the command, "origin" and "master" are arguments and "-f" is an
+		option.
+	The "command()" function configures a command. Each command it's like a new
+	fresh cli program, with --help, --usage and --version messages.
+	
+		npm config set <key> <value>
+		npm config get [<key>]
+		npm config list
+		
+		require ("argp")
+				.main ()
+						.on ("start|end|argument|option")
+						.description ()
+						.email ()
+						.body ()
+								.option ()
+								.argument ()
+								.help ()
+								.version ()
+								.end ()
+						.end ()
+				.command ("config")
+						.on ("start|end|argument|option")
+						.description ()
+						.usages([])
+						.body ()
+								.option ()
+								.argument ("set")
+								.argument ("get")
+								.argument ("list")

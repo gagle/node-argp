@@ -9,7 +9,7 @@ argp
 				.option ({ short: "a", long: "aa", description: "aaaa" })
 				.option ({ long: "bb", description: "bbbb" })
 				.option ({ short: "c", description: "cccc",
-						argument: "cc", optional: true, value: 5, type: Number })
+						argument: "cc", optional: true, default: 5, type: Number })
 				.help ()
 				.usage ()
 				.version ("v1.2.3")
@@ -42,7 +42,7 @@ console.log (argp.options ());
 		id: "aa",
 		hidden: false,
 		negate: false,
-		value: false
+		default: false
 	},
 	bb: {
 		long: "bb",
@@ -51,14 +51,14 @@ console.log (argp.options ());
 		id: "bb",
 		hidden: false,
 		negate: false,
-		value: false
+		default: false
 	},
 	c: {
 		short: "c",
 		description: "cccc",
 		argument: "cc",
 		optional: true,
-		value: 5,
+		default: 5,
 		type: [Function: Number],
 		flag: false,
 		id: "c",
@@ -73,7 +73,7 @@ console.log (argp.options ());
 		id: "help",
 		hidden: false,
 		negate: false,
-		value: false
+		default: false
 	},
 	usage: {
 		long: "usage",
@@ -82,7 +82,7 @@ console.log (argp.options ());
 		id: "usage",
 		hidden: false,
 		negate: false,
-		value: false
+		default: false
 	},
 	version: {
 		short: "v",
@@ -92,7 +92,7 @@ console.log (argp.options ());
 		id: "version",
 		hidden: false,
 		negate: false,
-		value: false
+		default: false
 	}
 }
 */

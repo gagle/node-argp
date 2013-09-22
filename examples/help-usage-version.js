@@ -8,9 +8,9 @@ require ("../lib")
 				.option ({ short: "a", long: "aaaa" })
 				.option ({ long: "b", negate: true })
 				.option ({ short: "c", argument: "C" })
-				.option ({ long: "d", argument: "D", value: "dddd" })
+				.option ({ long: "d", argument: "D", default: "dddd" })
 				.option ({ short: "e", argument: "E", optional: true })
-				.option ({ long: "f", argument: "F", value: "ffff",
+				.option ({ long: "f", argument: "F", default: "ffff",
 						optional: true })
 				.option ({ short: "g", argument: "G", description: "gggg",
 						reviver: function (value){

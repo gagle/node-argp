@@ -36,13 +36,13 @@ var argv = require ("../lib")
 				.option ({ short: "f", argument: "F", type: Boolean })
 				
 				//Option with a mandatory value and "gggg" as default value
-				.option ({ long: "g", argument: "G", value: "gggg" })
+				.option ({ long: "g", argument: "G", default: "gggg" })
 				
 				//Option with an optional value and null as default value
 				.option ({ short: "i", argument: "I", optional: true })
 				
 				//Option with an optional value and "jjjj" as default value
-				.option ({ long: "j", argument: "J", value: "jjjj",
+				.option ({ long: "j", argument: "J", default: "jjjj",
 						optional: true })
 				
 				//Option with a description and reviver

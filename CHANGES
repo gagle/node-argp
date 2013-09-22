@@ -1,3 +1,6 @@
+v0.0.10 (xx Sep 2013)
+	The default value of an option is now set with "default" instead of "value".
+
 v0.0.9 (20 Sep 2013)
 	Added "columns()".
 	Minor bugfixes.

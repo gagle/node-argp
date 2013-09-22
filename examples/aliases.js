@@ -20,7 +20,7 @@ var argv = require ("../lib")
 					long: "dot",
 					argument: "N",
 					optional: true,
-					value: 1,
+					default: 1,
 					type: Number,
 					description: "Print N dots, default is 1"
 				})

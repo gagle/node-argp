@@ -213,6 +213,9 @@ Flags:
 	$ node script.js
 	{ a: true }
 	
+	$ node script.js --name
+	{ a: true }
+	
 	$ node script.js --no-name
 	{ a: false }
 	```
@@ -232,7 +235,7 @@ Options with value:
   ...
 	```
 - __optional__ - _Boolean_  
-  If true, the value is optional. Default is false. If the option doesn't receive any value the default value is set and it depends on the `value` and `type` properties.
+  If true, the value is optional. Default is false. If the option doesn't receive any value the default value is set and it depends on the `default` and `type` properties.
 
 	```javascript
 	.option ({ long: "name1", argument: "STR", optional: true })
@@ -296,11 +299,11 @@ Options with value:
 	{ name: [1, true, "foo"] }
 	```
   
-- __value__ - _Object_  
+- __default__ - _Object_  
   The default value.
 
 	```javascript
-	.option ({ long: "name", argument: "STR", value: "bar", optional: true })
+	.option ({ long: "name", argument: "STR", default: "bar", optional: true })
 	```
 	```bash
 	$ node script.js

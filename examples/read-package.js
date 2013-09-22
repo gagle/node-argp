@@ -7,7 +7,7 @@ require ("../lib")
 				.argument ("arg2")
 				.option ({ short: "a", long: "aa", description: "aaaa" })
 				.option ({ short: "b", long: "bb", description: "bbbb",
-						argument: "bb", optional: true, value: 5, type: Number })
+						argument: "bb", optional: true, default: 5, type: Number })
 				.help ()
 				.usage ()
 				.end ()

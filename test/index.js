@@ -364,7 +364,7 @@ var tests = {
 					.argument ("a")
 					.option ({ long: "b", short: "x" })
 					.option ({ long: "c", negate: true })
-					.option ({ short: "d", argument: true, value: "a" })
+					.option ({ short: "d", argument: true, default: "a" })
 					.option ({ short: "e", argument: true, optional: true })
 					.end ().argv ();
 			equal (opts, {
