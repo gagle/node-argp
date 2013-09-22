@@ -1,7 +1,5 @@
-var argv = require("./lib")
-		.body ()
-				.option ({ long: "asd", negate: true })
-				.end ()
-		.argv ()
+"use strict"
 
-console.log (argv);
+var argv = require("./lib")
+		
+		.argv ()
