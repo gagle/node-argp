@@ -42,3 +42,6 @@ Recap:
 								.argument ("set")
 								.argument ("get")
 								.argument ("list")
+						.end ()
+				.end ()
+				.argv ();
