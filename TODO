@@ -5,7 +5,6 @@ Recap:
 	- Argument: individual names.
 			login, install, build
 
-- Add aliases and choices.
 - In the --usage message, group the options with short and long name.
 		[-abc] [-f|--force] [--foo]
 - Add commands. A command is formed by an argument followed by options and

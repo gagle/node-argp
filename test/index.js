@@ -476,6 +476,14 @@ var tests = {
 			assert.strictEqual (opts.b, 0);
 			assert.deepEqual (opts.c, []);
 			assert.strictEqual (opts.d, false);
+			
+			argv (["--b"]);
+			opts = n ().body ()
+					.option ({ long: "a", aliases: ["b"] })
+					.end ().argv ();
+			equal (opts, {
+				a: true
+			});
 		});
 		
 		assert.throws (function (){
