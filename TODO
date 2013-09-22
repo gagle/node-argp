@@ -7,6 +7,7 @@ Recap:
 
 - Test global modules, .slice(1)?
 - Allow negated flags with a short name.
+- Add aliases.
 - In the --usage message, group the options with short and long name.
 		[-abc] [-f|--force] [--foo]
 - Add commands. A command is formed by an argument followed by options and
