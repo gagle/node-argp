@@ -4,6 +4,7 @@ v0.0.10 (xx Sep 2013)
 	Allowed negated flags with a short name.
 	Added aliases.
 	Added choices.
+	Improved --usage message.
 	Minor improvements.
 
 v0.0.9 (20 Sep 2013)
