@@ -5,8 +5,6 @@ Recap:
 	- Argument: individual names.
 			login, install, build
 
-- Test global modules, .slice(1)?
-- Allow negated flags with a short name.
 - Add aliases and choices.
 - In the --usage message, group the options with short and long name.
 		[-abc] [-f|--force] [--foo]

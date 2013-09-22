@@ -402,6 +402,14 @@ var tests = {
 				a: false
 			});
 			
+			argv (["-a"]);
+			opts = n ().body ()
+					.option ({ short: "a", long: "abc", negate: true })
+					.end ().argv ();
+			equal (opts, {
+				abc: false
+			});
+			
 			argv (["--no-a"]);
 			opts = n ().body ()
 					.option ({ long: "a" })
