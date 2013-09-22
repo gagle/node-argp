@@ -13,14 +13,14 @@ Recap:
 - Add commands. A command is formed by an argument followed by options and
 	arguments.
 		git push origin master -f
-		"push" is the command, "origin" and "master" are arguments and "-f" is an
-		option.
 	The "command()" function configures a command. Each command it's like a new
 	fresh cli program, with --help, --usage and --version messages.
 	
 		npm config set <key> <value>
 		npm config get [<key>]
 		npm config list
+		npm install [<pkg>...]
+		npm tag <project>@<version> [<tag>]
 		
 		require ("argp")
 				.main ()
@@ -28,8 +28,7 @@ Recap:
 						.description ()
 						.email ()
 						.body ()
-								.option ()
-								.argument ()
+								.option ({ short: "l" })
 								.help ()
 								.version ()
 								.end ()
@@ -39,10 +38,53 @@ Recap:
 						.description ()
 						.usages([])
 						.body ()
-								.option ()
-								.argument ("set")
-								.argument ("get")
+								.argument ("set", { trailing: { eq: 2 } })
+								.argument ("get", { trailing: { max: 1 } })
 								.argument ("list")
+								.end ()
+						.end ()
+				.command ("install", { trailing: { max: Infinity } })
+						.on ("start|end|argument|option")
+						.description ()
+						.usages([])
+						.body ()
+								.option ({ short: "g", long: "global" })
+								.end ()
+						.end ()
+				.command ("tag", { trailing: { min: 1, max: 2 } })
+						.on ("start|end|argument|option")
+						.description ()
+						.usages([])
 						.end ()
 				.end ()
 				.argv ();
+	
+	Output examples:
+	
+	$ npm config set foo bar
+	
+	{
+		config: [],
+		set: ["foo", "bar"]
+	}
+	
+	$ npm config get
+	
+	{
+		config: [],
+		get: []
+	}
+	
+	$ npm config get foo
+	
+	{
+		config: [],
+		get: ["foo"]
+	}
+	
+	$ npm install foo bar -g
+	
+	{
+		install: ["foo", "bar"],
+		global: true
+	}
