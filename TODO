@@ -7,7 +7,7 @@ Recap:
 
 - Test global modules, .slice(1)?
 - Allow negated flags with a short name.
-- Add aliases.
+- Add aliases and choices.
 - In the --usage message, group the options with short and long name.
 		[-abc] [-f|--force] [--foo]
 - Add commands. A command is formed by an argument followed by options and
@@ -87,4 +87,21 @@ Recap:
 	{
 		install: ["foo", "bar"],
 		global: true
+	}
+	
+	This can also be parsed:
+	
+	$ foo x 1 2 y 3
+	
+	.command ("foo")
+			.body ()
+					.argument ("x", { trailing: { eq: 2 } })
+					.argument ("y", { trailing: { eq: 1 } })
+					.end ()
+			.end ()
+	
+	{
+		foo: [],
+		x: [1, 2],
+		y: [3]
 	}
