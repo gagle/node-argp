@@ -79,7 +79,7 @@ Recap:
 		global: true
 	}
 	
-	This can also be parsed:
+	This can be also parsed:
 	
 	$ foo x 1 2 y 3
 	
