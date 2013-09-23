@@ -5,9 +5,9 @@ _Node.js project_
 
 #### Command-line option parser ####
 
-Version: 0.0.9
+Version: 0.0.10
 
-Inspired by the extremly well-known [argp C library](http://www.gnu.org/software/libc/manual/html_node/Argp.html), this module parses GNU-style command-line options. Help, usage and version messages are automatically generated and line-wrapped at 80 columns. The module checks for errors, can be easily adapted to your needs thanks to its evented system and also works when Node.js is in debug mode. The module is uncached and nulled once all the data has been parsed, so there's no memory footprint.
+Inspired by the extremly well-known [argp C library](http://www.gnu.org/software/libc/manual/html_node/Argp.html), this module parses GNU-style command-line options. Help, usage and version messages are automatically generated and line-wrapped at 80 columns. The module checks for errors, can be easily adapted to your needs thanks to its evented system and also works when Node.js is in debug mode. The module is uncached and each property is deleted once all the data has been parsed, so there's no memory footprint.
 
 This module it's made for you if you want:
 
@@ -19,11 +19,12 @@ This module it's made for you if you want:
 A common configuration looks like this:
 
 ```javascript
+//If you can, don't cache the module
 var argv = require ("argp")
     .description ("Sample app.")
     .email ("a@b.c")
     .body ()
-        //The object an argument definition and the text of the help message are
+        //The object an argument definitions and the text of the --help message are
         //configured at the same time
         .group ("Arguments")
         .argument ("arg", { description: "Sample argument" })
@@ -41,7 +42,7 @@ $ node script.js
 
 {
   _debug: false,
-  _filename: __filename,
+  _filename: <main_file>,
   opt: false,
   help: false,
   version: false,
@@ -50,7 +51,7 @@ $ node script.js
 
 $ node script.js --help
 
-Usage: t.js [OPTIONS] [ARGUMENTS]
+Usage: t.js [options] [arguments]
 
 Sample app.
 
@@ -109,7 +110,7 @@ If an option has not been defined the type of the value is converted automatical
 By default the parser doesn't allow undefined arguments and options because you typically want to have an absolute control over the calls to your program in order to avoid unexpected behaviours. Allowing undefined arguments and options is as simple as this:
 
 ```javascript
-var argv = require ("argv")
+var argv = require ("argp")
     .allowUndefinedArguments ()
     .allowUndefinedOptions ()
     .argv ();
@@ -149,12 +150,18 @@ Properties:
 
 ```javascript
 .argument ("arg1")
-.argument ("arg2", { description: "..." })
-.argument ("arg3", { description: "...", hidden: true })
+.argument ("arg2", { description: "foo" })
+.argument ("arg3", { description: "bar", hidden: true })
 ```
 ```bash
 $ node script.js arg1
 { arg1: true, arg2: false, arg3: false }
+
+$ node script.js --help
+...
+  arg1                        foo
+  arg2                        bar
+...
 ```
 
 Example: [options.js](https://github.com/gagle/node-argp/blob/master/examples/options.js).
@@ -177,8 +184,8 @@ Considerations:
   
   Where `STR` is the `argument` property.
 
-2. By default, the value of the options is a string. Configure the `type` property if the value is a number, boolean or array (comma-separated values).
-3. Each option has an id which is used to store the value into the final object. This id is the long name. If the long name has not been configured then the id is the short name.
+2. By default, the value of the options is a string. Configure the `type` property if the value is a number, boolean (rarely used, use a flag instead) or array (comma-separated values).
+3. Each option has an id which is used to store the value into the final object. This id is the long name. If the long name has not been defined then the id is the short name.
 
 	```javascript
 	.option ({ short: "a", long: "aa" })
@@ -196,32 +203,74 @@ Common properties between flags and options with value:
 - __hidden__ - _Boolean_  
   If true, the option is not displayed in the --help and --usage messages. Default is false.
 - __long__ - _String_  
-  The long name, eg: `--name`. Cannot contain white spaces.
+  The long name. Cannot contain white spaces.
 - __short__ - _String_  
-  The short name, eg: `-a`. It must be an alphanumeric character.
+  The short name. It must be an alphanumeric character.
 
 Flags:
 
 - __negate__ - _Boolean_  
-  If true, the flag is negated. The default value is true. Cannot negate a flag with a short name, only the long name can be configured.
+  If true, the flag is negated. The default value is true.
 
 	```javascript
-	.option ({ short: "n", long: "name", negate: true }) //Error!
-	.option ({ long: "name", negate: true })
+	.option ({ short: "o", long: "opt", negate: true })
 	```
 	```bash
 	$ node script.js
-	{ a: true }
+	{ opt: true }
 	
-	$ node script.js --name
-	{ a: true }
+	$ node script.js --opt
+	{ opt: true }
 	
-	$ node script.js --no-name
-	{ a: false }
+	$ node script.js --no-opt
+	{ opt: false }
+	
+	$ node script.js -o
+	{ opt: false }
 	```
 
 Options with value:
 
+- __aliases__ - _Array_  
+  An alias it's a long option that points to another option.
+
+	```javascript
+	.body ()
+	    .option ({ long: "name", aliases: ["foo", "bar"] })
+	    .help ()
+	    .usage ()
+	```
+	```bash
+	$ node script.js --usage
+	Usage: script [--name|--foo|--bar] [-h|--help] [--usage]
+	
+	$ node script.js --help
+	Usage: script [options]
+
+      --name, --foo, --bar
+  -h, --help                  Display this help message and exit
+      --usage                 Display a short usage message and exit
+	```
+	
+	The `options()` function returns:
+	
+	```javascript
+	{
+	  name: { ... },
+	  foo: { ... },
+	  bar: { ... },
+	  help: { ... },
+	  usage: { ... }
+	}
+	```
+	Where `name`, `foo` and `bar` point to the same object:
+	
+	```javascript
+	.on ("start", function (){
+	  var options = this.options ();
+	  assert.ok (options.name === options.foo && options.name === options.bar);
+	})
+	```
 - __argument__ - _String_  
   Must be configured if the option requires a value. The string is used when the --help message is printed.
 
@@ -233,6 +282,44 @@ Options with value:
 	...
        --name=STR
   ...
+	```
+- __choices__ - _Array_  
+  The input value must be one of the choices. If the option has an optional value the `choices` property is ignored.
+
+	```javascript
+	.option ({ long: "opt", argument: "NUM", type: Number, choices: [1,2,3] })
+	```
+	```bash
+	$ node script.js --opt=1
+	{ opt: 1 }
+	
+	$ node script.js --opt=7 # Error!
+	```
+	
+	When `default` and `choices` are configured in the same option the default value doesn't need to match a choice:
+	
+	```javascript
+	.option ({ long: "opt", argument: "STR", default: "d", choices: ["a", "b", "c"] })
+	```
+	```bash
+	$ node script.js
+	{ opt: "d" }
+	```
+- __default__ - _Object_  
+  The default value.
+
+	```javascript
+	.option ({ long: "name", argument: "STR", default: "bar", optional: true })
+	```
+	```bash
+	$ node script.js
+	{ name: "bar" }
+	
+	$ node script.js --name
+	{ name: "bar" }
+	
+	$ node script.js --name foo
+	{ name: "foo" }
 	```
 - __optional__ - _Boolean_  
   If true, the value is optional. Default is false. If the option doesn't receive any value the default value is set and it depends on the `default` and `type` properties.
@@ -270,20 +357,11 @@ Options with value:
 	```
 	```javascript
 	//The reviver is used to validate the range of the number
-	.option ({ long: "name", argument: "STR", type: Number,
+	.option ({ long: "opt", argument: "NUM", type: Number,
 	    reviver: function (value){
     //"value" is already a number
     if (value < 1 || value > 3){
-      argp.fail ("Option 'name': invalid range");
-    }
-    return value;
-	}})
-	```
-	```javascript
-	//The reviver can be also used to allow only a few string values, a.k.a. choices.
-	.option ({ long: "name", argument: "STR", reviver: function (value){
-    if (value !== "a" && value !== "b" && value !== "c"){
-      argp.fail ("Option 'name': invalid choice");
+      argp.fail ("Option 'opt': invalid range");
     }
     return value;
 	}})
@@ -292,28 +370,11 @@ Options with value:
   The type of the value. Default is a String. If the type is an Array, comma-separated values are automatically stored into an array and each element is converted to the type it represents.
 
 	```javascript
-	.option ({ long: "name", argument: "STR", type: Array })
+	.option ({ long: "name", argument: "ARR", type: Array })
 	```
 	```bash
 	$ node script.js --name 1,true,foo
 	{ name: [1, true, "foo"] }
-	```
-  
-- __default__ - _Object_  
-  The default value.
-
-	```javascript
-	.option ({ long: "name", argument: "STR", default: "bar", optional: true })
-	```
-	```bash
-	$ node script.js
-	{ name: "bar" }
-	
-	$ node script.js --name
-	{ name: "bar" }
-	
-	$ node script.js --name foo
-	{ name: "foo" }
 	```
 
 Example: [options.js](https://github.com/gagle/node-argp/blob/master/examples/options.js).
@@ -376,7 +437,7 @@ var argv = require ("./lib")
     .allowUndefinedArguments ()
     //Allow undefined options
     .allowUndefinedOptions ()
-    //The [ARGUMENTS] part of the "usage" line in the --help and --usage messages can be changed
+    //The [arguments] part of the "usage" line in the --help and --usage messages can be changed
     //See "custom-usages.js" example
     .usages ([
       "foo",
@@ -388,7 +449,7 @@ var argv = require ("./lib")
     .email ("a@b.c")
     //Configure the body
     .body ()
-        //The object an argument definition and the text of the help message are
+        //The object an argument definitions and the text of the --help message are
         //configured at the same time
         //The order of the configuration is important
         
@@ -396,10 +457,11 @@ var argv = require ("./lib")
         .paragraph ("Random paragraph")
 			  //Print a line
         .line ("Random line")
+        //Print a line with 2 columns
+        .columns ("col1", "col2")
         //Print a group line
         .group ("Group 1")
-        //After a group line you typically want to print some options or
-        //arguments
+        //After a group line you typically want to print options or arguments
         .argument ("arg1", { description: "aaa" })
         .argument ("arg2")
         .group ("Group 2")
@@ -425,12 +487,12 @@ __Argp__
 
 The module returns an instance of `Argp`. It inherits from an EventEmitter.
 
-The parser follows the GNU-style rules: `-a`, `-abc`, `--a`, `--no-a`, `--a=b`, etc.
+The parser follows the GNU-style rules: `-a`, `-abc`, `--a`, `--no-a`, `--a=b`, etc. Long option abbreviation is also supported.
 
 If you don't want to configure anything simply require the module, allow undefined arguments and options and call to `argv()`.
 
 ```javascript
-var argv = require ("argv")
+var argv = require ("argp")
     .allowUndefinedArguments ()
     .allowUndefinedOptions ()
     .argv ();
@@ -442,7 +504,7 @@ The object that `argv()` returns has 2 special properties: `_debug` and `_filena
 
 __Events__
 
-With the event system you can fully adapt this module to yours needs. For example, you can create [aliases.js](https://github.com/gagle/node-argp/blob/master/examples/aliases.js), read phases without being surrounded with `"` ([to-upper-case.js](https://github.com/gagle/node-argp/blob/master/examples/to-upper-case.js)), do complex things ([mimic npm](https://github.com/gagle/node-argp/blob/master/examples/npm.js)), etc. Look at the [events.js](https://github.com/gagle/node-argp/blob/master/examples/events.js) example for further details.
+With the event system you can fully adapt this module to yours needs. Example: ([to-upper-case.js](https://github.com/gagle/node-argp/blob/master/examples/to-upper-case.js)).
 
 - [argument](#event_argument)
 - [end](#event_end)
@@ -601,8 +663,9 @@ __Body__
 
 The `Body` instance is returned by [Argp#body()](#argp_body). All the following functions print a message in the same order they are configured, this allows you to fully customize the --help message very easily.
 
-The difference among `group()`, `line()` and `paragraph()` are:
+The differences among `columns()`, `group()`, `line()` and `paragraph()` are:
 
+- `columns()` is used to print 2 columns the same way are printed the arguments and options.
 - `group()` is mainly used to introduce a list of things like arguments or options. The line has an indentation of 1 space and ends with `:`. A group line always starts in a new paragraph.
 - `line()` prints text in a new line (the text is prefixed with `\n`).
 - `paragraph()` prints text in a new paragraph (the text is prefixed with `\n\n`).

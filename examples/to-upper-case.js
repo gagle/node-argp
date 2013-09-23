@@ -2,15 +2,6 @@
 
 /*
 Converts to upper case any phrase if the -u option is passed.
-
-$ node to-upper-case.js this is a sample text with the -u option
-
-{
-	_debug: false,
-	_filename: <__filename>,
-	u: true,
-	phrase: "THIS IS A SAMPLE TEXT WITH THE OPTION"
-}
 */
 
 require ("../lib")
@@ -38,3 +29,14 @@ require ("../lib")
 				.option ({ short: "u" })
 				.end ()
 		.argv ();
+
+/*
+$ node to-upper-case.js this is a sample text with the -u option
+
+{
+	_debug: false,
+	_filename: __filename,
+	u: true,
+	phrase: "THIS IS A SAMPLE TEXT WITH THE OPTION"
+}
+*/

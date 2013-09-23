@@ -508,6 +508,13 @@ var tests = {
 		});
 		
 		assert.throws (function (){
+			argv (["--no-"]);
+			n ().body ()
+					.option ({ long: "a", negate: true })
+					.end ().argv ();
+		});
+		
+		assert.throws (function (){
 			argv (["--a=b"]);
 			n ().body ()
 					.option ({ long: "a" })

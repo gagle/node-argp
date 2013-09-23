@@ -12,9 +12,7 @@ require ("../lib")
 /*
 $ node abbreviations.js --he
 
-Usage: help-usage-version.js [OPTIONS] [ARGUMENTS]
-
-Usage: abbreviations.js [OPTIONS]
+Usage: abbreviations [options]
 
 Sample app.
 
@@ -26,11 +24,11 @@ Sample app.
 
 $ node abbreviations.js --u
 
-Usage: abbreviations.js [-hv] [--help] [--usage] [--version]
+Usage: abbreviations [-h|--help] [--usage] [-v|--version]
 
 --------------------------------------------------------------------------------
 
-$ node help-usage-version.js --ver
+$ node abbreviations.js --ver
 
 v1.2.3
 */

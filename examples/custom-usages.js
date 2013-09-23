@@ -1,9 +1,9 @@
 "use strict";
 
 /*
-By default when the help or usage messages are printed there is only one usage
-line. The [ARGUMENTS] part can be changed and multiple lines can be added with
-the usage() function.
+By default when the --help and --usage messages are printed there is only one
+"usage" line. This line can be changed and multiple lines can be added with the
+usages() function.
 */
 
 require ("../lib")
@@ -32,5 +32,4 @@ $ custom-usages.js --usage
 
 Usage: custom-usages <input file> <output file>
        custom-usages [word [word [word]]]
-
 */

@@ -8,8 +8,8 @@ argp
 				.argument ("arg2")
 				.option ({ short: "a", long: "aa", description: "aaaa" })
 				.option ({ long: "bb", description: "bbbb" })
-				.option ({ short: "c", description: "cccc",
-						argument: "cc", optional: true, default: 5, type: Number })
+				.option ({ short: "c", description: "cccc", argument: "cc",
+						aliases: ["dd"], optional: true, default: 5, type: Number })
 				.help ()
 				.usage ()
 				.version ("v1.2.3")
@@ -54,6 +54,18 @@ console.log (argp.options ());
 		default: false
 	},
 	c: {
+		short: "c",
+		description: "cccc",
+		argument: "cc",
+		optional: true,
+		default: 5,
+		type: [Function: Number],
+		flag: false,
+		id: "c",
+		hidden: false,
+		reviver: null
+	},
+	dd: {
 		short: "c",
 		description: "cccc",
 		argument: "cc",
@@ -123,6 +135,9 @@ console.log (argp.options ({ long: true }));
 		...
 	},
 	bb: {
+		...
+	},
+	dd: {
 		...
 	},
 	help: {

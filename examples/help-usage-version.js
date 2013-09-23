@@ -12,10 +12,7 @@ require ("../lib")
 				.option ({ short: "e", argument: "E", optional: true })
 				.option ({ long: "f", argument: "F", default: "ffff",
 						optional: true })
-				.option ({ short: "g", argument: "G", description: "gggg",
-						reviver: function (value){
-							return value + "foo";
-						}})
+				.option ({ short: "g", argument: "G", aliases: ["foo", "bar"]})
 				.help ()
 				.usage ()
 				.version ("v1.2.3")
@@ -23,18 +20,9 @@ require ("../lib")
 		.argv ();
 
 /*
-All the lines are wrapped at 80 columns. The limit can be changed with the
-"columns" property:
-
-.configuration ({
-	columns: <number>
-})
-
---------------------------------------------------------------------------------
-
 $ node help-usage-version.js --help
 
-Usage: help-usage-version.js [OPTIONS] [ARGUMENTS]
+Usage: help-usage-version [options] [arguments]
 
 Sample app.
 
@@ -47,7 +35,7 @@ Sample app.
       --d=D
   -e[E]
       --f[=F]
-  -g G                        gggg
+  -g, --foo, --bar=G
   -h, --help                  Display this help message and exit
       --usage                 Display a short usage message and exit
   -v, --version               Output version information and exit
@@ -56,8 +44,8 @@ Sample app.
 
 $ node help-usage-version.js --usage
 
-Usage: help-usage-version.js [-hva] [-c C] [-e[E]] [-g G] [--aaaa] [--b] [--d=D]
-         [--f[=F]] [--help] [--usage] [--version] [arg1] [arg2]
+Usage: help-usage-version [-c C] [-e[E]] [-a|--aaaa] [--b] [--d=D] [--f[=F]]
+         [-g|--foo|--bar=G] [-h|--help] [--usage] [-v|--version] [arg1] [arg2]
 
 --------------------------------------------------------------------------------
 

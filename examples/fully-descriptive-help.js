@@ -6,7 +6,6 @@ require ("../lib")
 		.description ("Sample app.")
 		.email ("a@b.c")
 		.body ()
-				//The configuration has an insertion order
 				.group ("Group 1")
 				.argument ("arg1", { description: "aaaa" })
 				.argument ("arg2", { description: "bbbb" })
@@ -33,7 +32,7 @@ require ("../lib")
 		.argv ();
 
 /*
-Usage: fully-descriptive-help [OPTIONS] [ARGUMENTS]
+Usage: fully-descriptive-help [options] [arguments]
 
 Sample app.
 

@@ -56,6 +56,12 @@ var argv = require ("../lib")
 				//Hidden option, it isn't printed in the --help and --usage messages
 				.option ({ short: "l", hidden: true })
 				
+				//Option with an alias
+				.option ({ short: "m", long: "mm", aliases: ["x"] })
+				
+				//Option with choices
+				.option ({ short: "n", type: Number, choices: [1, 10, 100] })
+				
 				.help ()
 				.usage ()
 				.end ()
@@ -68,7 +74,7 @@ $ node options.js
 
 {
 	_debug: false,
-	_filename: <__filename>,
+	_filename: __filename,
 	aaaa: false,
 	b: true,
 	c: null,
@@ -80,6 +86,8 @@ $ node options.js
 	j: "jjjj",
 	kkkk: null,
 	l: false,
+	mm: false,
+	n: false,
 	help: false,
 	usage: false,
 	arg1: false,
@@ -91,7 +99,7 @@ $ node options.js
 
 $ node options.js --help
 
-Usage: options [OPTIONS] [ARGUMENTS]
+Usage: options [options] [arguments]
 
   arg1
   arg2                        aaaa
@@ -106,6 +114,8 @@ Usage: options [OPTIONS] [ARGUMENTS]
   -i[I]
       --j[=J]
   -k, --kkkk=K                kkkk
+  -m, --mm, --x
+  -n
   -h, --help                  Display this help message and exit
       --usage                 Display a short usage message and exit
 
@@ -113,6 +123,7 @@ Usage: options [OPTIONS] [ARGUMENTS]
 
 $ node options.js --usage
 
-Usage: options [-ha] [-c C] [-d D] [-e E] [-f F] [-i[I]] [-k K] [--aaaa] [--b]
-         [--g=G] [--j[=J]] [--kkkk=K] [--help] [--usage] [arg1] [arg2]
+Usage: options [-n] [-c C] [-d D] [-e E] [-f F] [-i[I]] [-a|--aaaa] [--b]
+         [--g=G] [--j[=J]] [-k|--kkkk=K] [-m|--mm|--x] [-h|--help] [--usage]
+         [arg1] [arg2]
 */

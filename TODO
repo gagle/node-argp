@@ -27,7 +27,6 @@ Recap:
 								.help ()
 								.version ()
 								.end ()
-						.end ()
 				.command ("config")
 						.on ("start|end|argument|option")
 						.description ()
@@ -37,7 +36,6 @@ Recap:
 								.argument ("get", { trailing: { max: 1 } })
 								.argument ("list")
 								.end ()
-						.end ()
 				.command ("install", { trailing: { max: Infinity } })
 						.on ("start|end|argument|option")
 						.description ()
@@ -45,13 +43,10 @@ Recap:
 						.body ()
 								.option ({ short: "g", long: "global" })
 								.end ()
-						.end ()
 				.command ("tag", { trailing: { min: 1, max: 2 } })
 						.on ("start|end|argument|option")
 						.description ()
 						.usages([])
-						.end ()
-				.end ()
 				.argv ();
 	
 	Output examples:

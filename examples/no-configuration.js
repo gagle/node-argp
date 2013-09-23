@@ -13,7 +13,7 @@ console.log (argv);
 /*
 {
 	_debug: false,
-	_filename: <__filename>,
+	_filename: __filename,
 	a: true,
 	b: true,
 	c: "d",

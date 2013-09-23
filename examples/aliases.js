@@ -1,13 +1,17 @@
 "use strict";
 
-process.argv = ["node", __filename, "--ellipsis"];
-
 /*
-Aliases are rarely used, that's why they cannot be configured explicitly.
-If you need aliases you can play with the events. Say we have a --dot option. By
-default it prints one dot. If we want to print an ellipsis we can pass the value
-of 3 or we can define an --ellipsis flag. When it is enabled it prints 3 dots.
---ellipsis will we an alias.
+This example shows 2 types of aliases:
+- Pure aliases: They are just a different name which points to the same option.
+- Defined aliases: They have their own option definition but they are related
+  with other options.
+
+Say we have a --dot option. We want to also use the --point name to refer to the
+same option. By default it prints one dot. If we want to print an ellipsis we
+can pass the value of 3 or we can define an --ellipsis flag. When it is enabled
+it prints 3 dots.
+
+--point is a pure alias and --ellipsis is a defined alias.
 */
 
 var argv = require ("../lib")
@@ -18,6 +22,7 @@ var argv = require ("../lib")
 				.option ({
 					short: "d",
 					long: "dot",
+					aliases: ["point"],
 					argument: "N",
 					optional: true,
 					default: 1,
@@ -34,9 +39,22 @@ var argv = require ("../lib")
 console.log (argv);
 
 /*
+$ node aliases.js --po 2 # The aliases can be also abbreviated
+
 {
 	_debug: false,
-	_filename: <__filename>,
+	_filename: __filename,
+	dot: 2,
+	ellipisis: false
+}
+
+--------------------------------------------------------------------------------
+
+$ node aliases.js --ellipsis
+
+{
+	_debug: false,
+	_filename: __filename,
 	dot: 3,
 	ellipisis: true
 }

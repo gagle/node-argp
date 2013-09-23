@@ -43,6 +43,7 @@ require ("../lib")
 			
 			console.log ("END");
 		})
+		.sort ()
 		.allowUndefinedOptions ()
 		.allowUndefinedArguments ()
 		.argv ();
@@ -52,6 +53,15 @@ START
 OPTION: a b false
 ARGUMENT: arg1
 OPTION: c d true
+ARGUMENT: arg2
+END
+
+If the "sort()" function is uncommented:
+
+START
+OPTION: a b false
+OPTION: c d true
+ARGUMENT: arg1
 ARGUMENT: arg2
 END
 */

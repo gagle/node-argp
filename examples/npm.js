@@ -1,5 +1,7 @@
 "use strict";
 
+//NOTE: THIS EXAMPLE WILL BE REFACTORED WITH COMMANDS WITH THE VERSION 0.0.11.
+
 /*
 Mimics two npm commands: deprecate and install.
 The deprecate command is partially implemented but the install command
