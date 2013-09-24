@@ -1,5 +1,8 @@
 v0.0.11 (xx Sep 2013)
-	Added commands.
+	Added commands ("trailing" and "help" properties to "argument()").
+	The "end" event now receives 3 new parameters: "printHelp()", "printUsage()"
+		and "printVersion()".
+	Minor improvements.
 
 v0.0.10 (23 Sep 2013)
 	The default value of an option is now set with "default" instead of "value".
