@@ -81,7 +81,7 @@ Recap:
 	
 	This can be also parsed:
 	
-	$ foo x 1 2 y 3
+	$ node script.js foo x 1 2 y 3
 	
 	.command ("foo")
 			.body ()
