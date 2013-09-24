@@ -827,6 +827,19 @@ var tests = {
 				c: []
 			});
 		});
+		
+		assert.doesNotThrow (function (){
+			argv (["a", "b", "c"]);
+			opts = n ()
+					.command ("a").body ()
+							.argument ("b", { trailing: {} })
+							.end ()
+					.argv ();
+			equal (opts, {
+				a: [],
+				b: ["c"]
+			});
+		});
 	}
 };
 

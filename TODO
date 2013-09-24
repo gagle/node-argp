@@ -55,21 +55,27 @@ Recap:
 	
 	{
 		config: [],
-		set: ["foo", "bar"]
+		set: ["foo", "bar"],
+		get: [],
+		list: false
 	}
 	
 	$ npm config get
 	
 	{
 		config: [],
-		get: []
+		set: [],
+		get: [],
+		list: false
 	}
 	
 	$ npm config get foo
 	
 	{
 		config: [],
-		get: ["foo"]
+		set: [],
+		get: ["foo"],
+		list: false
 	}
 	
 	$ npm install foo bar -g
