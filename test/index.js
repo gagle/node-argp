@@ -731,9 +731,101 @@ var tests = {
 			});
 		});
 	},
-	"command, immediate trailing": function (){
+	"command, trailing error check": function (){
+		assert.throws (function (){
+			n ().command ("a", { trailing: { eq: 1, min: 2 } });
+		});
+		
+		assert.throws (function (){
+			n ().command ("a", { trailing: { eq: 1, max: 2 } });
+		});
+		
+		assert.throws (function (){
+			n ().command ("a", { trailing: { eq: 0 } });
+		});
+		
+		assert.throws (function (){
+			n ().command ("a", { trailing: { min: -1 } });
+		});
+		
+		assert.throws (function (){
+			n ().command ("a", { trailing: { max: 0 } });
+		});
+		
+		assert.throws (function (){
+			n ().command ("a", { trailing: { min: 2, max: 1 } });
+		});
+		
+		assert.throws (function (){
+			argv (["a"]);
+			n ().command ("a", { trailing: { eq: 1 } }).argv ();
+		});
+		
+		assert.throws (function (){
+			argv (["a"]);
+			n ().command ("a", { trailing: { min: 1 } }).argv ();
+		});
+	},
+	"command": function (){
 		assert.doesNotThrow (function (){
-			
+			argv (["a", "1"]);
+			opts = n ().command ("a", { trailing: { eq: 1 } }).body ()
+					.argument ("b", { trailing: { eq: 1 } })
+					.argument ("c")
+					.end ().argv ();
+			equal (opts, {
+				a: [1],
+				b: [],
+				c: false
+			});
+		});
+		
+		assert.doesNotThrow (function (){
+			argv (["a", "1", "b", "2", "c"]);
+			opts = n ().command ("a", { trailing: { eq: 1 } }).body ()
+					.argument ("b", { trailing: { eq: 1 } })
+					.argument ("c")
+					.end ().argv ();
+			equal (opts, {
+				a: [1],
+				b: [2],
+				c: true
+			});
+		});
+		
+		assert.doesNotThrow (function (){
+			argv (["a", "1"]);
+			opts = n ().command ("a", { trailing: { max: 2 } }).argv ();
+			equal (opts, {
+				a: [1],
+			});
+		});
+		
+		assert.doesNotThrow (function (){
+			argv (["a", "1", "2", "b", "1", "2", "3"]);
+			opts = n ().command ("a", { trailing: { max: 2 } }).body ()
+					.argument ("b", { trailing: {} })
+					.end ().argv ();
+			equal (opts, {
+				a: [1, 2],
+				b: [1, 2, 3]
+			});
+		});
+		
+		assert.doesNotThrow (function (){
+			argv (["b", "1", "c"]);
+			opts = n ()
+					.command ("a", { trailing: { max: 2 } }).body ()
+							.argument ("b", { trailing: {} })
+							.end ()
+					.command ("b", { trailing: { eq: 1 } }).body ()
+							.argument ("c", { trailing: {} })
+							.end ()
+					.argv ();
+			equal (opts, {
+				b: [1],
+				c: []
+			});
 		});
 	}
 };
