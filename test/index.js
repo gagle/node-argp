@@ -730,6 +730,11 @@ var tests = {
 				a: true
 			});
 		});
+	},
+	"command, immediate trailing": function (){
+		assert.doesNotThrow (function (){
+			
+		});
 	}
 };
 
