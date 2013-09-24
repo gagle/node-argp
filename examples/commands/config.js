@@ -15,8 +15,7 @@ require ("../../lib")
 								description: "Echo the config value to stdout." })
 						.argument ("list", { description: "Show all the config settings." })
 						.group ("Options")
-						.help ()
-						.end ();
+						.help ();
 						
 function config (argv){
 	//Code...

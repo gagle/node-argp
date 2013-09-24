@@ -17,8 +17,7 @@ require ("../../lib")
 								"npm install <git:// url>\n" +
 								"npm install <github username>/<github project>")
 						.group ("Options")
-						.help ()
-						.end ();
+						.help ();
 						
 function install (argv){
 	//Code...

@@ -18,8 +18,7 @@ require ("../../lib")
 						.group ("Options")
 						.option ({ short: "l", description: "Display full usage info" })
 						.help ()
-						.version ("v1.2.3")
-						.end ();
+						.version ("v1.2.3");
 
 //Configure subcomands
 require ("./config");

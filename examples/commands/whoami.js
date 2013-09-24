@@ -6,8 +6,7 @@ require ("../../lib")
 				.description ("Display npm username. Just prints the 'username' " +
 						"config.")
 				.body ()
-						.help ()
-						.end ();
+						.help ();
 						
 function whoami (){
 	//Code...
