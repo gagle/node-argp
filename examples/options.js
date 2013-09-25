@@ -73,8 +73,6 @@ console.log (argv);
 $ node options.js
 
 {
-	_debug: false,
-	_filename: __filename,
 	aaaa: false,
 	b: true,
 	c: null,

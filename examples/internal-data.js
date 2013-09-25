@@ -1,19 +1,30 @@
 "use strict";
 
+var util = require ("util");
 var argp = require ("../lib");
 
 argp
-		.body ()
-				.argument ("arg1")
-				.argument ("arg2")
-				.option ({ short: "a", long: "aa", description: "aaaa" })
-				.option ({ long: "bb", description: "bbbb" })
-				.option ({ short: "c", description: "cccc", argument: "cc",
-						aliases: ["dd"], optional: true, default: 5, type: Number })
-				.help ()
-				.usage ()
-				.version ("v1.2.3")
-				.end ();
+		.main ()
+				.body ()
+						.argument ("arg1")
+						.argument ("arg2")
+						.option ({ short: "a", long: "aa", description: "aaaa" })
+						.option ({ long: "bb", description: "bbbb" })
+						.option ({ short: "c", description: "cccc", argument: "cc",
+								aliases: ["dd"], optional: true, default: 5, type: Number })
+						.help ()
+						.usage ()
+						.version ("v1.2.3")
+						.end ()
+		.command ("a", { trailing: {} })
+				.body ()
+						.help ()
+						.end ()
+		.command ("b")
+				.body ()
+						.argument ("c", { trailing: {} })
+						.usage ()
+						.end ();
 
 console.log (argp.arguments ());
 
@@ -148,6 +159,51 @@ console.log (argp.options ({ long: true }));
 	},
 	usage: {
 		...
+	}
+}
+*/
+
+console.log (util.inspect (argp.commands (), { depth: null }));
+
+/*
+{
+	a: {
+		arguments: {},
+		options: {
+			help: {
+				short: "h",
+				long: "help",
+				description: "Display this help message and exit",
+				flag: true,
+				id: "help",
+				hidden: false,
+				aliases: null,
+				negate: false,
+				default: false
+			}
+		}
+	},
+	b: {
+		arguments: {
+			c: {
+				trailing: {},
+				hidden: false,
+				help: null,
+				description: null
+			}
+		},
+		options: {
+			usage: {
+				long: "usage",
+				description: "Display a short usage message and exit",
+				flag: true,
+				id: "usage",
+				hidden: false,
+				aliases: null,
+				negate: false,
+				default: false
+			}
+		}
 	}
 }
 */

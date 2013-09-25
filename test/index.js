@@ -17,12 +17,6 @@ var a = function (){
 	return new Argp ().allowUndefinedArguments ().allowUndefinedOptions ();
 };
 
-var equal = function (o, expected){
-	delete o._debug;
-	delete o._filename;
-	assert.deepEqual (o, expected);
-};
-
 console.error = function (){};
 
 process.exit = function (){
@@ -104,7 +98,7 @@ var tests = {
 			opts = n ().body ()
 					.option ({ long: "aa" })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				aa: true
 			});
 			
@@ -112,7 +106,7 @@ var tests = {
 			opts = n ().body ()
 					.option ({ long: "abc", argument: true })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				abc: "b"
 			});
 		});
@@ -130,18 +124,13 @@ var tests = {
 			argv ([]);
 			
 			opts = a ().argv ();
-			assert.deepEqual (opts, {
-				_debug: debug,
-				_filename: __filename
-			});
+			assert.deepEqual (opts, {});
 			
 			opts = a ().body ()
 					.help ()
 					.usage ()
 					.end ().argv ();
 			assert.deepEqual (opts, {
-				_debug: debug,
-				_filename: __filename,
 				help: false,
 				usage: false
 			});
@@ -151,20 +140,20 @@ var tests = {
 		assert.doesNotThrow (function (){
 			argv (["--a"]);
 			opts = a ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: true
 			});
 			
 			argv (["--a", "--b"]);
 			opts = a ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: true,
 				b: true
 			});
 			
 			argv (["--a", "--b", "--c"]);
 			opts = a ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: true,
 				b: true,
 				c: true
@@ -172,14 +161,14 @@ var tests = {
 			
 			argv (["--a", "b", "--c", "d"]);
 			opts = a ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: "b",
 				c: "d"
 			});
 			
 			argv (["--a", "--b-c", "--1", "2"]);
 			opts = a ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: true,
 				"b-c": true,
 				"1": 2
@@ -188,7 +177,7 @@ var tests = {
 			
 			argv (["--a=--b", "--b=c", "--1"]);
 			opts = a ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: "--b",
 				b: "c",
 				"1": true
@@ -196,7 +185,7 @@ var tests = {
 			
 			argv (["--no-a", "--b", "1"]);
 			opts = a ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: false,
 				b: 1
 			});
@@ -207,20 +196,20 @@ var tests = {
 		assert.doesNotThrow (function (){
 			argv (["-a"]);
 			opts = a ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: true
 			});
 			
 			argv (["-a", "-b"]);
 			opts = a ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: true,
 				b: true
 			});
 			
 			argv (["-a", "-b", "-c"]);
 			opts = a ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: true,
 				b: true,
 				c: true
@@ -228,14 +217,14 @@ var tests = {
 			
 			argv (["-a", "b", "-c", "d"]);
 			opts = a ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: "b",
 				c: "d"
 			});
 			
 			argv (["-a", "-b-c", "-1", "2"]);
 			opts = a ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: true,
 				"b": true,
 				"-": true,
@@ -246,7 +235,7 @@ var tests = {
 			
 			argv (["-abc", "d", "-ef"]);
 			opts = a ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: true,
 				b: true,
 				c: "d",
@@ -259,34 +248,34 @@ var tests = {
 		assert.doesNotThrow (function (){
 			argv (["a"]);
 			opts = a ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: true
 			});
 			
 			argv (["a", "b"]);
 			opts = a ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: true,
 				b: true
 			});
 			
 			argv (["-a", "b", "c"]);
 			opts = a ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: "b",
 				c: true
 			});
 			
 			argv (["a", "-b", "c"]);
 			opts = a ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: true,
 				b: "c"
 			});
 			
 			argv (["-a", "--", "b", "c"]);
 			opts = a ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: true,
 				b: true,
 				c: true
@@ -297,7 +286,7 @@ var tests = {
 		assert.doesNotThrow (function (){
 			argv (["--a", "-", "-b", "-", "-", "-1"]);
 			opts = a ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: "-",
 				b: "-",
 				"-": true,
@@ -306,31 +295,31 @@ var tests = {
 			
 			argv (["-"]);
 			opts = a ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				"-": true
 			});
 			
 			argv (["--"]);
 			opts = a ().argv ();
-			equal (opts, {});
+			assert.deepEqual (opts, {});
 			
 			argv (["--", "-", "--"]);
 			opts = a ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				"-": true,
 				"--": true
 			});
 			
 			argv (["--a", "--", "--b"]);
 			opts = a ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: true,
 				"--b": true
 			});
 			
 			argv (["-a", "--", "-b"]);
 			opts = a ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: true,
 				"-b": true
 			});
@@ -367,7 +356,7 @@ var tests = {
 					.option ({ short: "d", argument: true, default: "a" })
 					.option ({ short: "e", argument: true, optional: true })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: false,
 				b: false,
 				c: true,
@@ -382,7 +371,7 @@ var tests = {
 			opts = n ().body ()
 					.option ({ long: "a" })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: true
 			});
 			
@@ -390,7 +379,7 @@ var tests = {
 			opts = n ().body ()
 					.option ({ long: "a", negate: true })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: true
 			});
 			
@@ -398,7 +387,7 @@ var tests = {
 			opts = n ().body ()
 					.option ({ long: "a", negate: true })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: false
 			});
 			
@@ -406,7 +395,7 @@ var tests = {
 			opts = n ().body ()
 					.option ({ short: "a", long: "abc", negate: true })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				abc: false
 			});
 			
@@ -414,7 +403,7 @@ var tests = {
 			opts = n ().body ()
 					.option ({ long: "a" })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: false
 			});
 			
@@ -423,7 +412,7 @@ var tests = {
 					.argument ("b")
 					.option ({ long: "a" })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: true,
 				b: true
 			});
@@ -432,7 +421,7 @@ var tests = {
 			opts = n ().body ()
 					.option ({ long: "a", argument: true })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: "b"
 			});
 			
@@ -440,7 +429,7 @@ var tests = {
 			opts = n ().body ()
 					.option ({ long: "a", argument: true, optional: true })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: null
 			});
 			
@@ -449,7 +438,7 @@ var tests = {
 					.option ({ long: "a", argument: true })
 					.option ({ long: "b" })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: "b",
 				b: true
 			});
@@ -458,7 +447,7 @@ var tests = {
 			opts = n ().body ()
 					.option ({ long: "abc", negate: true })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				abc: false
 			});
 			
@@ -481,7 +470,7 @@ var tests = {
 			opts = n ().body ()
 					.option ({ long: "a", aliases: ["b"] })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: true
 			});
 			
@@ -489,7 +478,7 @@ var tests = {
 			opts = n ().body ()
 					.option ({ long: "a", argument: true, choices: ["b"] })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: "b"
 			});
 			
@@ -556,7 +545,7 @@ var tests = {
 			opts = n ().body ()
 					.option ({ short: "a" })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: true
 			});
 			
@@ -565,7 +554,7 @@ var tests = {
 					.argument ("b")
 					.option ({ short: "a" })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: true,
 				b: true
 			});
@@ -574,7 +563,7 @@ var tests = {
 			opts = n ().body ()
 					.option ({ short: "a", argument: true })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: "b"
 			});
 			
@@ -582,7 +571,7 @@ var tests = {
 			opts = n ().body ()
 					.option ({ short: "a", argument: true, optional: true })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: null
 			});
 			
@@ -591,7 +580,7 @@ var tests = {
 					.option ({ short: "a", argument: true })
 					.option ({ short: "c" })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: "b",
 				c: true
 			});
@@ -601,7 +590,7 @@ var tests = {
 					.option ({ short: "a", argument: true })
 					.option ({ short: "d" })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: "bc",
 				d: true
 			});
@@ -611,7 +600,7 @@ var tests = {
 					.option ({ short: "a" })
 					.option ({ short: "b" })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: true,
 				b: true,
 				c: "d"
@@ -622,7 +611,7 @@ var tests = {
 					.option ({ short: "a" })
 					.option ({ short: "b" })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: true,
 				b: true,
 				c: true,
@@ -635,7 +624,7 @@ var tests = {
 					.option ({ short: "b" })
 					.option ({ short: "c", argument: true })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: true,
 				b: true,
 				c: "b"
@@ -647,7 +636,7 @@ var tests = {
 					.option ({ short: "b" })
 					.option ({ short: "c" })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: true,
 				b: true,
 				c: true,
@@ -660,7 +649,7 @@ var tests = {
 					.option ({ short: "b", argument: true, optional: true })
 					.option ({ short: "c", argument: true })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: null,
 				b: null,
 				c: "b"
@@ -671,7 +660,7 @@ var tests = {
 					.option ({ short: "a", argument: true, optional: true })
 					.option ({ short: "b" })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: null,
 				b: true
 			});
@@ -682,7 +671,7 @@ var tests = {
 			opts = n ().body ()
 					.option ({ short: "a", negate: true })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: true
 			});
 		});
@@ -725,7 +714,7 @@ var tests = {
 			opts = n ().allowUndefinedOptions ().body ()
 					.argument ("a")
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				c: "c",
 				a: true
 			});
@@ -773,7 +762,7 @@ var tests = {
 					.argument ("b", { trailing: { eq: 1 } })
 					.argument ("c")
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: [1],
 				b: [],
 				c: false
@@ -786,7 +775,7 @@ var tests = {
 					.argument ("b", { trailing: { eq: 1 } })
 					.argument ("c")
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: [1],
 				b: [2],
 				c: true
@@ -796,7 +785,7 @@ var tests = {
 		assert.doesNotThrow (function (){
 			argv (["a", "1"]);
 			opts = n ().command ("a", { trailing: { max: 2 } }).argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: [1],
 			});
 		});
@@ -806,7 +795,7 @@ var tests = {
 			opts = n ().command ("a", { trailing: { max: 2 } }).body ()
 					.argument ("b", { trailing: {} })
 					.end ().argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: [1, 2],
 				b: [1, 2, 3]
 			});
@@ -822,7 +811,7 @@ var tests = {
 							.argument ("c", { trailing: {} })
 							.end ()
 					.argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				b: [1],
 				c: []
 			});
@@ -835,7 +824,7 @@ var tests = {
 							.argument ("b", { trailing: {} })
 							.end ()
 					.argv ();
-			equal (opts, {
+			assert.deepEqual (opts, {
 				a: [],
 				b: ["c"]
 			});

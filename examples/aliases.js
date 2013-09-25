@@ -42,8 +42,6 @@ console.log (argv);
 $ node aliases.js --po 2 # The aliases can be also abbreviated
 
 {
-	_debug: false,
-	_filename: __filename,
 	dot: 2,
 	ellipisis: false
 }
@@ -53,8 +51,6 @@ $ node aliases.js --po 2 # The aliases can be also abbreviated
 $ node aliases.js --ellipsis
 
 {
-	_debug: false,
-	_filename: __filename,
 	dot: 3,
 	ellipisis: true
 }

@@ -5,13 +5,14 @@ _Node.js project_
 
 #### Command-line option parser ####
 
-Version: 0.0.10
+Version: 0.0.11
 
-Inspired by the extremly well-known [argp C library](http://www.gnu.org/software/libc/manual/html_node/Argp.html), this module parses GNU-style command-line options. Help, usage and version messages are automatically generated and line-wrapped at 80 columns. The module checks for errors, can be easily adapted to your needs thanks to its evented system and also works when Node.js is in debug mode. The module is uncached and each property is deleted once all the data has been parsed, so there's no memory footprint.
+Inspired by the extremly well-known [argp C library](http://www.gnu.org/software/libc/manual/html_node/Argp.html), this module parses GNU-style command-line options. Help, usage and version messages are automatically generated and line-wrapped at 80 columns. The module checks for errors, can be easily adapted to your needs thanks to its evented system and it also works when Node.js is in debug mode. The module is uncached and each property is deleted once all the input parameters have been parsed, so there's no memory footprint.
 
 This module it's made for you if you want:
 
-- A robust solution that reads GNU-style parameters.
+- Robust solution that reads GNU-style options.
+- Command configuration.
 - Basic error checking.
 - Nice help messages without caring about indentation, multilines, etc.
 - Zero memory footprint.
@@ -41,8 +42,6 @@ console.log (argv);
 $ node script.js
 
 {
-  _debug: false,
-  _filename: <main_file>,
   opt: false,
   help: false,
   version: false,
@@ -92,8 +91,9 @@ npm install argp
 #### Documentation ####
 
 - [Quick examples with no configuration](#quick)
-- [Configuring arguments](#arguments)
 - [Configuring options](#options)
+- [Configuring arguments](#arguments)
+- [Configuring commands](#commands)
 - [Full example explained](#full)
 
 #### Objects ####
@@ -135,36 +135,6 @@ $ node script.js --no-a b
 $ node script.js --a -- -b --c d
 { a: true, "-b": true, "--c": true, d: true }
 ```
-
----
-
-<a name="arguments"></a>
-__Configuring arguments__
-
-Properties:
-
-- __description__ - _String_  
-  The description.
-- __hidden__ - _Boolean_  
-  If true, the option is not displayed in the --help and --usage messages. Default is false.
-
-```javascript
-.argument ("arg1")
-.argument ("arg2", { description: "foo" })
-.argument ("arg3", { description: "bar", hidden: true })
-```
-```bash
-$ node script.js arg1
-{ arg1: true, arg2: false, arg3: false }
-
-$ node script.js --help
-...
-  arg1                        foo
-  arg2                        bar
-...
-```
-
-Example: [options.js](https://github.com/gagle/node-argp/blob/master/examples/options.js).
 
 ---
 
@@ -210,7 +180,7 @@ Common properties between flags and options with value:
 Flags:
 
 - __negate__ - _Boolean_  
-  If true, the flag is negated. The default value is true.
+  If true, the flag is negated.
 
 	```javascript
 	.option ({ short: "o", long: "opt", negate: true })
@@ -232,7 +202,7 @@ Flags:
 Options with value:
 
 - __aliases__ - _Array_  
-  An alias it's a long option that points to another option.
+  An alias it's a long-name option that points to another option.
 
 	```javascript
 	.body ()
@@ -252,7 +222,7 @@ Options with value:
       --usage                 Display a short usage message and exit
 	```
 	
-	The `options()` function returns:
+	The `options()` function returns an object with all the configured options:
 	
 	```javascript
 	{
@@ -284,7 +254,7 @@ Options with value:
   ...
 	```
 - __choices__ - _Array_  
-  The input value must be one of the choices. If the option has an optional value the `choices` property is ignored.
+  The input value must be one of the choices. If the option defines the `optional` property the `choices` property is ignored.
 
 	```javascript
 	.option ({ long: "opt", argument: "NUM", type: Number, choices: [1,2,3] })
@@ -356,12 +326,11 @@ Options with value:
 	{ name: "foobar" }
 	```
 	```javascript
-	//The reviver is used to validate the range of the number
 	.option ({ long: "opt", argument: "NUM", type: Number,
 	    reviver: function (value){
     //"value" is already a number
     if (value < 1 || value > 3){
-      argp.fail ("Option 'opt': invalid range");
+      require ("argp").fail ("Option 'opt': invalid range");
     }
     return value;
 	}})
@@ -378,6 +347,174 @@ Options with value:
 	```
 
 Example: [options.js](https://github.com/gagle/node-argp/blob/master/examples/options.js).
+
+---
+
+<a name="arguments"></a>
+__Configuring arguments__
+
+Properties:
+
+- __description__ - _String_  
+  The description.
+- __hidden__ - _Boolean_  
+  If true, the option is not displayed in the --help and --usage messages. Default is false.
+
+Note: `help` and `trailing` properties can be also configured but they are related with the [commands](#commands).
+
+```javascript
+.argument ("arg1")
+.argument ("arg2", { description: "foo" })
+.argument ("arg3", { description: "bar", hidden: true })
+```
+```bash
+$ node script.js arg1
+{ arg1: true, arg2: false, arg3: false }
+
+$ node script.js --help
+...
+  arg1                        foo
+  arg2                        bar
+...
+```
+
+Example: [options.js](https://github.com/gagle/node-argp/blob/master/examples/options.js).
+
+---
+
+<a name="commands"></a>
+__Configuring commands__
+
+A command is an argument followed by other arguments and options. NPM is an example:
+
+```
+npm config set <key> [<value>]
+npm install [<package>...] -g
+```
+
+`config` is a command and `set` an argument with 2 trailing arguments: minimum 1, maximum 2.  
+`install` is a command with infinite trailing arguments: minimum 0, maximum Infinity. `-g` is an option which only applies to the `install` command.
+
+```javascript
+var argv = require ("argp")
+    .main ()
+        .description ("Main menu")
+        .body ()
+            .help ()
+            .usage ()
+            .end ()
+    .command ("config")
+        .body ()
+            .argument ("set", { help: "set <key> [<value>]",
+                trailing: { min: 1, max: 2 } })
+            .help ()
+            .end ()
+    .command ("install", { trailing: {} })
+        .body ()
+            .option ({ short: "g", long: "global" })
+            .usage ()
+            .end ()
+    .argv ()
+
+console.log (argv);
+		
+/*
+$ node script.js -h
+
+Usage: script [options]
+
+Main menu.
+
+  -h, --help                  Display this help message and exit
+      --usage                 Display a short usage message and exit
+
+$ node script.js config -h
+
+Usage: t config [options] [arguments]
+
+  set <key> [<value>]
+
+  -h, --help                  Display this help message and exit
+
+$ node script.js config set 1 2
+
+{ config: [], set: [ 1, 2 ] }
+
+$ node script.js install --usage
+
+Usage: t install [-g|--global] [--usage]
+
+$ node script.js install 1 2 3 -g
+
+{ install: [ 1, 2, 3 ], global: true }
+*/
+```
+
+If you have a very few commands you can configure them like above, chaining the commands, but you typically want to modularize them, one command per file. Then you should check the [npm.js](https://github.com/gagle/node-argp/blob/master/examples/commands/npm.js) example.
+
+The commands are configured exactly the same way as the `Argp` instance with only one difference: `argument()` accepts 2 new properties:
+
+- __help__ - _String_  
+  The string replaces the argument name in the help message.
+
+  ```javascript
+  .argument ("set", { description: "Sample argument" });
+  /*
+  ...
+      set                         Sample argument
+  ...
+  */
+  
+  .argument ("set", { help: "set <key> [<value>]", description: "Sample argument" });
+  /*
+  ...
+      set <key> [<value>]         Sample argument
+  ...
+  */
+  ```
+- __trailing__ - _Object_  
+  Configures how many arguments must follow this argument.
+
+  There are 3 properties: `eq`, `min` and `max`. `eq` cannot be used with `min` or `max`. If `min` and `max` are being used, by default `min` is 0 and `max` is Infinity. A `trailing` object without any of these 3 properties defaults to `min` 0, `max` Infinity.
+  
+  Some examples:
+  
+  - 2 arguments required: `foo x <y> <y>`.
+  
+      ```javascript
+      .argument ("x", { trailing: { eq: 2 } })
+      ```
+  - 1 required, 1 optional: `foo x <y> [<y>]`.
+  
+      ```javascript
+      .argument ("x", { trailing: { min 1, max: 2 } })
+      ```
+  - 1 optional: `foo x [<y>]`.
+  
+      ```javascript
+      .argument ("x", { trailing: { max: 1 } })
+      ```
+  - 1 required, infinite optional: `foo x <y> [<y>...]`.
+  
+      ```javascript
+      .argument ("x", { trailing: { min: 1 } })
+      ```
+  - Infinite: `foo x [<y>...]`.
+  
+      ```javascript
+      .argument ("x", { trailing: {} })
+      ```
+  - No arguments: `foo x`.
+  
+      ```javascript
+      .argument ("x")
+      ```
+  - Multiple commands in the same line. command `x` with 1 required, and command `y` with infinite arguments: `foo x <y> z [<w>...]`.
+  
+      ```javascript
+       .argument ("x", { trailing: { eq: 1 } })
+       .argument ("z", { trailing: {} })
+      ```
 
 ---
 
@@ -500,8 +637,6 @@ var argv = require ("argp")
 
 Note: If no configuration is provided you cannot join a short name with its value in the same token, eg: `-Dvalue`, all the characters following a dash, `-`, are interpreted as individual flags.
 
-The object that `argv()` returns has 2 special properties: `_debug` and `_filename`. `_debug` is a boolean and it's true if the Node.js process has been started in debug mode, otherwise false (debug mode: `$ node debug <script>`). `_filename` is the absolute path of the main script.
-
 __Events__
 
 With the event system you can fully adapt this module to yours needs. Example: ([to-upper-case.js](https://github.com/gagle/node-argp/blob/master/examples/to-upper-case.js)).
@@ -519,9 +654,12 @@ __Methods__
 - [Argp#argv() : Object](#argp_argv)
 - [Argp#body() : Body](#argp_body)
 - [Argp#columns(columns) : Argp](#argp_columns)
+- [Argp#command(name[, configuration]) : Command](#argp_command)
+- [Argp#commands() : Argp](#argp_commands)
 - [Argp#description(str) : Argp](#argp_description)
 - [Argp#email(str) : Argp](#argp_email)
 - [Argp#fail(str[, code]) : undefined](#argp_fail)
+- [Argp#main() : Argp](#argp_main)
 - [Argp#options([filter]) : Object](#argp_options)
 - [Argp#readPackage([path]) : Argp](#argp_readpackage)
 - [Argp#sort() : Argp](#argp_sort)
@@ -550,15 +688,25 @@ Parameters:
 <a name="event_end"></a>
 __end__
 
-Emitted when all the options and arguments have been parsed.
+Emitted when all the options and arguments have been parsed. The following 3 functions can be cached, they are safe to use at any time, they won't introduce a memory leak.
+
+Parameters:
 
 - __argv__ - _Object_  
   The final object.
+- __printHelp__ - _Function_  
+ Prints the help message and exits with code 0.
+- __printUsage__ - _Function_  
+ Prints the usage and exits with code 0.
+- __printVersion__ - _Function_  
+ Prints the version, if it was configured, and exits with code 0.
 
 <a name="event_option"></a>
 __option__
 
 Emitted when an option is found.
+
+Parameters:
 
 - __argv__ - _Object_  
   The final object.
@@ -575,6 +723,8 @@ Emitted when an option is found.
 __start__
 
 Emitted just before the parser begins to read the input data.
+
+Parameters:
 
 - __argv__ - _Object_  
   The final object. The default values are already set.
@@ -611,6 +761,18 @@ __Argp#columns(columns) : Argp__
 
 Sets a maximum line length. By default lines are wrapped at 80 columns.
 
+<a name="argp_command"></a>
+__Argp#command(name[, configuration]) : Command__
+
+Configures a command. A command it's like a new fresh cli program. It behaves exactly like an `Argp`. See [Configuring commands](#commands).
+
+<a name="argp_commands"></a>
+__Argp#commands() : Object__
+
+Returns the configured commands.
+
+Look at the [internal-data.js](https://github.com/gagle/node-argp/blob/master/examples/internal-data.js) example for further details.
+
 <a name="argp_description"></a>
 __Argp#description(str) : Argp__
 
@@ -625,6 +787,13 @@ Sets a contact email. The email is printed at the end of the --help message.
 __Argp#fail(str[, code]) : undefined__
 
 Prints a message to the stderr and exists the program. By default it exists with code 1.
+
+<a name="argp_main"></a>
+__Argp#main() : Argp__
+
+Returns de `Argp` instance. It's a no-op function, just for a better visual organization when configuring commands.
+
+Look at the [npm.js](https://github.com/gagle/node-argp/blob/master/examples/commands/npm.js) example for further details.
 
 <a name="argp_options"></a>
 __Argp#options([filter]) : Object__
@@ -695,7 +864,7 @@ Defines an argument. See [Configuring arguments](#arguments).
 <a name="body_columns"></a>
 __Body#columns(column1, column2) : Body__
 
-Prints a line with 2 columns. This functionality is used to print the options and arguments.
+Prints a line with 2 columns. The first columns shouldn't contain line breaks (`\n`). This functionality is used to print the options and arguments.
 
 <a name="body_end"></a>
 __Body#end() : Argp__
