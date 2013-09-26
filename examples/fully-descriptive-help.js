@@ -15,7 +15,7 @@ require ("../lib")
 				.paragraph ("This is a random paragraph. You can add descriptive " +
 						"messages very easily with the paragraph() function.\nRemember " +
 						"that all the messages are line-wrapped at 80 columns and you " +
-						"can use \\n to split them in multiple lines...")
+						"can use \\n to split them in multiple lines...", "> ")
 				.paragraph ("...or if you want to print a new paragraph use the " +
 						"paragraph() function again.")
 				.line ("Line messages differs from paragraph messages in that")
