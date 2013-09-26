@@ -75,7 +75,7 @@ var argv = require ("argp")
     .body ()
         .text (" Arguments:")
         .argument ("arg", { description: "Sample argument" })
-        .group ("\n Options:")
+        .text ("\n Options:")
         .option ({ short: "o", long: "opt", description: "Sample option" })
         .help ()
         .end ()
@@ -591,7 +591,7 @@ var argv = require ("./lib")
         //The order of the configuration is important
         
 			  //Print a text
-        .line ("Random text")
+        .text ("Random text")
         //Print a line with 2 columns
         .columns ("col1", "col2")
         
