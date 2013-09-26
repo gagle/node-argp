@@ -5,7 +5,7 @@ _Node.js project_
 
 #### Command-line option parser ####
 
-Version: 0.0.12
+Version: 0.0.13
 
 Inspired by the extremly well-known [argp C library](http://www.gnu.org/software/libc/manual/html_node/Argp.html), this module parses GNU-style command-line options. Help, usage and version messages are automatically generated and line-wrapped at 80 columns. The module checks for errors, can be easily adapted to your needs thanks to its evented system and it also works when Node.js is in debug mode. The module is uncached and each property is deleted once all the input parameters have been parsed, so there's no memory footprint.
 
@@ -832,15 +832,6 @@ __Body__
 
 The `Body` instance is returned by [Argp#body()](#argp_body). All the following functions print a message in the same order they are configured, this allows you to fully customize the --help message very easily.
 
-The differences among `columns()`, `group()`, `line()` and `paragraph()` are:
-
-- `columns()` is used to print 2 columns the same way are printed the arguments and options.
-- `group()` is mainly used to introduce a list of things like arguments or options. The line has an indentation of 1 space and ends with `:`. A group line always starts in a new paragraph.
-- `line()` prints text in a new line (the text is prefixed with `\n`).
-- `paragraph()` prints text in a new paragraph (the text is prefixed with `\n\n`).
-
-All the text messages can be split up in multiple lines using `\n` or `\r\n`. They will be indented according to the functionality of the caller function.
-
 Look at [fully-descriptive-help.js](https://github.com/gagle/node-argp/blob/master/examples/fully-descriptive-help.js) for further details.
 
 __Methods__
@@ -848,11 +839,9 @@ __Methods__
 - [Body#argument(name[, configuration]) : Body](#body_argument)
 - [Body#columns(column1, column2) : Body](#body_columns)
 - [Body#end() : Argp](#body_end)
-- [Body#group(str) : Body](#body_group)
 - [Body#help() : Body](#body_help)
-- [Body#line(str[, prefix]) : Body](#body_line)
 - [Body#option(o) : Body](#body_option)
-- [Body#paragraph(str[, prefix]) : Body](#body_paragraph)
+- [Body#text(str[, prefix]) : Body](#body_text)
 - [Body#usage() : Body](#body_usage)
 - [Body#version(str) : Body](#body_version)
 
@@ -871,30 +860,20 @@ __Body#end() : Argp__
 
 Returns the `Argp` instance. Use it to explicitly end the body configuration.
 
-<a name="body_group"></a>
-__Body#group(str) : Body__
-
-Prints a group line.
-
 <a name="body_help"></a>
 __Body#help() : Body__
 
 Enables the `-h, --help` option.
-
-<a name="body_line"></a>
-__Body#line(str[, prefix]) : Body__
-
-Prints a line. The `prefix` is mainly used to indent the line with some spaces.
 
 <a name="body_option"></a>
 __Body#option(o) : Body__
 
 Defines an option. See [Configuring options](#options).
 
-<a name="body_paragraph"></a>
-__Body#paragraph(str[, prefix]) : Body__
+<a name="body_text"></a>
+__Body#text(str[, prefix]) : Body__
 
-Prints a paragraph. The `prefix` is mainly used to indent the paragraph with some spaces.
+Prints a text message. Line-wrapped at 80 columns by default and supports multilines (line breaks, `\n`). The `prefix` is mainly used to indent the text with a some spaces.
 
 <a name="body_usage"></a>
 __Body#usage() : Body__

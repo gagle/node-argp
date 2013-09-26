@@ -28,7 +28,6 @@ Sample app.
 
   arg1
   arg2
-
   -a, --aaaa
       --no-b
   -c C

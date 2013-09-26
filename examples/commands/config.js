@@ -3,9 +3,9 @@
 require ("../../lib")
 		.command ("config")
 				.on ("end", config)
-				.description ("Manage the npm configuration files.")
+				.description ("Manages the npm configuration files.")
 				.body ()
-						.group ("Commands")
+						.text (" Commands:")
 						.argument ("set", { trailing: { min: 1, max: 2 } ,
 								help: "set <key> [<value>]",
 								description: "Sets the config key to the value. If value is " +
@@ -14,7 +14,7 @@ require ("../../lib")
 								help: "get [<key>]",
 								description: "Echo the config value to stdout." })
 						.argument ("list", { description: "Show all the config settings." })
-						.group ("Options")
+						.text ("\n Options:")
 						.help ();
 						
 function config (argv){

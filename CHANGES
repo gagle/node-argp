@@ -1,3 +1,7 @@
+v0.0.13 (26 Sep 2013)
+	Removed "line()", "paragraph()", "group()".
+	Added "text()".
+
 v0.0.12 (26 Sep 2013)
 	Minor bugfixes.
 

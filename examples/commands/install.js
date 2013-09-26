@@ -6,7 +6,7 @@ require ("../../lib")
 				.on ("end", install)
 				.description ("Installs packages.")
 				.body ()
-						.paragraph ("npm install\n" +
+						.text ("npm install\n" +
 								"npm install <pkg>\n" +
 								"npm install <pkg>@<tag>\n" +
 								"npm install <pkg>@<version>\n" +
@@ -16,7 +16,7 @@ require ("../../lib")
 								"npm install <tarball url>\n" +
 								"npm install <git:// url>\n" +
 								"npm install <github username>/<github project>")
-						.group ("Options")
+						.text ("\n Options:")
 						.help ();
 						
 function install (argv){

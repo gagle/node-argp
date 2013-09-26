@@ -101,7 +101,6 @@ Usage: options [options] [arguments]
 
   arg1
   arg2                        aaaa
-
   -a, --aaaa
       --no-b
   -c C
