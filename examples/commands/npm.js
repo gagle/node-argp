@@ -2,6 +2,7 @@
 
 //Configure the main menu
 require ("../../lib")
+		//main() is optional, no-op, just for a better visual organization
 		.main ()
 				.on ("end", function (argv, printHelp){
 					if (argv.l){
