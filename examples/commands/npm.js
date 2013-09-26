@@ -21,7 +21,7 @@ require ("../../lib")
 						.help ()
 						.version ("v1.2.3");
 
-//Configure subcomands
+//Configure comands
 require ("./config");
 require ("./install");
 require ("./whoami");
