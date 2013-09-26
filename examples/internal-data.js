@@ -15,16 +15,13 @@ argp
 						.help ()
 						.usage ()
 						.version ("v1.2.3")
-						.end ()
 		.command ("a", { trailing: {} })
 				.body ()
 						.help ()
-						.end ()
 		.command ("b")
 				.body ()
 						.argument ("c", { trailing: {} })
-						.usage ()
-						.end ();
+						.usage ();
 
 console.log (argp.arguments ());
 

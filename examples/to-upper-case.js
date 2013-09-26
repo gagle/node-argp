@@ -27,7 +27,6 @@ require ("../lib")
 		.sort ()
 		.body ()
 				.option ({ short: "u" })
-				.end ()
 		.argv ();
 
 /*

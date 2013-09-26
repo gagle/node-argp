@@ -6,7 +6,6 @@ require ("../lib")
 				.help ()
 				.usage ()
 				.version ("v1.2.3")
-				.end ()
 		.argv ();
 
 /*

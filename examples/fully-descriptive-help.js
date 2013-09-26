@@ -1,7 +1,5 @@
 "use strict";
 
-process.argv = ["node", __filename, "-h"];
-
 require ("../lib")
 		.description ("Sample app.")
 		.email ("a@b.c")
@@ -24,10 +22,11 @@ require ("../lib")
 				.version ("v1.2.3")
 				.text ("\nThe program exits with a status code of 0 if no error, " +
 						"otherwise 1.")
-				.end ()
 		.argv ();
 
 /*
+$ node fully-descriptive-help.js --help
+
 Usage: fully-descriptive-help [options] [arguments]
 
 Sample app.

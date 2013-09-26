@@ -5,7 +5,7 @@ _Node.js project_
 
 #### Command-line option parser ####
 
-Version: 0.0.13
+Version: 0.0.14
 
 Inspired by the extremly well-known [argp C library](http://www.gnu.org/software/libc/manual/html_node/Argp.html), this module parses GNU-style command-line options. Help, usage and version messages are automatically generated and line-wrapped at 80 columns. The module checks for errors, can be easily adapted to your needs thanks to its evented system and it also works when Node.js is in debug mode. The module is uncached and each property is deleted once all the input parameters have been parsed, so there's no memory footprint.
 
@@ -33,7 +33,6 @@ var argv = require ("argp")
         .option ({ short: "o", long: "opt", description: "Sample option" })
         .help ()
         .version ("v1.2.3")
-        .end ()
     .argv ();
 
 console.log (argv);
@@ -78,7 +77,6 @@ var argv = require ("argp")
         .text ("\n Options:")
         .option ({ short: "o", long: "opt", description: "Sample option" })
         .help ()
-        .end ()
     .argv ();
 ```
 
@@ -94,7 +92,6 @@ npm install argp
 - [Configuring options](#options)
 - [Configuring arguments](#arguments)
 - [Configuring commands](#commands)
-- [Full example explained](#full)
 
 #### Objects ####
 
@@ -395,62 +392,7 @@ npm install [<package>...] -g
 `config` is a command and `set` an argument with 2 trailing arguments: minimum 1, maximum 2.  
 `install` is a command with infinite trailing arguments: minimum 0, maximum Infinity. `-g` is an option which only applies to the `install` command.
 
-```javascript
-var argv = require ("argp")
-    .main ()
-        .description ("Main menu")
-        .body ()
-            .help ()
-            .usage ()
-            .end ()
-    .command ("config")
-        .body ()
-            .argument ("set", { help: "set <key> [<value>]",
-                trailing: { min: 1, max: 2 } })
-            .help ()
-            .end ()
-    .command ("install", { trailing: {} })
-        .body ()
-            .option ({ short: "g", long: "global" })
-            .usage ()
-            .end ()
-    .argv ()
-
-console.log (argv);
-		
-/*
-$ node script.js -h
-
-Usage: script [options]
-
-Main menu.
-
-  -h, --help                  Display this help message and exit
-      --usage                 Display a short usage message and exit
-
-$ node script.js config -h
-
-Usage: t config [options] [arguments]
-
-  set <key> [<value>]
-
-  -h, --help                  Display this help message and exit
-
-$ node script.js config set 1 2
-
-{ config: [], set: [ 1, 2 ] }
-
-$ node script.js install --usage
-
-Usage: t install [-g|--global] [--usage]
-
-$ node script.js install 1 2 3 -g
-
-{ install: [ 1, 2, 3 ], global: true }
-*/
-```
-
-If you have a very few commands you can configure them like above, chaining the commands, but you typically want to modularize them, one command per file. Then you should check the [npm.js](https://github.com/gagle/node-argp/blob/master/examples/commands/npm.js) example.
+If you have a very few commands you can configure them in the same file ([commands.js](https://github.com/gagle/node-argp/blob/master/examples/commands.js) example), but you typically want to modularize them, one command per file. Then you should check the [npm.js](https://github.com/gagle/node-argp/blob/master/examples/commands/npm.js) example.
 
 The commands are configured exactly the same way as the `Argp` instance with only one difference: `argument()` accepts 2 new properties:
 
@@ -515,103 +457,6 @@ The commands are configured exactly the same way as the `Argp` instance with onl
        .argument ("x", { trailing: { eq: 1 } })
        .argument ("z", { trailing: {} })
       ```
-
----
-
-<a name="full"></a>
-__Full example explained__
-
-```javascript
-/*
-Avoid storing the module in a variable because when the parser finishes it
-is removed from the cache. If you store a reference remember to unreference it
-if you want a zero memory footprint.
-
-var argp = require ("argp")
-var argv = ...
-argp = null;
-*/
-
-var argv = require ("./lib")
-    //The evented system allows you to fully adapt the module to your needs
-    //The "start" and "end" events are useful when you need to initialize or
-    //clean up things
-    .on ("start", function (argv){
-      //Emitted after the default values of the configured options and arguments
-			//have been set and before starting the read.
-			
-			//"argv" is the final object
-    })
-    .on ("argument", function (argv, argument, ignore){
-      //Emitted when an argument is found
-			
-			//"argv" is the final object
-			//"argument" is the argument found
-			//"ignore" is a function that when called ignores the argument, hence it
-			//it isn't stored in the final object
-    })
-    .on ("option", function (argv, option, value, long, ignore){
-      //Emitted when an option is found
-			
-			//"argv" is the final object
-			//"option" is the name of the option found
-			//"value" is the value of the option after calling the reviver, if any
-			//"long" is a boolean; true if the option is a long name, otherwise false
-			//"ignore" is a function that when called ignores the argument, hence it
-			//it isn't stored in the final object
-    })
-    .on ("end", function (argv){
-      //Emitted when all the options and arguments have been read
-			
-			//"argv" is the final object
-    })
-    //Wrap lines at 100 columns, default is 80
-    .columns (100)
-    //If "sort" is enabled, the options are parsed before the arguments, if not,
-    //the options and arguments are parsed in the same order they come
-    .sort ()
-    //Allow undefined arguments
-    .allowUndefinedArguments ()
-    //Allow undefined options
-    .allowUndefinedOptions ()
-    //The [arguments] part of the "usage" line in the --help and --usage messages can be changed
-    //See "custom-usages.js" example
-    .usages ([
-      "foo",
-      "bar"
-    ])
-    //Print a description at the top of the help message
-    .description ("Sample app.")
-    //Print a contact email at the end of the help message
-    .email ("a@b.c")
-    //Configure the body
-    .body ()
-        //The object an argument definitions and the text of the --help message are
-        //configured at the same time
-        //The order of the configuration is important
-        
-			  //Print a text
-        .text ("Random text")
-        //Print a line with 2 columns
-        .columns ("col1", "col2")
-        
-        //Define arguments and options
-        .argument ("arg1", { description: "aaa" })
-        .argument ("arg2")
-        .option ({ short: "a", long: "aa", description: "aaa" })
-        .option ({ short: "b", long: "bb", type: Number, description: "bbb" })
-        
-        //Enable the -h, --help option
-        .help ()
-        //Enable the --usage option
-        .usage ()
-        //Enable the -v, --version option
-        .version ("v1.2.3")
-        //Explicit ending
-        .end ()
-    //Parse the options
-    .argv ();
-```
 
 ---
 
@@ -787,7 +632,7 @@ Prints a message to the stderr and exists the program. By default it exists with
 <a name="argp_main"></a>
 __Argp#main() : Argp__
 
-Returns de `Argp` instance. It's a no-op function, just for a better visual organization when configuring commands.
+Returns de main `Argp` instance. It's a no-op function, just for a better visual organization when configuring commands.
 
 Look at the [npm.js](https://github.com/gagle/node-argp/blob/master/examples/commands/npm.js) example for further details.
 
@@ -833,9 +678,11 @@ Look at [fully-descriptive-help.js](https://github.com/gagle/node-argp/blob/mast
 __Methods__
 
 - [Body#argument(name[, configuration]) : Body](#body_argument)
+- [Body#argv() : Object](#body_argv)
 - [Body#columns(column1, column2) : Body](#body_columns)
-- [Body#end() : Argp](#body_end)
+- [Body#command(name[, configuration]) : Command](#body_command)
 - [Body#help() : Body](#body_help)
+- [Body#main() : Argp](#body_main)
 - [Body#option(o) : Body](#body_option)
 - [Body#text(str[, prefix]) : Body](#body_text)
 - [Body#usage() : Body](#body_usage)
@@ -846,20 +693,30 @@ __Body#argument(name[, configuration]) : Body__
 
 Defines an argument. See [Configuring arguments](#arguments).
 
+<a name="body_argv"></a>
+__Body#argv() : Object__
+
+Same as [Argp#argv()](#argp_argv).
+
 <a name="body_columns"></a>
 __Body#columns(column1, column2) : Body__
 
 Prints a line with 2 columns. The first columns shouldn't contain line breaks (`\n`). This functionality is used to print the options and arguments.
 
-<a name="body_end"></a>
-__Body#end() : Argp__
+<a name="body_command"></a>
+__Body#command(name[, configuration]) : Command__
 
-Returns the `Argp` instance. Use it to explicitly end the body configuration.
+Same as [Argp#command()](#argp_command).
 
 <a name="body_help"></a>
 __Body#help() : Body__
 
 Enables the `-h, --help` option.
+
+<a name="body_main"></a>
+__Body#main() : Argp__
+
+Same as [Argp#main()](#argp_main).
 
 <a name="body_option"></a>
 __Body#option(o) : Body__

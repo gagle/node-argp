@@ -33,7 +33,6 @@ var argv = require ("../lib")
 					long: "ellipsis",
 					description: "Print 3 dots, same as --dots=3"
 				})
-				.end ()
 		.argv ();
 
 console.log (argv);

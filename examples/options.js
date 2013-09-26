@@ -64,7 +64,6 @@ var argv = require ("../lib")
 				
 				.help ()
 				.usage ()
-				.end ()
 		.argv ();
 
 console.log (argv);

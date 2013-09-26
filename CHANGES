@@ -1,3 +1,7 @@
+v0.0.14 (27 Sep 2013)
+	Added "command()", "main()" and "argv()" to the Body instance.
+	Removed "end()".
+
 v0.0.13 (26 Sep 2013)
 	Removed "line()", "paragraph()", "group()".
 	Added "text()".

@@ -2,8 +2,10 @@
 
 process.argv = ["node", __filename, "-a", "b", "arg1", "--c=d", "arg2"];
 
-//The events allow you to fully adapt the parser to your needs
-//See to-upper-case.js example
+/*
+The events allow you to fully adapt the parser to your needs.
+See to-upper-case.js example.
+*/
 
 require ("../lib")
 		.on ("start", function (argv){

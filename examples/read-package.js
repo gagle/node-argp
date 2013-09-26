@@ -5,7 +5,6 @@ require ("../lib")
 		.body ()
 				.help ()
 				.usage ()
-				.end ()
 		.argv ();
 
 /*
