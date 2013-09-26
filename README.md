@@ -27,9 +27,9 @@ var argv = require ("argp")
     .body ()
         //The object an argument definitions and the text of the --help message are
         //configured at the same time
-        .group ("Arguments")
+        .text (" Arguments:")
         .argument ("arg", { description: "Sample argument" })
-        .group ("Options")
+        .text ("\n Options:")
         .option ({ short: "o", long: "opt", description: "Sample option" })
         .help ()
         .version ("v1.2.3")
@@ -73,9 +73,9 @@ var argv = require ("argp")
     //If no path is provided, it tries to read the "./package.json" file
     .readPackage ("path/to/package.json")
     .body ()
-        .group ("Arguments")
+        .text (" Arguments:")
         .argument ("arg", { description: "Sample argument" })
-        .group ("Options")
+        .group ("\n Options:")
         .option ({ short: "o", long: "opt", description: "Sample option" })
         .help ()
         .end ()
@@ -216,10 +216,10 @@ Options with value:
 	
 	$ node script.js --help
 	Usage: script [options]
-
-      --name, --foo, --bar
-  -h, --help                  Display this help message and exit
-      --usage                 Display a short usage message and exit
+	
+        --name, --foo, --bar
+    -h, --help                  Display this help message and exit
+        --usage                 Display a short usage message and exit
 	```
 	
 	The `options()` function returns an object with all the configured options:
@@ -590,21 +590,17 @@ var argv = require ("./lib")
         //configured at the same time
         //The order of the configuration is important
         
-        //Print a paragraph
-        .paragraph ("Random paragraph")
-			  //Print a line
-        .line ("Random line")
+			  //Print a text
+        .line ("Random text")
         //Print a line with 2 columns
         .columns ("col1", "col2")
-        //Print a group line
-        .group ("Group 1")
-        //After a group line you typically want to print options or arguments
+        
+        //Define arguments and options
         .argument ("arg1", { description: "aaa" })
         .argument ("arg2")
-        .group ("Group 2")
         .option ({ short: "a", long: "aa", description: "aaa" })
         .option ({ short: "b", long: "bb", type: Number, description: "bbb" })
-        .group ("Group 2")
+        
         //Enable the -h, --help option
         .help ()
         //Enable the --usage option
