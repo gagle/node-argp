@@ -1,7 +1,8 @@
-v0.0.15 (28 Sep 2013)
+v0.0.15 (27 Sep 2013)
+	Renamed "help" to "synopsis", property of "argument()".
 	Minor improvements.
 
-v0.0.14 (27 Sep 2013)
+v0.0.14 (26 Sep 2013)
 	Added "command()", "main()" and "argv()" to the Body instance.
 	Removed "end()".
 

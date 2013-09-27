@@ -398,8 +398,8 @@ If you have a very few commands you can configure them in the same file ([comman
 
 The commands are configured exactly the same way as the `Argp` instance with only one difference: `argument()` accepts 2 new properties:
 
-- __help__ - _String_  
-  The string replaces the argument name in the help message.
+- __synopsis__ - _String_  
+  The string replaces the argument name in the --help and --usage messages.
 
   ```javascript
   .argument ("set", { description: "Sample argument" });
@@ -409,7 +409,7 @@ The commands are configured exactly the same way as the `Argp` instance with onl
   ...
   */
   
-  .argument ("set", { help: "set <key> [<value>]", description: "Sample argument" });
+  .argument ("set", { synopsis: "set <key> [<value>]", description: "Sample argument" });
   /*
   ...
       set <key> [<value>]         Sample argument

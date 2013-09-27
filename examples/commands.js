@@ -8,7 +8,7 @@ var argv = require ("../lib")
             .usage ()
     .command ("config")
         .body ()
-            .argument ("set", { help: "set <key> [<value>]",
+            .argument ("set", { synopsis: "set <key> [<value>]",
                 trailing: { min: 1, max: 2 } })
             .help ()
     .command ("install", { trailing: {} })
