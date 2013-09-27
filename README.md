@@ -333,7 +333,9 @@ Options with value:
 	}})
 	```
 - __type__ - _String | Number | Boolean | Array_  
-  The type of the value. Default is a String. If the type is an Array, comma-separated values are automatically stored into an array and each element is converted to the type it represents.
+  The type of the value. Default is a String.
+
+  If the type is an Array, comma-separated values are automatically stored into an array and each element is converted to the type it represents. An alternative is to specify the option multiple times.
 
 	```javascript
 	.option ({ long: "name", argument: "ARR", type: Array })
@@ -341,6 +343,12 @@ Options with value:
 	```bash
 	$ node script.js --name 1,true,foo
 	{ name: [1, true, "foo"] }
+	
+	$ node script.js --name 1 --name true --name foo
+	{ name: [1, true, "foo"] }
+	
+	$ node script.js --name 1,2 --name true,false --name foo,bar
+	{ name: [1, 2, true, false "foo", "bar"] }
 	```
 
 Example: [options.js](https://github.com/gagle/node-argp/blob/master/examples/options.js).

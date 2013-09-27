@@ -50,7 +50,8 @@ var tests = {
 	"type conversion, configuration": function (){
 		assert.doesNotThrow (function (){
 			argv (["--a=b", "--b=", "--c=12.34", "--d=", "--e=true", "--f=",
-					"--g=1,true,a", "--h=", "--i", "-12.34", "--j", "-1.2,foo"]);
+					"--g=1,true,a", "--h=", "--i", "-12.34", "--j", "-1.2,foo", "--k",
+					"1", "--k", "true,foo"]);
 			opts = n ().body ()
 					.option ({ long: "a", argument: true })
 					.option ({ long: "b", argument: true })
@@ -62,6 +63,7 @@ var tests = {
 					.option ({ long: "h", argument: true, type: Array })
 					.option ({ long: "i", argument: true, type: Number })
 					.option ({ long: "j", argument: true, type: Array })
+					.option ({ long: "k", argument: true, type: Array })
 					.argv ();
 			assert.strictEqual (opts.a, "b");
 			assert.strictEqual (opts.b, null);
@@ -76,6 +78,9 @@ var tests = {
 			assert.strictEqual (opts.i, -12.34);
 			assert.strictEqual (opts.j[0], -1.2);
 			assert.strictEqual (opts.j[1], "foo");
+			assert.strictEqual (opts.k[0], 1);
+			assert.strictEqual (opts.k[1], true);
+			assert.strictEqual (opts.k[2], "foo");
 		});
 		
 		assert.throws (function (){
