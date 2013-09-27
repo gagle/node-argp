@@ -10,7 +10,7 @@ argp
 						.argument ("arg2")
 						.option ({ short: "a", long: "aa", description: "aaaa" })
 						.option ({ long: "bb", description: "bbbb" })
-						.option ({ short: "c", description: "cccc", argument: "cc",
+						.option ({ short: "c", description: "cccc", metavar: "cc",
 								aliases: ["dd"], optional: true, default: 5, type: Number })
 						.help ()
 						.usage ()
@@ -64,7 +64,7 @@ console.log (argp.options ());
 	c: {
 		short: "c",
 		description: "cccc",
-		argument: "cc",
+		metavar: "cc",
 		optional: true,
 		default: 5,
 		type: [Function: Number],
@@ -76,7 +76,7 @@ console.log (argp.options ());
 	dd: {
 		short: "c",
 		description: "cccc",
-		argument: "cc",
+		metavar: "cc",
 		optional: true,
 		default: 5,
 		type: [Function: Number],

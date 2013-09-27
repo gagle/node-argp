@@ -18,37 +18,37 @@ var argv = require ("../lib")
 				.option ({ long: "b", negate: true })
 				
 				//Option with a mandatory value and null as default value
-				.option ({ short: "c", argument: "C" })
+				.option ({ short: "c", metavar: "C" })
 				
 				//Option with a Number type and 0 as default value
 				//By default the options are strings
-				.option ({ short: "d", argument: "D", type: Number })
+				.option ({ short: "d", metavar: "D", type: Number })
 				
 				//Option with an Array type and [] as default value
 				//Array-type values must be comma-separated values, eg: --a 1,a,true
 				//Each element is converted automatically to the type it represents,
 				//the previous example is converted to { a: [1, "a", true] }
-				.option ({ short: "e", argument: "E", type: Array })
+				.option ({ short: "e", metavar: "E", type: Array })
 				
 				//Option with a Boolean type and false as default value
 				//This type is not very useful because you can just use a flag, eg:
 				//--a true is converted to { a: true }
-				.option ({ short: "f", argument: "F", type: Boolean })
+				.option ({ short: "f", metavar: "F", type: Boolean })
 				
 				//Option with a mandatory value and "gggg" as default value
-				.option ({ long: "g", argument: "G", default: "gggg" })
+				.option ({ long: "g", metavar: "G", default: "gggg" })
 				
 				//Option with an optional value and null as default value
-				.option ({ short: "i", argument: "I", optional: true })
+				.option ({ short: "i", metavar: "I", optional: true })
 				
 				//Option with an optional value and "jjjj" as default value
-				.option ({ long: "j", argument: "J", default: "jjjj",
+				.option ({ long: "j", metavar: "J", default: "jjjj",
 						optional: true })
 				
 				//Option with a description and reviver
 				//The reviver receives the string value and returns the new value,
 				//it's like the json reviver function
-				.option ({ short: "k", long: "kkkk", argument: "K", description: "kkkk",
+				.option ({ short: "k", long: "kkkk", metavar: "K", description: "kkkk",
 						reviver: function (value){
 							return value + "foo";
 						}})

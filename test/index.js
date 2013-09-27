@@ -53,17 +53,17 @@ var tests = {
 					"--g=1,true,a", "--h=", "--i", "-12.34", "--j", "-1.2,foo", "--k",
 					"1", "--k", "true,foo"]);
 			opts = n ().body ()
-					.option ({ long: "a", argument: true })
-					.option ({ long: "b", argument: true })
-					.option ({ long: "c", argument: true, type: Number })
-					.option ({ long: "d", argument: true, type: Number })
-					.option ({ long: "e", argument: true, type: Boolean })
-					.option ({ long: "f", argument: true, type: Boolean })
-					.option ({ long: "g", argument: true, type: Array })
-					.option ({ long: "h", argument: true, type: Array })
-					.option ({ long: "i", argument: true, type: Number })
-					.option ({ long: "j", argument: true, type: Array })
-					.option ({ long: "k", argument: true, type: Array })
+					.option ({ long: "a", metavar: true })
+					.option ({ long: "b", metavar: true })
+					.option ({ long: "c", metavar: true, type: Number })
+					.option ({ long: "d", metavar: true, type: Number })
+					.option ({ long: "e", metavar: true, type: Boolean })
+					.option ({ long: "f", metavar: true, type: Boolean })
+					.option ({ long: "g", metavar: true, type: Array })
+					.option ({ long: "h", metavar: true, type: Array })
+					.option ({ long: "i", metavar: true, type: Number })
+					.option ({ long: "j", metavar: true, type: Array })
+					.option ({ long: "k", metavar: true, type: Array })
 					.argv ();
 			assert.strictEqual (opts.a, "b");
 			assert.strictEqual (opts.b, null);
@@ -86,14 +86,14 @@ var tests = {
 		assert.throws (function (){
 			argv (["--a=b"]);
 			n ().body ()
-					.option ({ long: "a", argument: true, type: Number })
+					.option ({ long: "a", metavar: true, type: Number })
 					.argv ();
 		});
 		
 		assert.throws (function (){
 			argv (["--a=b"]);
 			n ().body ()
-					.option ({ long: "a", argument: true, type: Boolean })
+					.option ({ long: "a", metavar: true, type: Boolean })
 					.argv ();
 		});
 	},
@@ -109,7 +109,7 @@ var tests = {
 			
 			argv (["--a", "b"]);
 			opts = n ().body ()
-					.option ({ long: "abc", argument: true })
+					.option ({ long: "abc", metavar: true })
 					.argv ();
 			assert.deepEqual (opts, {
 				abc: "b"
@@ -358,8 +358,8 @@ var tests = {
 					.argument ("a")
 					.option ({ long: "b", short: "x" })
 					.option ({ long: "c", negate: true })
-					.option ({ short: "d", argument: true, default: "a" })
-					.option ({ short: "e", argument: true, optional: true })
+					.option ({ short: "d", metavar: true, default: "a" })
+					.option ({ short: "e", metavar: true, optional: true })
 					.argv ();
 			assert.deepEqual (opts, {
 				a: false,
@@ -424,7 +424,7 @@ var tests = {
 			
 			argv (["--a", "b"]);
 			opts = n ().body ()
-					.option ({ long: "a", argument: true })
+					.option ({ long: "a", metavar: true })
 					.argv ();
 			assert.deepEqual (opts, {
 				a: "b"
@@ -432,7 +432,7 @@ var tests = {
 			
 			argv (["--a"]);
 			opts = n ().body ()
-					.option ({ long: "a", argument: true, optional: true })
+					.option ({ long: "a", metavar: true, optional: true })
 					.argv ();
 			assert.deepEqual (opts, {
 				a: null
@@ -440,7 +440,7 @@ var tests = {
 			
 			argv (["--a=b", "--b"]);
 			opts = n ().body ()
-					.option ({ long: "a", argument: true })
+					.option ({ long: "a", metavar: true })
 					.option ({ long: "b" })
 					.argv ();
 			assert.deepEqual (opts, {
@@ -458,12 +458,12 @@ var tests = {
 			
 			argv (["--a", "--b", "--c", "--d"]);
 			opts = n ().body ()
-					.option ({ long: "a", argument: true, optional: true })
-					.option ({ long: "b", argument: true, optional: true,
+					.option ({ long: "a", metavar: true, optional: true })
+					.option ({ long: "b", metavar: true, optional: true,
 							type: Number })
-					.option ({ long: "c", argument: true, optional: true,
+					.option ({ long: "c", metavar: true, optional: true,
 							type: Array })
-					.option ({ long: "d", argument: true, optional: true,
+					.option ({ long: "d", metavar: true, optional: true,
 							type: Boolean })
 					.argv ();
 			assert.strictEqual (opts.a, null);
@@ -481,7 +481,7 @@ var tests = {
 			
 			argv (["--a", "b"]);
 			opts = n ().body ()
-					.option ({ long: "a", argument: true, choices: ["b"] })
+					.option ({ long: "a", metavar: true, choices: ["b"] })
 					.argv ();
 			assert.deepEqual (opts, {
 				a: "b"
@@ -489,13 +489,13 @@ var tests = {
 			
 			argv (["--a", "1"]);
 			opts = n ().body ()
-					.option ({ long: "a", argument: true, type: Number, choices: [1] })
+					.option ({ long: "a", metavar: true, type: Number, choices: [1] })
 					.argv ();
 			assert.strictEqual (opts.a, 1);
 			
 			argv (["--a"]);
 			opts = n ().body ()
-					.option ({ long: "a", argument: true, type: Number, optional: true,
+					.option ({ long: "a", metavar: true, type: Number, optional: true,
 							choices: [1] })
 					.argv ();
 			assert.strictEqual (opts.a, 0);
@@ -518,14 +518,14 @@ var tests = {
 		assert.throws (function (){
 			argv (["--a"]);
 			n ().body ()
-					.option ({ long: "a", argument: true })
+					.option ({ long: "a", metavar: true })
 					.argv ();
 		});
 		
 		assert.throws (function (){
 			argv (["--a", "--b"]);
 			n ().body ()
-					.option ({ long: "a", argument: true })
+					.option ({ long: "a", metavar: true })
 					.argv ();
 		});
 		
@@ -540,7 +540,7 @@ var tests = {
 		assert.throws (function (){
 			argv (["--a=2"]);
 			n ().body ()
-					.option ({ long: "a", argument: true, type: Number, choices: [1] })
+					.option ({ long: "a", metavar: true, type: Number, choices: [1] })
 					.argv ();
 		});
 	},
@@ -566,7 +566,7 @@ var tests = {
 			
 			argv (["-a", "b"]);
 			opts = n ().body ()
-					.option ({ short: "a", argument: true })
+					.option ({ short: "a", metavar: true })
 					.argv ();
 			assert.deepEqual (opts, {
 				a: "b"
@@ -574,7 +574,7 @@ var tests = {
 			
 			argv (["-a"]);
 			opts = n ().body ()
-					.option ({ short: "a", argument: true, optional: true })
+					.option ({ short: "a", metavar: true, optional: true })
 					.argv ();
 			assert.deepEqual (opts, {
 				a: null
@@ -582,7 +582,7 @@ var tests = {
 			
 			argv (["-ab", "-c"]);
 			opts = n ().body ()
-					.option ({ short: "a", argument: true })
+					.option ({ short: "a", metavar: true })
 					.option ({ short: "c" })
 					.argv ();
 			assert.deepEqual (opts, {
@@ -592,7 +592,7 @@ var tests = {
 			
 			argv (["-abc", "-d"]);
 			opts = n ().body ()
-					.option ({ short: "a", argument: true })
+					.option ({ short: "a", metavar: true })
 					.option ({ short: "d" })
 					.argv ();
 			assert.deepEqual (opts, {
@@ -627,7 +627,7 @@ var tests = {
 			opts = n ().body ()
 					.option ({ short: "a" })
 					.option ({ short: "b" })
-					.option ({ short: "c", argument: true })
+					.option ({ short: "c", metavar: true })
 					.argv ();
 			assert.deepEqual (opts, {
 				a: true,
@@ -650,9 +650,9 @@ var tests = {
 			
 			argv (["-abc", "b"]);
 			opts = n ().body ()
-					.option ({ short: "a", argument: true, optional: true })
-					.option ({ short: "b", argument: true, optional: true })
-					.option ({ short: "c", argument: true })
+					.option ({ short: "a", metavar: true, optional: true })
+					.option ({ short: "b", metavar: true, optional: true })
+					.option ({ short: "c", metavar: true })
 					.argv ();
 			assert.deepEqual (opts, {
 				a: null,
@@ -662,7 +662,7 @@ var tests = {
 			
 			argv (["-ab"]);
 			opts = n ().body ()
-					.option ({ short: "a", argument: true, optional: true })
+					.option ({ short: "a", metavar: true, optional: true })
 					.option ({ short: "b" })
 					.argv ();
 			assert.deepEqual (opts, {
@@ -684,7 +684,7 @@ var tests = {
 		assert.throws (function (){
 			argv (["-ab"]);
 			n ().body ()
-					.option ({ short: "a", argument: "a" })
+					.option ({ short: "a", metavar: "a" })
 					.option ({ short: "b" })
 					.argv ();
 		});
@@ -692,16 +692,16 @@ var tests = {
 		assert.throws (function (){
 			argv (["-ab"]);
 			n ().body ()
-					.option ({ short: "a", argument: "a" })
-					.option ({ short: "b", argument: "a" })
+					.option ({ short: "a", metavar: "a" })
+					.option ({ short: "b", metavar: "a" })
 					.argv ();
 		});
 		
 		assert.throws (function (){
 			argv (["-ab", "--c"]);
 			n ().body ()
-					.option ({ short: "a", argument: "a" })
-					.option ({ short: "b", argument: "a" })
+					.option ({ short: "a", metavar: "a" })
+					.option ({ short: "b", metavar: "a" })
 					end ().argv ();
 		});
 		
@@ -709,7 +709,7 @@ var tests = {
 			argv (["-abc"]);
 			n ().body ()
 					.option ({ short: "a" })
-					.option ({ short: "b", argument: "a" })
+					.option ({ short: "b", metavar: "a" })
 					end ().argv ();
 		});
 	},

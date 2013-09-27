@@ -23,7 +23,7 @@ var argv = require ("../lib")
 					short: "d",
 					long: "dot",
 					aliases: ["point"],
-					argument: "N",
+					metavar: "N",
 					optional: true,
 					default: 1,
 					type: Number,

@@ -238,11 +238,11 @@ Options with value:
 	  assert.ok (options.name === options.foo && options.name === options.bar);
 	})
 	```
-- __argument__ - _String_  
-  Must be configured if the option requires a value. The string is used when the --help message is printed.
+- __metavar__ - _String_  
+  Must be configured if the option requires a value. The string is used when the --help and --usage messages are printed.
 
 	```javascript
-	.option ({ long: "name", argument: "STR" })
+	.option ({ long: "name", metavar: "STR" })
 	```
 	```bash
 	$ node script.js --help
@@ -254,7 +254,7 @@ Options with value:
   The input value must be one of the choices. If the option defines the `optional` property the `choices` property is ignored.
 
 	```javascript
-	.option ({ long: "opt", argument: "NUM", type: Number, choices: [1,2,3] })
+	.option ({ long: "opt", metavar: "NUM", type: Number, choices: [1,2,3] })
 	```
 	```bash
 	$ node script.js --opt=1
@@ -266,7 +266,7 @@ Options with value:
 	When `default` and `choices` are configured in the same option the default value doesn't need to match a choice:
 	
 	```javascript
-	.option ({ long: "opt", argument: "STR", default: "d", choices: ["a", "b", "c"] })
+	.option ({ long: "opt", metavar: "STR", default: "d", choices: ["a", "b", "c"] })
 	```
 	```bash
 	$ node script.js
@@ -276,7 +276,7 @@ Options with value:
   The default value.
 
 	```javascript
-	.option ({ long: "name", argument: "STR", default: "bar", optional: true })
+	.option ({ long: "name", metavar: "STR", default: "bar", optional: true })
 	```
 	```bash
 	$ node script.js
@@ -292,11 +292,11 @@ Options with value:
   If true, the value is optional. Default is false. If the option doesn't receive any value the default value is set and it depends on the `default` and `type` properties.
 
 	```javascript
-	.option ({ long: "name1", argument: "STR", optional: true })
-	.option ({ long: "name2", argument: "NUM", optional: true, type: Number })
-	.option ({ long: "name3", argument: "ARR", optional: true, type: Array })
+	.option ({ long: "name1", metavar: "STR", optional: true })
+	.option ({ long: "name2", metavar: "NUM", optional: true, type: Number })
+	.option ({ long: "name3", metavar: "ARR", optional: true, type: Array })
 	//Boolean type is rarely used, use a flag instead
-	.option ({ long: "name4", argument: "BOOL", optional: true, type: Boolean })
+	.option ({ long: "name4", metavar: "BOOL", optional: true, type: Boolean })
 	```
 	```bash
 	$ node script.js --name1 --name2 --name3
@@ -314,7 +314,7 @@ Options with value:
   The function is executed when the option is parsed. It is similar to the reviver of the `JSON.parse()` function. This is the right place where you can validate the input data and `fail()` if is not valid. For example, if the option requires a number you can validate the range here.
 
 	```javascript
-	.option ({ long: "name", argument: "STR", reviver: function (value){
+	.option ({ long: "name", metavar: "STR", reviver: function (value){
 	  return value + "bar";
 	}})
 	```
@@ -323,7 +323,7 @@ Options with value:
 	{ name: "foobar" }
 	```
 	```javascript
-	.option ({ long: "opt", argument: "NUM", type: Number,
+	.option ({ long: "opt", metavar: "NUM", type: Number,
 	    reviver: function (value){
     //"value" is already a number
     if (value < 1 || value > 3){
@@ -338,7 +338,7 @@ Options with value:
   If the type is an Array, comma-separated values are automatically stored into an array and each element is converted to the type it represents. An alternative is to specify the option multiple times.
 
 	```javascript
-	.option ({ long: "name", argument: "ARR", type: Array })
+	.option ({ long: "name", metavar: "ARR", type: Array })
 	```
 	```bash
 	$ node script.js --name 1,true,foo
