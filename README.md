@@ -348,7 +348,7 @@ Options with value:
 	{ name: [1, true, "foo"] }
 	
 	$ node script.js --name 1,2 --name true,false --name foo,bar
-	{ name: [1, 2, true, false "foo", "bar"] }
+	{ name: [1, 2, true, false, "foo", "bar"] }
 	```
 
 Example: [options.js](https://github.com/gagle/node-argp/blob/master/examples/options.js).
