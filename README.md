@@ -140,7 +140,7 @@ __Configuring options__
 
 Considerations:
 
-1. By default the options are flags. If the option requires a value, the `argument` property must be defined. This property is a string and can be seen when the --help message is printed. For example,
+1. By default the options are flags. If the option requires a value, the `metavar` property must be defined. This property is a string and can be seen when the --help and --usage messages are printed.
 
 	```bash
 	$ node script.js --help
@@ -149,7 +149,7 @@ Considerations:
 	...
 	```
   
-  Where `STR` is the `argument` property.
+  Where `STR` is the `metavar` property.
 
 2. By default, the value of the options is a string. Configure the `type` property if the value is a number, boolean (rarely used, use a flag instead) or array (comma-separated values).
 3. Each option has an id which is used to store the value into the final object. This id is the long name. If the long name has not been defined then the id is the short name.
