@@ -5,7 +5,7 @@ _Node.js project_
 
 #### Command-line option parser ####
 
-Version: 0.0.14
+Version: 0.0.15
 
 Inspired by the extremly well-known [argp C library](http://www.gnu.org/software/libc/manual/html_node/Argp.html), this module parses GNU-style command-line options. Help, usage and version messages are automatically generated and line-wrapped at 80 columns. The module checks for errors, can be easily adapted to your needs thanks to its evented system and it also works when Node.js is in debug mode. The module is uncached and each property is deleted once all the input parameters have been parsed, so there's no memory footprint.
 
@@ -349,6 +349,8 @@ Example: [options.js](https://github.com/gagle/node-argp/blob/master/examples/op
 
 <a name="arguments"></a>
 __Configuring arguments__
+
+An argument is an individual name like `login`, `reset`, `build`, etc. If you need a --help message specific to the argument, if the argument expects other arguments and options like `npm config set foo bar`, then use a [command](#commands).
 
 Properties:
 
