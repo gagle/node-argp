@@ -475,7 +475,7 @@ __Argp__
 
 The module returns an instance of `Argp`. It inherits from an EventEmitter.
 
-The parser follows the GNU-style rules: `-a`, `-abc`, `--a`, `--no-a`, `--a=b`, etc. Long option abbreviation is also supported.
+The parser follows the GNU-style rules: `-a`, `-abc`, `--a`, `--no-a`, `--a=b`, `--`, etc. Long option abbreviation is also supported.
 
 If you don't want to configure anything simply require the module, allow undefined arguments and options and call to `argv()`.
 
