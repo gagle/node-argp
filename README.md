@@ -238,18 +238,6 @@ Options with value:
 	  assert.ok (options.name === options.foo && options.name === options.bar);
 	})
 	```
-- __metavar__ - _String_  
-  Must be configured if the option requires a value. The string is used when the --help and --usage messages are printed.
-
-	```javascript
-	.option ({ long: "name", metavar: "STR" })
-	```
-	```bash
-	$ node script.js --help
-	...
-       --name=STR
-  ...
-	```
 - __choices__ - _Array_  
   The input value must be one of the choices. If the option defines the `optional` property the `choices` property is ignored.
 
@@ -287,6 +275,18 @@ Options with value:
 	
 	$ node script.js --name foo
 	{ name: "foo" }
+	```
+- __metavar__ - _String_  
+  Must be configured if the option requires a value. The string is used when the --help and --usage messages are printed.
+
+	```javascript
+	.option ({ long: "name", metavar: "STR" })
+	```
+	```bash
+	$ node script.js --help
+	...
+       --name=STR
+  ...
 	```
 - __optional__ - _Boolean_  
   If true, the value is optional. Default is false. If the option doesn't receive any value the default value is set and it depends on the `default` and `type` properties.
