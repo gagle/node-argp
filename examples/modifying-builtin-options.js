@@ -20,8 +20,7 @@ delete argp.options ().version.short;
 
 var argv = argp.argv ();
 
-//If you cache the module into a variable remember to null it when you finish or
-//you'll produce a memory leak
+//If you cache the module into a variable remember to null it when you finish
 argp = null;
 
 /*
