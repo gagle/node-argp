@@ -402,7 +402,7 @@ npm install [<package>...] -g
 `config` is a command and `set` an argument with 2 trailing arguments: minimum 1, maximum 2.  
 `install` is a command with infinite trailing arguments: minimum 0, maximum Infinity. `-g` is an option which only applies to the `install` command.
 
-If you have a very few commands you can configure them in the same file ([commands.js](https://github.com/gagle/node-argp/blob/master/examples/commands.js) example), but you typically want to modularize them, one command per file. Then you should check the [npm.js](https://github.com/gagle/node-argp/blob/master/examples/commands/npm.js) example.
+If you have a very few commands you can configure them in the same file ([commands.js](https://github.com/gagle/node-argp/blob/master/examples/commands.js) example), but you typically want to modularize them, one command per file. Then you should check the [npm.js](https://github.com/gagle/node-argp/blob/master/examples/npm/npm.js) example.
 
 The commands are configured exactly the same way as the `Argp` instance with only one difference: `argument()` accepts 2 new properties:
 
@@ -650,7 +650,7 @@ __Argp#main() : Argp__
 
 Returns de main `Argp` instance. It's a no-op function, just for a better visual organization when configuring commands.
 
-Look at the [npm.js](https://github.com/gagle/node-argp/blob/master/examples/commands/npm.js) example for further details.
+Look at the [npm.js](https://github.com/gagle/node-argp/blob/master/examples/npm/npm.js) example for further details.
 
 <a name="argp_options"></a>
 __Argp#options([filter]) : Object__
