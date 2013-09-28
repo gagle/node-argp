@@ -59,4 +59,18 @@ $ node mkdir.js -p a b c
 	version: false,
 	dirs: ["a", "b", "c" ]
 }
+
+--------------------------------------------------------------------------------
+
+$ node mkdir.js -- --help
+
+{
+	mode: null,
+	parents: false,
+	verbose: false,
+	context: null,
+	help: false,
+	version: false,
+	dirs: ["--help" ]
+}
 */
