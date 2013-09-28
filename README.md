@@ -242,7 +242,7 @@ Options with value:
   The input value must be one of the choices. If the option defines the `optional` property the `choices` property is ignored.
 
 	```javascript
-	.option ({ long: "opt", metavar: "NUM", type: Number, choices: [1,2,3] })
+	.option ({ long: "opt", metavar: "NUM", type: Number, choices: [1, 2, 3] })
 	```
 	```bash
 	$ node script.js --opt=1
