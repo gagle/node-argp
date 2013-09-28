@@ -1,27 +1,15 @@
 "use strict";
 
-var argp = require ("../lib");
+var argv = require ("../lib")
+		.body ()
+				.option ({ short: "v", long: "verbose" })
+				.help ()
+				.usage ()
+				//Disable -v option
+				.version ("v1.2.3", { short: false })
+				.argv ();
 
-/*
-If you want to use the -v option as the short name of --verbose, you can modify
-the --version option.
-*/
-
-
-argp.body ()
-		.option ({ short: "v", long: "verbose" })
-		.help ()
-		.usage ()
-		.version ();
-
-//Remove the short name
-
-delete argp.options ().version.short;
-
-var argv = argp.argv ();
-
-//If you cache the module into a variable remember to null it when you finish
-argp = null;
+console.log (argv);
 
 /*
 $ node modifying-builtin-options.js --help

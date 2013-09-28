@@ -5,7 +5,7 @@ _Node.js project_
 
 #### Command-line option parser ####
 
-Version: 0.0.15
+Version: 0.0.16
 
 Inspired by the extremly well-known [argp C library](http://www.gnu.org/software/libc/manual/html_node/Argp.html), this module parses GNU-style command-line options. Help, usage and version messages are automatically generated and line-wrapped at 80 columns. The module checks for errors, can be easily adapted to your needs thanks to its evented system and it also works when Node.js is in debug mode. The module is uncached and each property is deleted once all the input parameters have been parsed, so there's no memory footprint.
 
@@ -490,7 +490,7 @@ Note: If no configuration is provided you cannot join a short name with its valu
 
 __Events__
 
-With the event system you can fully adapt this module to yours needs. Example: ([to-upper-case.js](https://github.com/gagle/node-argp/blob/master/examples/to-upper-case.js)).
+With the event system you can fully adapt this module to yours needs. Examples: [to-upper-case.js](https://github.com/gagle/node-argp/blob/master/examples/to-upper-case.js), [mkdir.js](https://github.com/gagle/node-argp/blob/master/examples/mkdir.js).
 
 - [argument](#event_argument)
 - [end](#event_end)
@@ -691,12 +691,12 @@ __Methods__
 - [Body#argv() : Object](#body_argv)
 - [Body#columns(column1, column2) : Body](#body_columns)
 - [Body#command(name[, configuration]) : Command](#body_command)
-- [Body#help() : Body](#body_help)
+- [Body#help([configuration]) : Body](#body_help)
 - [Body#main() : Argp](#body_main)
 - [Body#option(o) : Body](#body_option)
 - [Body#text(str[, prefix]) : Body](#body_text)
 - [Body#usage() : Body](#body_usage)
-- [Body#version(str) : Body](#body_version)
+- [Body#version(str[, configuration]) : Body](#body_version)
 
 <a name="body_argument"></a>
 __Body#argument(name[, configuration]) : Body__
@@ -719,9 +719,13 @@ __Body#command(name[, configuration]) : Command__
 Same as [Argp#command()](#argp_command).
 
 <a name="body_help"></a>
-__Body#help() : Body__
+__Body#help([configuration]) : Body__
 
-Enables the `-h, --help` option.
+Enables the `-h, --help` option. The short option can be disabled using the `configuration` parameter.
+
+```javascript
+.help ({ short: false })
+```
 
 <a name="body_main"></a>
 __Body#main() : Argp__
@@ -746,4 +750,8 @@ Enables the `--usage` option.
 <a name="body_version"></a>
 __Body#version(str) : Body__
 
-Enables the `-v, --version` option. `str` is the text to print when the option is called.
+Enables the `-v, --version` option. `str` is the text to print when the option is called. The short option can be disabled using the `configuration` parameter.
+
+```javascript
+.version ("v1.2.3", { short: false })
+```
