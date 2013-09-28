@@ -15,8 +15,8 @@ require ("../../lib")
 								"npm install <tarball file>\n" +
 								"npm install <tarball url>\n" +
 								"npm install <git:// url>\n" +
-								"npm install <github username>/<github project>")
-						.text ("\n Options:")
+								"npm install <github username>/<github project>\n\n" +
+								" Options:")
 						.help ();
 						
 function install (argv){
