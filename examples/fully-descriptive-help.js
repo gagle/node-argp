@@ -3,6 +3,7 @@
 require ("../lib")
 		.description ("Sample app.")
 		.email ("a@b.c")
+		.exitStatus (99)
 		.body ()
 				.text (" Group 1:")
 				.argument ("arg1", { description: "aaaa" })
@@ -21,7 +22,7 @@ require ("../lib")
 				.help ()
 				.version ("v1.2.3")
 				.text ("\nThe program exits with a status code of 0 if no error, " +
-						"otherwise 1.")
+						"otherwise 99.")
 		.argv ();
 
 /*

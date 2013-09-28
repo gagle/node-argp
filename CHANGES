@@ -1,5 +1,6 @@
 v0.0.16 (28 Sep 2013)
 	Added a new parameter to "help()" and "version()" to disable the short option.
+	Added "exitStatus()".
 
 v0.0.15 (27 Sep 2013)
 	Renamed "help" to "synopsis", property of "argument()".

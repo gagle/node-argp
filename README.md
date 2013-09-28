@@ -509,6 +509,7 @@ __Methods__
 - [Argp#commands() : Argp](#argp_commands)
 - [Argp#description(str) : Argp](#argp_description)
 - [Argp#email(str) : Argp](#argp_email)
+- [Argp#exitStatus(code) : Argp](#argp_exitstatus)
 - [Argp#fail(str[, code]) : undefined](#argp_fail)
 - [Argp#main() : Argp](#argp_main)
 - [Argp#options([filter]) : Object](#argp_options)
@@ -633,6 +634,11 @@ Sets a description. The description is printed at the start of the --help messag
 __Argp#email(str) : Argp__
 
 Sets a contact email. The email is printed at the end of the --help message.
+
+<a name="argp_exitstatus"></a>
+__Argp#exitStatus(code) : Argp__
+
+Sets the exit code when the process finishes due to an error. Default is 1.
 
 <a name="argp_fail"></a>
 __Argp#fail(str[, code]) : undefined__
