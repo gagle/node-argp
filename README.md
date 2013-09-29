@@ -5,7 +5,7 @@ _Node.js project_
 
 #### Command-line option parser ####
 
-Version: 0.0.16
+Version: 0.1.0
 
 Inspired by the extremly well-known [argp C library](http://www.gnu.org/software/libc/manual/html_node/Argp.html), this module parses GNU-style command-line options. Help, usage and version messages are automatically generated and line-wrapped at 80 columns. The module checks for errors, can be easily adapted to your needs thanks to its evented system and it also works when Node.js is in debug mode. The module is uncached and each property is deleted once all the input parameters have been parsed, so there's no memory footprint.
 
@@ -65,7 +65,7 @@ Report bugs to <a@b.c>.
 */
 ```
 
-If you have a `package.json` file you can take from it the description, email and version using the `readPackage()` function. Take into account that this function calls a synchronous `fs` operation. Doesn't really matter because this module is the first thing you're going to execute.
+If you have a `package.json` file you can take from it the description, email and version using the `readPackage()` function. Take into account that this function calls a synchronous `fs` operation. Doesn't really matter because this module is one of the first things you're going to execute in your program.
 
 ```javascript
 var argv = require ("argp")
@@ -151,7 +151,7 @@ Considerations:
   
   Where `STR` is the `metavar` property.
 
-2. By default, the value of the options is a string. Configure the `type` property if the value is a number, boolean (rarely used, use a flag instead) or array (comma-separated values).
+2. By default, the value of the options is a string. Configure the `type` property if the value is a number, boolean (rarely used, use a flag instead) or array (comma-separated values and multiple assignments).
 3. Each option has an id which is used to store the value into the final object. This id is the long name. If the long name has not been defined then the id is the short name.
 
 	```javascript
@@ -162,6 +162,7 @@ Considerations:
 	.option ({ short: "a" })
 	//{ a: false }
 	```
+4. Mandatory options (aka `required`) are not implemented because options are _optional_. Use a [command](#commands) if you need mandatory parameters.
 
 Common properties between flags and options with value:
 
@@ -208,6 +209,9 @@ Options with value:
 	    .usage ()
 	```
 	```bash
+	$ node script.js --foo
+	{ name: true }
+	
 	$ node script.js --usage
 	Usage: script [--name|--foo|--bar] [-h|--help] [--usage]
 	
@@ -239,7 +243,7 @@ Options with value:
 	})
 	```
 - __choices__ - _Array_  
-  The input value must be one of the choices. If the option defines the `optional` property the `choices` property is ignored.
+  The input value must be one of these choices. If the option is `optional`, the `choices` property is ignored.
 
 	```javascript
 	.option ({ long: "opt", metavar: "NUM", type: Number, choices: [1, 2, 3] })
@@ -251,7 +255,7 @@ Options with value:
 	$ node script.js --opt=7 # Error!
 	```
 	
-	When `default` and `choices` are configured in the same option the default value doesn't need to match a choice:
+	When `default` and `choices` are configured in the same option the default value doesn't need to match any choice:
 	
 	```javascript
 	.option ({ long: "opt", metavar: "STR", default: "d", choices: ["a", "b", "c"] })
@@ -291,6 +295,12 @@ Options with value:
 - __optional__ - _Boolean_  
   If true, the value is optional. Default is false. If the option doesn't receive any value the default value is set and it depends on the `default` and `type` properties.
 
+  Types and default values:
+  - String: `null`
+  - Number: `0`
+  - Array: `[]`
+  - Boolean: `false`
+
 	```javascript
 	.option ({ long: "name1", metavar: "STR", optional: true })
 	.option ({ long: "name2", metavar: "NUM", optional: true, type: Number })
@@ -299,19 +309,15 @@ Options with value:
 	.option ({ long: "name4", metavar: "BOOL", optional: true, type: Boolean })
 	```
 	```bash
-	$ node script.js --name1 --name2 --name3
-	# "name1" is null because all the options are strings by default, and the default value of a string is null
-	# "name2" is 0 because the default value of a number is 0
-	# "name3" is [] because the default value of an array is []
-	# "name4" is false because the default value of a boolean is false
+	$ node script.js --name1 --name2 --name3 --name4
 	{ name1: null, name2: 0, name3: [], name4: false }
 	```
 	```bash
-	$ node script.js --name1 foo --name2 12 --name3 -12.34,foo,true --name4 true
+	$ node script.js --name1 foo --name2 12 --name3 -12.34,foo,true --name3 true --name4 true
 	{ name1: "foo", name2: 12, name3: [-12.34, "foo", true], name4: true }
 	```
 - __reviver__ - _Function_  
-  The function is executed when the option is parsed. It is similar to the reviver of the `JSON.parse()` function. This is the right place where you can validate the input data and `fail()` if is not valid. For example, if the option requires a number you can validate the range here.
+  The function is executed when the option is parsed. It is similar to the reviver of the `JSON.parse()` function. This is the right place where you can validate the input data and `fail()` if it's not valid. For example, if the option requires a number you can validate the range here.
 
 	```javascript
 	.option ({ long: "name", metavar: "STR", reviver: function (value){
@@ -327,15 +333,15 @@ Options with value:
 	    reviver: function (value){
     //"value" is already a number
     if (value < 1 || value > 3){
-      require ("argp").fail ("Option 'opt': invalid range");
+      this.fail ("Option 'opt': invalid range");
     }
     return value;
 	}})
 	```
 - __type__ - _String | Number | Boolean | Array_  
-  The type of the value. Default is a String.
+  The type of the value. Default is String.
 
-  If the type is an Array, comma-separated values are automatically stored into an array and each element is converted to the type it represents. An alternative is to specify the option multiple times.
+  If the type is an Array, comma-separated values are automatically stored into an array and each element is converted to the type it represents. Multiple assignments are also supported.
 
 	```javascript
 	.option ({ long: "name", metavar: "ARR", type: Array })
@@ -358,7 +364,7 @@ Example: [options.js](https://github.com/gagle/node-argp/blob/master/examples/op
 <a name="arguments"></a>
 __Configuring arguments__
 
-An argument is an individual name like `login`, `reset`, `build`, etc. If you need a --help message specific to the argument, if the argument expects other arguments and options like `npm config set foo bar`, then use a [command](#commands).
+An argument is an individual name like `login`, `reset`, `build`, etc. They are basically flags.
 
 Properties:
 
@@ -385,7 +391,7 @@ $ node script.js --help
 ...
 ```
 
-Example: [options.js](https://github.com/gagle/node-argp/blob/master/examples/options.js).
+Example: [arguments.js](https://github.com/gagle/node-argp/blob/master/examples/arguments.js).
 
 ---
 
@@ -427,7 +433,7 @@ The commands are configured exactly the same way as the `Argp` instance with onl
 - __trailing__ - _Object_  
   Configures how many arguments must follow this argument.
 
-  There are 3 properties: `eq`, `min` and `max`. `eq` cannot be used with `min` or `max`. If `min` and `max` are being used, by default `min` is 0 and `max` is Infinity. A `trailing` object without any of these 3 properties defaults to `min` 0, `max` Infinity.
+  There are 3 properties: `eq`, `min` and `max`. `eq` cannot be used with `min` or `max`. If `min` and `max` are being used, by default `min` is 0 and `max` is Infinity. A `trailing` object without any of these 3 properties defaults to `min` 0 and `max` Infinity.
   
   Some examples:
   
@@ -461,7 +467,7 @@ The commands are configured exactly the same way as the `Argp` instance with onl
       ```javascript
       .argument ("x")
       ```
-  - Multiple commands in the same line. command `x` with 1 required, and command `y` with infinite arguments: `foo x <y> z [<w>...]`.
+  - Multiple commands in the same line. Command `x` with 1 required, and command `y` with infinite arguments: `foo x <y> z [<w>...]`.
   
       ```javascript
        .argument ("x", { trailing: { eq: 1 } })
@@ -540,7 +546,7 @@ Parameters:
 <a name="event_end"></a>
 __end__
 
-Emitted when all the options and arguments have been parsed. The following 3 functions can be cached, they are safe to use at any time, they won't introduce a memory leak.
+Emitted when all the options and arguments have been parsed. The following 3 functions can be cached, they are safe to use at any time, they won't introduce any memory leak.
 
 Parameters:
 
@@ -601,7 +607,7 @@ Returns the configured arguments. Look at the [internal-data.js](https://github.
 <a name="argp_argv"></a>
 __Argp#argv() : Object__
 
-Parses the `process.argv` array. It uncaches and nulls the module after parsing the input data.
+Parses the `process.argv` array. The module is removed from the cache and all its properties are nulled, so even if you store the module in a variable (`var argp = require ("argp")`) and forget to free it (`argp = null`) you won't introduce any memory leak, just an empty object (`{}`) will remain in memory.
 
 <a name="argp_body"></a>
 __Argp#body() : Argp__
@@ -611,7 +617,7 @@ Returns a `Body` instance.
 <a name="argp_columns"></a>
 __Argp#columns(columns) : Argp__
 
-Sets a maximum line length. By default lines are wrapped at 80 columns.
+Sets the maximum line length. By default lines are wrapped at 80 columns.
 
 <a name="argp_command"></a>
 __Argp#command(name[, configuration]) : Command__
@@ -628,7 +634,7 @@ Look at the [internal-data.js](https://github.com/gagle/node-argp/blob/master/ex
 <a name="argp_description"></a>
 __Argp#description(str) : Argp__
 
-Sets a description. The description is printed at the start of the --help message, after the usage lines.
+Sets a description. The description is printed at the start of the --help message, after the "Usage" lines.
 
 <a name="argp_email"></a>
 __Argp#email(str) : Argp__
@@ -643,7 +649,7 @@ Sets the exit code when the process finishes due to an error. Default is 1.
 <a name="argp_fail"></a>
 __Argp#fail(str[, code]) : undefined__
 
-Prints a message to the stderr and exists the program. By default it exists with code 1.
+Prints a message to the stderr and exists the program.
 
 <a name="argp_main"></a>
 __Argp#main() : Argp__
@@ -668,12 +674,12 @@ Look at the [internal-data.js](https://github.com/gagle/node-argp/blob/master/ex
 <a name="argp_readpackage"></a>
 __Argp#readPackage([path]) : Argp__
 
-Reads a `package.json` file and configures the parser with the description, email and version. If no path is provided it uses the `./package.json` path. It's an `fs` synchronous operation.
+Reads a `package.json` file and configures the parser with the description, email and version. If no path is provided it tries to read the `./package.json` path.
 
 <a name="argp_usages"></a>
 __Argp#usages(usages) : Argp__
 
-Changes the "usage" line from the --help and --usage messages. `usages` is an array of strings.
+Changes the "Usage" line from the --help and --usage messages. `usages` is an array of strings.
 
 Look at the [custom-usages.js](https://github.com/gagle/node-argp/blob/master/examples/custom-usages.js) example for further details.
 
@@ -717,7 +723,7 @@ Same as [Argp#argv()](#argp_argv).
 <a name="body_columns"></a>
 __Body#columns(column1, column2) : Body__
 
-Prints a line with 2 columns. The first columns shouldn't contain line breaks (`\n`). This functionality is used to print the options and arguments.
+Prints a line with 2 columns. The first column shouldn't contain line breaks (`\n`). This functionality is used to print the options and arguments.
 
 <a name="body_command"></a>
 __Body#command(name[, configuration]) : Command__
@@ -731,6 +737,12 @@ Enables the `-h, --help` option. The short option can be disabled using the `con
 
 ```javascript
 .help ({ short: false })
+```
+```bash
+$ node script.js --help
+...
+      --help                  Display this help message and exit
+...
 ```
 
 <a name="body_main"></a>
@@ -746,7 +758,7 @@ Defines an option. See [Configuring options](#options).
 <a name="body_text"></a>
 __Body#text(str[, prefix]) : Body__
 
-Prints a text message. Line-wrapped at 80 columns by default and supports multilines (line breaks, `\n`). The `prefix` is mainly used to indent the text with a some spaces.
+Prints a text message. By default it's line-wrapped at 80 columns and supports multilines (line breaks, `\n`). The `prefix` is mainly used to indent the text with some spaces.
 
 <a name="body_usage"></a>
 __Body#usage() : Body__
@@ -760,4 +772,10 @@ Enables the `-v, --version` option. `str` is the text to print when the option i
 
 ```javascript
 .version ("v1.2.3", { short: false })
+```
+```bash
+$ node script.js --help
+...
+      --version               Output version information and exit
+...
 ```

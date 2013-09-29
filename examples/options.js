@@ -2,15 +2,6 @@
 
 var argv = require ("../lib")
 		.body ()
-				//Argument
-				.argument ("arg1")
-				
-				//Argument with a description
-				.argument ("arg2", { description: "aaaa" })
-				
-				//Hidden argument
-				.argument ("arg3", { hidden: true })
-				
 				//Positive flag because it doesn't define the "argument" property
 				.option ({ short: "a", long: "aaaa" })
 				
@@ -86,20 +77,15 @@ $ node options.js
 	mm: false,
 	n: false,
 	help: false,
-	usage: false,
-	arg1: false,
-	arg2: false,
-	arg3: false
+	usage: false
 }
 
 --------------------------------------------------------------------------------
 
 $ node options.js --help
 
-Usage: options [options] [arguments]
+Usage: options [options]
 
-  arg1
-  arg2                        aaaa
   -a, --aaaa
       --no-b
   -c C
@@ -121,5 +107,4 @@ $ node options.js --usage
 
 Usage: options [-n] [-c C] [-d D] [-e E] [-f F] [-i[I]] [-a|--aaaa] [--b]
          [--g=G] [--j[=J]] [-k|--kkkk=K] [-m|--mm|--x] [-h|--help] [--usage]
-         [arg1] [arg2]
 */
