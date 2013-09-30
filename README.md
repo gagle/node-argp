@@ -5,7 +5,7 @@ _Node.js project_
 
 #### Command-line option parser ####
 
-Version: 0.1.0
+Version: 0.1.1
 
 Inspired by the extremly well-known [argp C library](http://www.gnu.org/software/libc/manual/html_node/Argp.html), this module parses GNU-style command-line options. Help, usage and version messages are automatically generated and line-wrapped at 80 columns. The module checks for errors, can be easily adapted to your needs thanks to its evented system and it also works when Node.js is in debug mode. The module is uncached and each property is deleted once all the input parameters have been parsed, so there's no memory footprint.
 
@@ -508,7 +508,7 @@ __Methods__
 - [Argp#allowUndefinedArguments() : Argp](#argp_allowundefinedarguments)
 - [Argp#allowUndefinedOptions() : Argp](#argp_allowundefinedoptions)
 - [Argp#arguments() : Object](#argp_arguments)
-- [Argp#argv() : Object](#argp_argv)
+- [Argp#argv([data]) : Object](#argp_argv)
 - [Argp#body() : Body](#argp_body)
 - [Argp#columns(columns) : Argp](#argp_columns)
 - [Argp#command(name[, configuration]) : Command](#argp_command)
@@ -605,9 +605,24 @@ __Argp#arguments() : Object__
 Returns the configured arguments. Look at the [internal-data.js](https://github.com/gagle/node-argp/blob/master/examples/internal-data.js) example for further details.
 
 <a name="argp_argv"></a>
-__Argp#argv() : Object__
+__Argp#argv([data]) : Object__
 
 Parses the `process.argv` array. The module is removed from the cache and all its properties are nulled, so even if you store the module in a variable (`var argp = require ("argp")`) and forget to free it (`argp = null`) you won't introduce any memory leak, just an empty object (`{}`) will remain in memory.
+
+You can also pass an array with the arguments and options, but then the module won't be freed, so you can reuse the configuration.
+
+```javascript
+var argp = require ("argp");
+
+//Configuration
+argp
+    .description ()
+    ...
+
+var argv;
+argv = argp.argv (["-a", "--b", ...]);
+argv = argp.argv (["c", "d", ...]);
+```
 
 <a name="argp_body"></a>
 __Argp#body() : Argp__
@@ -703,12 +718,12 @@ __Methods__
 - [Body#argv() : Object](#body_argv)
 - [Body#columns(column1, column2) : Body](#body_columns)
 - [Body#command(name[, configuration]) : Command](#body_command)
-- [Body#help([configuration]) : Body](#body_help)
+- [Body#help([options]) : Body](#body_help)
 - [Body#main() : Argp](#body_main)
 - [Body#option(o) : Body](#body_option)
 - [Body#text(str[, prefix]) : Body](#body_text)
 - [Body#usage() : Body](#body_usage)
-- [Body#version(str[, configuration]) : Body](#body_version)
+- [Body#version(str[, options]) : Body](#body_version)
 
 <a name="body_argument"></a>
 __Body#argument(name[, configuration]) : Body__
@@ -731,9 +746,9 @@ __Body#command(name[, configuration]) : Command__
 Same as [Argp#command()](#argp_command).
 
 <a name="body_help"></a>
-__Body#help([configuration]) : Body__
+__Body#help([options]) : Body__
 
-Enables the `-h, --help` option. The short option can be disabled using the `configuration` parameter.
+Enables the `-h, --help` option. The short option can be disabled using the `options` parameter.
 
 ```javascript
 .help ({ short: false })
@@ -766,9 +781,9 @@ __Body#usage() : Body__
 Enables the `--usage` option.
 
 <a name="body_version"></a>
-__Body#version(str) : Body__
+__Body#version(str[, options]) : Body__
 
-Enables the `-v, --version` option. `str` is the text to print when the option is called. The short option can be disabled using the `configuration` parameter.
+Enables the `-v, --version` option. `str` is the text to print when the option is called. The short option can be disabled using the `options` parameter.
 
 ```javascript
 .version ("v1.2.3", { short: false })

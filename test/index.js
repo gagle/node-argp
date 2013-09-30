@@ -834,6 +834,15 @@ var tests = {
 				b: ["c"]
 			});
 		});
+	},
+	"input array": function (){
+		assert.doesNotThrow (function (){
+			opts = a ().argv (["--a", "b", "--c", "d"]);
+			assert.deepEqual (opts, {
+				a: "b",
+				c: "d"
+			});
+		});
 	}
 };
 

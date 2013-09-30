@@ -1,3 +1,6 @@
+v0.1.1 (30 Sep 2013)
+	An array with options can be passed to "argv()".
+
 v0.1.0 (29 Sep 2013)
 	Bump version.
 
