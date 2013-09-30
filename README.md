@@ -607,7 +607,7 @@ Returns the configured arguments. Look at the [internal-data.js](https://github.
 <a name="argp_argv"></a>
 __Argp#argv([data]) : Object__
 
-Parses the `process.argv` array. The module is removed from the cache and all its properties are nulled, so even if you store the module in a variable (`var argp = require ("argp")`) and forget to free it (`argp = null`) you won't introduce any memory leak, just an empty object (`{}`) will remain in memory.
+Parses the `process.argv` array. The module is removed from the cache and all its properties are deleted, so even if you store the module in a variable (`var argp = require ("argp")`) and forget to free it (`argp = null`) you won't introduce any memory leak, just an empty object (`{}`) will remain in memory.
 
 You can also pass an array with the arguments and options, but then the module won't be freed, so you can reuse the configuration.
 
