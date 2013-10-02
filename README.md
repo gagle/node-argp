@@ -49,7 +49,7 @@ $ node script.js
 
 $ node script.js --help
 
-Usage: t.js [options] [arguments]
+Usage: script [options] [arguments]
 
 Sample app.
 
