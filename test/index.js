@@ -834,6 +834,19 @@ var tests = {
 				b: ["c"]
 			});
 		});
+		
+		assert.doesNotThrow (function (){
+			argv (["a", "1", "b", "2"]);
+			opts = n ()
+					.command ("a", { trailing: { eq: 1 } }).body ()
+							.argument ("b", { trailing: { eq: 1 } })
+							
+					.argv ();
+			assert.deepEqual (opts, {
+				a: [1],
+				b: [2]
+			});
+		});
 	},
 	"input array": function (){
 		assert.doesNotThrow (function (){
