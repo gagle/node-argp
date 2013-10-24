@@ -148,7 +148,7 @@ Considerations:
 	  o, --opt=STR               Sample option
 	...
 	```
-
+  
   Where `STR` is the `metavar` property.
 
 2. By default, the value of the options is a string. Configure the `type` property if the value is a number, boolean (rarely used, use a flag instead) or array (comma-separated values and multiple assignments).
@@ -166,18 +166,18 @@ Considerations:
 
 Common properties between flags and options with value:
 
-- __description__ - _String_
+- __description__ - _String_  
   The description.
-- __hidden__ - _Boolean_
+- __hidden__ - _Boolean_  
   If true, the option is not displayed in the --help and --usage messages. Default is false.
-- __long__ - _String_
+- __long__ - _String_  
   The long name. Cannot contain white spaces.
-- __short__ - _String_
+- __short__ - _String_  
   The short name. It must be an alphanumeric character.
 
 Flags:
 
-- __negate__ - _Boolean_
+- __negate__ - _Boolean_  
   If true, the flag is negated.
 
 	```javascript
@@ -186,20 +186,20 @@ Flags:
 	```bash
 	$ node script.js
 	{ opt: true }
-
+	
 	$ node script.js --opt
 	{ opt: true }
-
+	
 	$ node script.js --no-opt
 	{ opt: false }
-
+	
 	$ node script.js -o
 	{ opt: false }
 	```
 
 Options with value:
 
-- __aliases__ - _Array_
+- __aliases__ - _Array_  
   An alias it's a long-name option that points to another option.
 
 	```javascript
@@ -211,20 +211,20 @@ Options with value:
 	```bash
 	$ node script.js --foo
 	{ name: true }
-
+	
 	$ node script.js --usage
 	Usage: script [--name|--foo|--bar] [-h|--help] [--usage]
-
+	
 	$ node script.js --help
 	Usage: script [options]
-
+	
         --name, --foo, --bar
     -h, --help                  Display this help message and exit
         --usage                 Display a short usage message and exit
 	```
-
+	
 	The `options()` function returns an object with all the configured options:
-
+	
 	```javascript
 	{
 	  name: { ... },
@@ -235,14 +235,14 @@ Options with value:
 	}
 	```
 	Where `name`, `foo` and `bar` point to the same object:
-
+	
 	```javascript
 	.on ("start", function (){
 	  var options = this.options ();
 	  assert.ok (options.name === options.foo && options.name === options.bar);
 	})
 	```
-- __choices__ - _Array_
+- __choices__ - _Array_  
   The input value must be one of these choices. If the option is `optional`, the `choices` property is ignored.
 
 	```javascript
@@ -251,12 +251,12 @@ Options with value:
 	```bash
 	$ node script.js --opt=1
 	{ opt: 1 }
-
+	
 	$ node script.js --opt=7 # Error!
 	```
-
+	
 	When `default` and `choices` are configured in the same option the default value doesn't need to match any choice:
-
+	
 	```javascript
 	.option ({ long: "opt", metavar: "STR", default: "d", choices: ["a", "b", "c"] })
 	```
@@ -264,7 +264,7 @@ Options with value:
 	$ node script.js
 	{ opt: "d" }
 	```
-- __default__ - _Object_
+- __default__ - _Object_  
   The default value.
 
 	```javascript
@@ -273,14 +273,14 @@ Options with value:
 	```bash
 	$ node script.js
 	{ name: "bar" }
-
+	
 	$ node script.js --name
 	{ name: "bar" }
-
+	
 	$ node script.js --name foo
 	{ name: "foo" }
 	```
-- __metavar__ - _String_
+- __metavar__ - _String_  
   Must be configured if the option requires a value. The string is used when the --help and --usage messages are printed.
 
 	```javascript
@@ -292,7 +292,7 @@ Options with value:
        --name=STR
   ...
 	```
-- __optional__ - _Boolean_
+- __optional__ - _Boolean_  
   If true, the value is optional. Default is false. If the option doesn't receive any value the default value is set and it depends on the `default` and `type` properties.
 
   Types and default values:
@@ -316,7 +316,7 @@ Options with value:
 	$ node script.js --name1 foo --name2 12 --name3 -12.34,foo,true --name3 true --name4 true
 	{ name1: "foo", name2: 12, name3: [-12.34, "foo", true], name4: true }
 	```
-- __reviver__ - _Function_
+- __reviver__ - _Function_  
   The function is executed when the option is parsed. It is similar to the reviver of the `JSON.parse()` function. This is the right place where you can validate the input data and `fail()` if it's not valid. For example, if the option requires a number you can validate the range here.
 
 	```javascript
@@ -338,7 +338,7 @@ Options with value:
     return value;
 	}})
 	```
-- __type__ - _String | Number | Boolean | Array_
+- __type__ - _String | Number | Boolean | Array_  
   The type of the value. Default is String.
 
   If the type is an Array, comma-separated values are automatically stored into an array and each element is converted to the type it represents. Multiple assignments are also supported.
@@ -349,10 +349,10 @@ Options with value:
 	```bash
 	$ node script.js --name 1,true,foo
 	{ name: [1, true, "foo"] }
-
+	
 	$ node script.js --name 1 --name true --name foo
 	{ name: [1, true, "foo"] }
-
+	
 	$ node script.js --name 1,2 --name true,false --name foo,bar
 	{ name: [1, 2, true, false, "foo", "bar"] }
 	```
@@ -368,9 +368,9 @@ An argument is an individual name like `login`, `reset`, `build`, etc. They are 
 
 Properties:
 
-- __description__ - _String_
+- __description__ - _String_  
   The description.
-- __hidden__ - _Boolean_
+- __hidden__ - _Boolean_  
   If true, the option is not displayed in the --help and --usage messages. Default is false.
 
 Note: `help` and `trailing` properties can be also configured but they are related with the [commands](#commands).
@@ -405,14 +405,14 @@ npm config set <key> [<value>]
 npm install [<package>...] -g
 ```
 
-`config` is a command and `set` an argument with 2 trailing arguments: minimum 1, maximum 2.
+`config` is a command and `set` an argument with 2 trailing arguments: minimum 1, maximum 2.  
 `install` is a command with infinite trailing arguments: minimum 0, maximum Infinity. `-g` is an option which only applies to the `install` command.
 
 If you have a very few commands you can configure them in the same file ([commands.js](https://github.com/gagle/node-argp/blob/master/examples/commands.js) example), but you typically want to modularize them, one command per file. Then you should check the [npm.js](https://github.com/gagle/node-argp/blob/master/examples/npm/npm.js) example.
 
 The commands are configured exactly the same way as the `Argp` instance with only one difference: `argument()` accepts 2 new properties:
 
-- __synopsis__ - _String_
+- __synopsis__ - _String_  
   The string replaces the argument name in the --help and --usage messages.
 
   ```javascript
@@ -422,7 +422,7 @@ The commands are configured exactly the same way as the `Argp` instance with onl
       set                         Sample argument
   ...
   */
-
+  
   .argument ("set", { synopsis: "set <key> [<value>]", description: "Sample argument" });
   /*
   ...
@@ -430,45 +430,45 @@ The commands are configured exactly the same way as the `Argp` instance with onl
   ...
   */
   ```
-- __trailing__ - _Object_
+- __trailing__ - _Object_  
   Configures how many arguments must follow this argument.
 
   There are 3 properties: `eq`, `min` and `max`. `eq` cannot be used with `min` or `max`. If `min` and `max` are being used, by default `min` is 0 and `max` is Infinity. A `trailing` object without any of these 3 properties defaults to `min` 0 and `max` Infinity.
-
+  
   Some examples:
-
+  
   - 2 arguments required: `foo x <y> <y>`.
-
+  
       ```javascript
       .argument ("x", { trailing: { eq: 2 } })
       ```
   - 1 required, 1 optional: `foo x <y> [<y>]`.
-
+  
       ```javascript
       .argument ("x", { trailing: { min 1, max: 2 } })
       ```
   - 1 optional: `foo x [<y>]`.
-
+  
       ```javascript
       .argument ("x", { trailing: { max: 1 } })
       ```
   - 1 required, infinite optional: `foo x <y> [<y>...]`.
-
+  
       ```javascript
       .argument ("x", { trailing: { min: 1 } })
       ```
   - Infinite: `foo x [<y>...]`.
-
+  
       ```javascript
       .argument ("x", { trailing: {} })
       ```
   - No arguments: `foo x`.
-
+  
       ```javascript
       .argument ("x")
       ```
   - Multiple commands in the same line. Command `x` with 1 required, and command `y` with infinite arguments: `foo x <y> z [<w>...]`.
-
+  
       ```javascript
        .argument ("x", { trailing: { eq: 1 } })
        .argument ("z", { trailing: {} })
@@ -536,11 +536,11 @@ Emitted when an argument is found.
 
 Parameters:
 
-- __argv__ - _Object_
+- __argv__ - _Object_  
   The final object.
-- __argument__ - _String_
+- __argument__ - _String_  
   The name of the argument found.
-- __ignore__ - _Function_
+- __ignore__ - _Function_  
   When the function is called the parser ignores the argument, hence it isn't stored in the final object.
 
 <a name="event_end"></a>
@@ -550,15 +550,15 @@ Emitted when all the options and arguments have been parsed. The following 3 fun
 
 Parameters:
 
-- __argv__ - _Object_
+- __argv__ - _Object_  
   The final object.
-- __printHelp__ - _Function_
+- __printHelp__ - _Function_  
  Prints the help message and exits with code 0.
-- __printUsage__ - _Function_
+- __printUsage__ - _Function_  
  Prints the usage and exits with code 0.
-- __printVersion__ - _Function_
+- __printVersion__ - _Function_  
  Prints the version, if it was configured, and exits with code 0.
-- __fail__ - _Function_
+- __fail__ - _Function_  
  Same as [fail()](#argp_fail).
 
 <a name="event_option"></a>
@@ -568,15 +568,15 @@ Emitted when an option is found.
 
 Parameters:
 
-- __argv__ - _Object_
+- __argv__ - _Object_  
   The final object.
-- __option__ - _String_
+- __option__ - _String_  
   The name of the option found.
-- __value__ - _String_
+- __value__ - _String_  
   The value of the option after calling the reviver, if any.
-- __long__ - _Boolean_
+- __long__ - _Boolean_  
   True if the option is a long name, otherwise false.
-- __ignore__ - _Function_
+- __ignore__ - _Function_  
   When the function is called the parser ignores the argument, hence it isn't stored in the final object.
 
 <a name="event_start"></a>
@@ -586,7 +586,7 @@ Emitted just before the parser begins to read the input data.
 
 Parameters:
 
-- __argv__ - _Object_
+- __argv__ - _Object_  
   The final object. The default values are already set.
 
 ---
@@ -666,7 +666,7 @@ Sets the exit code when the process finishes due to an error. Default is 1.
 <a name="argp_fail"></a>
 __Argp#fail(str[, code]) : undefined__
 
-Prints a message to the stderr and the process finishes.
+Prints a message to the stderr and exists the program.
 
 <a name="argp_main"></a>
 __Argp#main() : Argp__
