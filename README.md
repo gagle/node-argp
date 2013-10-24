@@ -5,7 +5,7 @@ _Node.js project_
 
 #### Command-line option parser ####
 
-Version: 0.1.2
+Version: 0.1.3
 
 Inspired by the extremly well-known [argp C library](http://www.gnu.org/software/libc/manual/html_node/Argp.html), this module parses GNU-style command-line options. Help, usage and version messages are automatically generated and line-wrapped at 80 columns. The module checks for errors, can be easily adapted to your needs thanks to its evented system and it also works when Node.js is in debug mode. The module is uncached and each property is deleted once all the input parameters have been parsed, so there's no memory footprint.
 
@@ -558,6 +558,8 @@ Parameters:
  Prints the usage and exits with code 0.
 - __printVersion__ - _Function_
  Prints the version, if it was configured, and exits with code 0.
+- __fail__ - _Function_
+ Same as [fail()](#argp_fail).
 
 <a name="event_option"></a>
 __option__
