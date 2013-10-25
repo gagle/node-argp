@@ -38,7 +38,7 @@ require ("../lib")
 			
 			console.log ("OPTION:", option, value, long);
 		})
-		.on ("end", function (argv){
+		.on ("end", function (argv, printHelp, printUsage, printVersion, fail){
 			//Emitted when all the options and arguments have been read
 			
 			//"argv" is the final object
