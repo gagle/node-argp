@@ -666,7 +666,7 @@ Sets the exit code when the process finishes due to an error. Default is 1.
 <a name="argp_fail"></a>
 __Argp#fail(str[, code]) : undefined__
 
-Prints a message to the stderr the process finishes.
+Prints a message to the stderr and exits with code `code`, the one configured with [exitStatus()](#argp_exitstatus) or 1.
 
 <a name="argp_main"></a>
 __Argp#main() : Argp__

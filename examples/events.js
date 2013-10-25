@@ -40,8 +40,16 @@ require ("../lib")
 		})
 		.on ("end", function (argv, printHelp, printUsage, printVersion, fail){
 			//Emitted when all the options and arguments have been read
+
+			//The "this" pointer is not available here in order to prevent memory
+			//leaks, that's why the need of passing so many parameters
 			
 			//"argv" is the final object
+			//"printHelp" prints the help message and exits
+			//"printUsage" prints the usage message and exits
+			//"printVersion" prints the version and exits
+			//"fail" prints the fail message and exits. It's the same as "this.fail()"
+			//but safe to use.
 			
 			console.log ("END");
 		})
