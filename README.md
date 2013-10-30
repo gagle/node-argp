@@ -431,47 +431,47 @@ The commands are configured exactly the same way as the `Argp` instance with onl
   */
   ```
 - __trailing__ - _Object_  
-  Configures how many arguments must follow this argument.
+  Configures how many trailing arguments must follow this argument.
 
   There are 3 properties: `eq`, `min` and `max`. `eq` cannot be used with `min` or `max`. If `min` and `max` are being used, by default `min` is 0 and `max` is Infinity. A `trailing` object without any of these 3 properties defaults to `min` 0 and `max` Infinity.
   
   Some examples:
   
-  - 2 arguments required: `cmd x <y> <y>`.
+  - 2 trailing arguments required: `cmd arg <x> <x>`.
   
       ```javascript
-      .argument ("x", { trailing: { eq: 2 } })
+      .argument ("arg", { trailing: { eq: 2 } })
       ```
-  - 1 required, 1 optional: `cmd x <y> [<y>]`.
+  - 1 required, 1 optional: `cmd arg <x> [<x>]`.
   
       ```javascript
-      .argument ("x", { trailing: { min 1, max: 2 } })
+      .argument ("arg", { trailing: { min 1, max: 2 } })
       ```
-  - 1 optional: `cmd x [<y>]`.
+  - 1 optional: `cmd arg [<x>]`.
   
       ```javascript
-      .argument ("x", { trailing: { max: 1 } })
+      .argument ("arg", { trailing: { max: 1 } })
       ```
-  - 1 required, infinite optional: `cmd x <y> [<y>...]`.
+  - 1 required, infinite optional: `cmd arg <x> [<x>...]`.
   
       ```javascript
-      .argument ("x", { trailing: { min: 1 } })
+      .argument ("arg", { trailing: { min: 1 } })
       ```
-  - Infinite: `cmd x [<y>...]`.
+  - Infinite: `cmd arg [<x>...]`.
   
       ```javascript
-      .argument ("x", { trailing: {} })
+      .argument ("arg", { trailing: {} })
       ```
-  - No arguments: `cmd x`.
+  - No trailing arguments: `cmd arg`.
   
       ```javascript
-      .argument ("x")
+      .argument ("arg")
       ```
-  - Multiple commands in the same line. Command `x` with 1 required, and command `y` with infinite arguments: `cmd x <y> z [<w>...]`.
+  - Multiple arguments with trailing in the same line. Argument `arg1` with 1 required, and argument `arg2` with infinite trailing arguments: `cmd arg1 <x> arg2 [<y>...]`.
   
       ```javascript
-       .argument ("x", { trailing: { eq: 1 } })
-       .argument ("z", { trailing: {} })
+       .argument ("arg1", { trailing: { eq: 1 } })
+       .argument ("arg2", { trailing: {} })
       ```
 
 ---
