@@ -437,37 +437,37 @@ The commands are configured exactly the same way as the `Argp` instance with onl
   
   Some examples:
   
-  - 2 arguments required: `foo x <y> <y>`.
+  - 2 arguments required: `cmd x <y> <y>`.
   
       ```javascript
       .argument ("x", { trailing: { eq: 2 } })
       ```
-  - 1 required, 1 optional: `foo x <y> [<y>]`.
+  - 1 required, 1 optional: `cmd x <y> [<y>]`.
   
       ```javascript
       .argument ("x", { trailing: { min 1, max: 2 } })
       ```
-  - 1 optional: `foo x [<y>]`.
+  - 1 optional: `cmd x [<y>]`.
   
       ```javascript
       .argument ("x", { trailing: { max: 1 } })
       ```
-  - 1 required, infinite optional: `foo x <y> [<y>...]`.
+  - 1 required, infinite optional: `cmd x <y> [<y>...]`.
   
       ```javascript
       .argument ("x", { trailing: { min: 1 } })
       ```
-  - Infinite: `foo x [<y>...]`.
+  - Infinite: `cmd x [<y>...]`.
   
       ```javascript
       .argument ("x", { trailing: {} })
       ```
-  - No arguments: `foo x`.
+  - No arguments: `cmd x`.
   
       ```javascript
       .argument ("x")
       ```
-  - Multiple commands in the same line. Command `x` with 1 required, and command `y` with infinite arguments: `foo x <y> z [<w>...]`.
+  - Multiple commands in the same line. Command `x` with 1 required, and command `y` with infinite arguments: `cmd x <y> z [<w>...]`.
   
       ```javascript
        .argument ("x", { trailing: { eq: 1 } })
