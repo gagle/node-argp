@@ -25,8 +25,8 @@ var argv = require ("argp")
     .description ("Sample app.")
     .email ("a@b.c")
     .body ()
-        //The object an argument definitions and the text of the --help message are
-        //configured at the same time
+        //The object and argument definitions and the text of the --help message
+        //are configured at the same time
         .text (" Arguments:")
         .argument ("arg", { description: "Sample argument" })
         .text ("\n Options:")
