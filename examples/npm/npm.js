@@ -4,11 +4,11 @@
 require ("../../lib")
 		//main() is optional, no-op, just for a better visual organization
 		.main ()
-				.on ("end", function (argv, printHelp){
+				.on ("end", function (argv, fns){
 					if (argv.l){
 						fullInfo ();
 					}else{
-						printHelp ();
+						fns.printHelp ();
 					}
 				})
 				.usages (["npm <command>"])

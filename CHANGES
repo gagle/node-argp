@@ -1,3 +1,11 @@
+v0.2.0 (24 Nov 2013)
+	The "end" event now receives a second parameter with an object with the
+		previous functions "printHelp()", "printUsage()", "printVersion()" and
+		"fail()".
+	Improved README.
+	Added Travis integration.
+	Some bugfixes.
+
 v0.1.3 (25 Oct 2013)
 	Added a fifth parameter ("fail") to the "end" event.
 	Minor improvements and bugfixes.

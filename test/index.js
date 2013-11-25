@@ -351,7 +351,7 @@ var tests = {
 			n ().argv ();
 		});
 	},
-	"configuration, nothing, default values": function (){
+	"configuration, default values": function (){
 		assert.doesNotThrow (function (){
 			argv ([]);
 			opts = n ().body ()
@@ -394,6 +394,14 @@ var tests = {
 					.argv ();
 			assert.deepEqual (opts, {
 				a: false
+			});
+			
+			argv (["--no-no-"]);
+			opts = n ().body ()
+					.option ({ long: "no-" })
+					.argv ();
+			assert.deepEqual (opts, {
+				"no-": false
 			});
 			
 			argv (["-a"]);
@@ -503,9 +511,7 @@ var tests = {
 		
 		assert.throws (function (){
 			argv (["--no-"]);
-			n ().body ()
-					.option ({ long: "a", negate: true })
-					.argv ();
+			n ().body ().argv ();
 		});
 		
 		assert.throws (function (){

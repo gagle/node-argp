@@ -5,7 +5,9 @@ _Node.js project_
 
 #### Command-line option parser ####
 
-Version: 0.1.3
+[![NPM version](https://badge.fury.io/js/argp.png)](http://badge.fury.io/js/argp "Fury Version Badge")
+[![Build Status](https://secure.travis-ci.org/gagle/node-argp.png)](http://travis-ci.org/gagle/node-argp "Travis CI Badge")
+
 
 Inspired by the extremly well-known [argp C library](http://www.gnu.org/software/libc/manual/html_node/Argp.html), this module parses GNU-style command-line options. Help, usage and version messages are automatically generated and line-wrapped at 80 columns. The module checks for errors, can be easily adapted to your needs thanks to its evented system and it also works when Node.js is in debug mode. The module is uncached and each property is deleted once all the input parameters have been parsed, so there's no memory footprint.
 
@@ -92,6 +94,7 @@ npm install argp
 - [Configuring options](#options)
 - [Configuring arguments](#arguments)
 - [Configuring commands](#commands)
+- [Some real examples](#examples)
 
 #### Objects ####
 
@@ -152,7 +155,7 @@ Considerations:
   Where `STR` is the `metavar` property.
 
 2. By default, the value of the options is a string. Configure the `type` property if the value is a number, boolean (rarely used, use a flag instead) or array (comma-separated values and multiple assignments).
-3. Each option has an id which is used to store the value into the final object. This id is the long name. If the long name has not been defined then the id is the short name.
+3. Each option has an id which is used to store the value in the final object. This id is the long name. If the long name has not been defined then the id is the short name.
 
 	```javascript
 	.option ({ short: "a", long: "aa" })
@@ -164,7 +167,7 @@ Considerations:
 	```
 4. Mandatory options (aka `required`) are not implemented because options are _optional_. Use a [command](#commands) if you need mandatory parameters.
 
-Common properties between flags and options with value:
+Common properties between flags and options with a value:
 
 - __description__ - _String_  
   The description.
@@ -178,26 +181,27 @@ Common properties between flags and options with value:
 Flags:
 
 - __negate__ - _Boolean_  
-  If true, the flag is negated.
+  If true, the flag is negated. The default value is true and it becomes false when the short name or the negated long name (eg. --no-flag) is present.
 
 	```javascript
-	.option ({ short: "o", long: "opt", negate: true })
+	.option ({ short: "a", long: "aaa" })
+	.option ({ short: "b", long: "bbb", negate: true })
 	```
 	```bash
 	$ node script.js
-	{ opt: true }
+	{ aaa: false, bbb: true }
 	
-	$ node script.js --opt
-	{ opt: true }
+	$ node script.js -a -b
+	{ aaa: true, bbb: false }
 	
-	$ node script.js --no-opt
-	{ opt: false }
+	$ node script.js --aaa --bbb
+	{ aaa: true, bbb: true }
 	
-	$ node script.js -o
-	{ opt: false }
+	$ node script.js --no-aaa --no-bbb
+	{ aaa: false, bbb: false }
 	```
 
-Options with value:
+Options with a value:
 
 - __aliases__ - _Array_  
   An alias it's a long-name option that points to another option.
@@ -255,7 +259,7 @@ Options with value:
 	$ node script.js --opt=7 # Error!
 	```
 	
-	When `default` and `choices` are configured in the same option the default value doesn't need to match any choice:
+	When `default` and `choices` are defined in the same option the default value doesn't need to match any choice:
 	
 	```javascript
 	.option ({ long: "opt", metavar: "STR", default: "d", choices: ["a", "b", "c"] })
@@ -281,7 +285,7 @@ Options with value:
 	{ name: "foo" }
 	```
 - __metavar__ - _String_  
-  Must be configured if the option requires a value. The string is used when the --help and --usage messages are printed.
+  Must be defined if the option requires a value. If `metavar` is not defined, the option is a flag. The string is used when the --help and --usage messages are printed.
 
 	```javascript
 	.option ({ long: "name", metavar: "STR" })
@@ -303,21 +307,22 @@ Options with value:
 
 	```javascript
 	.option ({ long: "name1", metavar: "STR", optional: true })
-	.option ({ long: "name2", metavar: "NUM", optional: true, type: Number })
-	.option ({ long: "name3", metavar: "ARR", optional: true, type: Array })
+	.option ({ long: "name2", metavar: "STR", optional: true, type: String })
+	.option ({ long: "name3", metavar: "NUM", optional: true, type: Number })
+	.option ({ long: "name4", metavar: "ARR", optional: true, type: Array })
 	//Boolean type is rarely used, use a flag instead
-	.option ({ long: "name4", metavar: "BOOL", optional: true, type: Boolean })
+	.option ({ long: "name5", metavar: "BOOL", optional: true, type: Boolean })
 	```
 	```bash
-	$ node script.js --name1 --name2 --name3 --name4
-	{ name1: null, name2: 0, name3: [], name4: false }
+	$ node script.js --name1 --name2 --name3 --name4 --name5
+	{ name1: null, name2: null, name3: 0, name4: [], name5: false }
 	```
 	```bash
-	$ node script.js --name1 foo --name2 12 --name3 -12.34,foo,true --name3 true --name4 true
-	{ name1: "foo", name2: 12, name3: [-12.34, "foo", true], name4: true }
+	$ node script.js --name1 foo --name2 bar --name3 12 --name4 -12.34,foo,true --name4 false --name5 true
+	{ name1: "foo", ame2: "bar", name3: 12, name4: [-12.34, "foo", true, false], name5: true }
 	```
 - __reviver__ - _Function_  
-  The function is executed when the option is parsed. It is similar to the reviver of the `JSON.parse()` function. This is the right place where you can validate the input data and `fail()` if it's not valid. For example, if the option requires a number you can validate the range here.
+  The function is executed when the option is parsed. It is similar to the reviver parameter of the `JSON.parse()` function. This is the right place where you can validate the input data and `fail()` if it's not valid. For example, if the option requires a number you can validate the range here.
 
 	```javascript
 	.option ({ long: "name", metavar: "STR", reviver: function (value){
@@ -331,9 +336,9 @@ Options with value:
 	```javascript
 	.option ({ long: "opt", metavar: "NUM", type: Number,
 	    reviver: function (value){
-    //"value" is already a number
+    //The "value" parameter is already a number
     if (value < 1 || value > 3){
-      this.fail ("Option 'opt': invalid range");
+      this.fail ("Option 'opt': Invalid range.");
     }
     return value;
 	}})
@@ -341,7 +346,7 @@ Options with value:
 - __type__ - _String | Number | Boolean | Array_  
   The type of the value. Default is String.
 
-  If the type is an Array, comma-separated values are automatically stored into an array and each element is converted to the type it represents. Multiple assignments are also supported.
+  If the type is an Array, comma-separated values are automatically stored in an array and each element is converted to the type it represents. Multiple assignments are also supported.
 
 	```javascript
 	.option ({ long: "name", metavar: "ARR", type: Array })
@@ -373,7 +378,7 @@ Properties:
 - __hidden__ - _Boolean_  
   If true, the option is not displayed in the --help and --usage messages. Default is false.
 
-Note: `help` and `trailing` properties can be also configured but they are related with the [commands](#commands).
+Note: `synopsis` and `trailing` properties can be also configured but they have meaning only with [commands](#commands).
 
 ```javascript
 .argument ("arg1")
@@ -390,6 +395,26 @@ $ node script.js --help
   arg2                        bar
 ...
 ```
+
+Note that an argument is just a flag but it can be present without any prefixed hyphen. It is a flag with more weight, it is used to denote important actions.
+
+As you can see, the arguments are also stored in a hash like regular options, undefined arguments inclusive. For example:
+
+```javascript
+var argv = require ("argp")
+    .allowUndefinedArguments ()
+    .allowUndefinedOptions ()
+    .argv ();
+    
+console.log (argv);
+```
+
+```bash
+$ node script.js a b c
+{ a: true, b: true, c: true }
+```
+
+This feature is different from other cli parsers that store the arguments in an array. If you need to read undefined arguments and save them in an array you can use the events. For more details: [to-upper-case.js](https://github.com/gagle/node-argp/blob/master/examples/to-upper-case.js)
 
 Example: [arguments.js](https://github.com/gagle/node-argp/blob/master/examples/arguments.js).
 
@@ -433,7 +458,7 @@ The commands are configured exactly the same way as the `Argp` instance with onl
 - __trailing__ - _Object_  
   Configures how many trailing arguments must follow this argument.
 
-  There are 3 properties: `eq`, `min` and `max`. `eq` cannot be used with `min` or `max`. If `min` and `max` are being used, by default `min` is 0 and `max` is Infinity. A `trailing` object without any of these 3 properties defaults to `min` 0 and `max` Infinity.
+  There are 3 properties: `eq`, `min` and `max`. `eq` cannot be used with `min` or `max`. If `min` and `max` are used, by default `min` is 0 and `max` is Infinity. A `trailing` object without any of these 3 properties defaults to `min` 0 and `max` Infinity.
   
   Some examples:
   
@@ -461,13 +486,14 @@ The commands are configured exactly the same way as the `Argp` instance with onl
   
       ```javascript
       .argument ("arg", { trailing: {} })
+      //Same as trailing: { min: 0, max: Infinity }
       ```
   - No trailing arguments: `cmd arg`.
   
       ```javascript
       .argument ("arg")
       ```
-  - Multiple arguments with trailing in the same line. Argument `arg1` with 1 required, and argument `arg2` with infinite trailing arguments: `cmd arg1 <x> arg2 [<y>...]`.
+  - Multiple arguments with trailing in the same line. Argument `arg1` with 1 required, and argument `arg2` with infinite trailing arguments: `cmd arg1 <x> arg2 [<y>...]`. Note that writing `cmd arg1 <x> arg2 [<y>...]` is not the same as `cmd arg2 [<y>...] arg1 <x>`. In the latter case, `arg1 <x>` will be eaten by the trailing arguments of `arg2`.
   
       ```javascript
        .argument ("arg1", { trailing: { eq: 1 } })
@@ -476,12 +502,20 @@ The commands are configured exactly the same way as the `Argp` instance with onl
 
 ---
 
+<a name="examples"></a>
+__Some real examples__
+
+- [brainfuck](https://github.com/gagle/node-brainfuck/blob/master/bin/brainfuck.js)
+- [ntftp](https://github.com/gagle/node-ntftp/blob/master/bin/ntftp.js)
+
+---
+
 <a name="argp_object"></a>
 __Argp__
 
 The module returns an instance of `Argp`. It inherits from an EventEmitter.
 
-The parser follows the GNU-style rules: `-a`, `-abc`, `--a`, `--no-a`, `--a=b`, `--`, etc. Long option abbreviation is also supported.
+The parser follows the GNU-style rules: `-a`, `-abc`, `--a`, `--no-a`, `--a=b`, `--`, etc. Long-option abbreviation is also supported.
 
 If you don't want to configure anything simply require the module, allow undefined arguments and options and call to `argv()`.
 
@@ -492,7 +526,7 @@ var argv = require ("argp")
     .argv ();
 ```
 
-Note: If no configuration is provided you cannot join a short name with its value in the same token, eg: `-Dvalue`, all the characters following a dash, `-`, are interpreted as individual flags.
+Note: If no configuration is provided you cannot join a short name with its value in the same token, eg: `-Dvalue`, all the characters following a hyhen are interpreted as individual flags.
 
 __Events__
 
@@ -508,7 +542,7 @@ __Methods__
 - [Argp#allowUndefinedArguments() : Argp](#argp_allowundefinedarguments)
 - [Argp#allowUndefinedOptions() : Argp](#argp_allowundefinedoptions)
 - [Argp#arguments() : Object](#argp_arguments)
-- [Argp#argv([data]) : Object](#argp_argv)
+- [Argp#argv([input]) : Object](#argp_argv)
 - [Argp#body() : Body](#argp_body)
 - [Argp#columns(columns) : Argp](#argp_columns)
 - [Argp#command(name[, configuration]) : Command](#argp_command)
@@ -539,27 +573,30 @@ Parameters:
 - __argv__ - _Object_  
   The final object.
 - __argument__ - _String_  
-  The name of the argument found.
+  The name of the argument.
 - __ignore__ - _Function_  
   When the function is called the parser ignores the argument, hence it isn't stored in the final object.
 
 <a name="event_end"></a>
 __end__
 
-Emitted when all the options and arguments have been parsed. The following 3 functions can be cached, they are safe to use at any time, they won't introduce any memory leak.
+Emitted when all the options and arguments have been parsed.
 
 Parameters:
 
 - __argv__ - _Object_  
   The final object.
-- __printHelp__ - _Function_  
- Prints the help message and exits with code 0.
-- __printUsage__ - _Function_  
- Prints the usage and exits with code 0.
-- __printVersion__ - _Function_  
- Prints the version, if it was configured, and exits with code 0.
-- __fail__ - _Function_  
- Same as [fail()](#argp_fail).
+- __fns__ - _Object_  
+  An object with the following properties:
+
+  - __printHelp__ - _Function_  
+    Prints the help message and exits with code 0.
+  - __printUsage__ - _Function_  
+    Prints the usage and exits with code 0.
+  - __printVersion__ - _Function_  
+    Prints the version, if it was configured, and exits with code 0.
+  - __fail__ - _Function_  
+    Same as [fail()](#argp_fail).
 
 <a name="event_option"></a>
 __option__
@@ -571,7 +608,7 @@ Parameters:
 - __argv__ - _Object_  
   The final object.
 - __option__ - _String_  
-  The name of the option found.
+  The name of the option.
 - __value__ - _String_  
   The value of the option after calling the reviver, if any.
 - __long__ - _Boolean_  
@@ -582,7 +619,7 @@ Parameters:
 <a name="event_start"></a>
 __start__
 
-Emitted just before the parser begins to read the input data.
+Emitted just before the parser begins to read the cli parameters.
 
 Parameters:
 
@@ -607,11 +644,11 @@ __Argp#arguments() : Object__
 Returns the configured arguments. Look at the [internal-data.js](https://github.com/gagle/node-argp/blob/master/examples/internal-data.js) example for further details.
 
 <a name="argp_argv"></a>
-__Argp#argv([data]) : Object__
+__Argp#argv([input]) : Object__
 
 Parses the `process.argv` array. The module is removed from the cache and all its properties are deleted, so even if you store the module in a variable (`var argp = require ("argp")`) and forget to free it (`argp = null`) you won't introduce any memory leak, just an empty object (`{}`) will remain in memory.
 
-You can also pass an array with the arguments and options, but then the module won't be freed, so you can reuse the configuration.
+You can also pass an array with the arguments and options, but then the module won't be freed, so you can reuse the same configuration to parse multiple arrays.
 
 ```javascript
 var argp = require ("argp");
@@ -678,7 +715,7 @@ Look at the [npm.js](https://github.com/gagle/node-argp/blob/master/examples/npm
 <a name="argp_options"></a>
 __Argp#options([filter]) : Object__
 
-Returns the configured options. `filter` is an object which can be used to return the options with a short name or with a long name.
+Returns the configured options. `filter` is an object which can be used to return the options that have a short name or a long name.
 
 ```javascript
 .options ()
@@ -710,14 +747,14 @@ If `sort()` is enabled, the options are parsed before the arguments, if not, the
 <a name="body"></a>
 __Body__
 
-The `Body` instance is returned by [Argp#body()](#argp_body). All the following functions print a message in the same order they are configured, this allows you to fully customize the --help message very easily.
+The `Body` instance is returned by calling [Argp#body()](#argp_body). All the following functions (except `argv()`, `command()` and `main()`) print a message in the same order they are configured, this allows you to fully customize the --help message very easily.
 
 Look at [fully-descriptive-help.js](https://github.com/gagle/node-argp/blob/master/examples/fully-descriptive-help.js) for further details.
 
 __Methods__
 
 - [Body#argument(name[, configuration]) : Body](#body_argument)
-- [Body#argv() : Object](#body_argv)
+- [Body#argv([input]) : Object](#body_argv)
 - [Body#columns(column1, column2) : Body](#body_columns)
 - [Body#command(name[, configuration]) : Command](#body_command)
 - [Body#help([options]) : Body](#body_help)
@@ -733,7 +770,7 @@ __Body#argument(name[, configuration]) : Body__
 Defines an argument. See [Configuring arguments](#arguments).
 
 <a name="body_argv"></a>
-__Body#argv() : Object__
+__Body#argv([input]) : Object__
 
 Same as [Argp#argv()](#argp_argv).
 

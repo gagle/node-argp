@@ -38,13 +38,15 @@ require ("../lib")
 			
 			console.log ("OPTION:", option, value, long);
 		})
-		.on ("end", function (argv, printHelp, printUsage, printVersion, fail){
+		.on ("end", function (argv, fns){
 			//Emitted when all the options and arguments have been read
 
 			//The "this" pointer is not available here in order to prevent memory
-			//leaks, that's why the need of passing so many parameters
+			//leaks
 			
 			//"argv" is the final object
+			//"fns" is an object with the following functions: fns.printHelp(),
+			//fns.printUsage(), fns.printVersion(), fns.fail()
 			//"printHelp" prints the help message and exits
 			//"printUsage" prints the usage message and exits
 			//"printVersion" prints the version and exits
