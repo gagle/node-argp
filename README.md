@@ -502,8 +502,8 @@ The commands are configured exactly the same way as the `Argp` instance with onl
 
 ---
 
-<a name="commands"></a>
-__Configuring commands__
+<a name="examples"></a>
+__Real examples__
 
 - [brainfuck](https://github.com/gagle/node-brainfuck/blob/master/bin/brainfuck.js): Interpreter for the Brainfuck esoteric language.
 - [ntftp](https://github.com/gagle/node-ntftp/blob/master/bin/ntftp.js): Streaming TFTP client.
