@@ -2,3 +2,6 @@
 - Add a "footer()" function (again) to be able to write some text before the
 		email. This is specially useful when using "readPackage()" because right now
 		you can't put anything after the version.
+- If an input array is used with "argv()", don't "process.exit()" and let the
+	user to decide what to do with the error message (typically printed to
+	stderr).
