@@ -861,6 +861,18 @@ var tests = {
 				a: "b",
 				c: "d"
 			});
+			
+			opts = a ().body ().argv (["--a", "b", "--c", "d"]);
+			assert.deepEqual (opts, {
+				a: "b",
+				c: "d"
+			});
+			
+			opts = a ().command ("a").argv (["--a", "b", "--c", "d"]);
+			assert.deepEqual (opts, {
+				a: "b",
+				c: "d"
+			});
 		});
 	}
 };

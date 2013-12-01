@@ -1,3 +1,10 @@
+v1.0.0 (01 Dec 2013)
+	Added support for multiple parsers. Now the parser is created using
+		"createParser()".
+	Added "footer()".
+	When "argv()" was called with an input array from inside a Body or Command
+		instance, the input array was not read.
+
 v0.2.1 (25 Nov 2013)
 	The "fail()" function from the "end" event now prints the string message
 		correctly.

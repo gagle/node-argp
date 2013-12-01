@@ -51,7 +51,8 @@ var argv = require ("../lib")
 				.option ({ short: "m", long: "mm", aliases: ["x"] })
 				
 				//Option with choices
-				.option ({ short: "n", type: Number, choices: [1, 10, 100] })
+				.option ({ short: "n", metavar: "NUM", type: Number,
+						choices: [1, 10, 100] })
 				
 				.help ()
 				.usage ()
@@ -75,7 +76,7 @@ $ node options.js
 	kkkk: null,
 	l: false,
 	mm: false,
-	n: false,
+	n: 0,
 	help: false,
 	usage: false
 }
@@ -97,7 +98,7 @@ Usage: options [options]
       --j[=J]
   -k, --kkkk=K                kkkk
   -m, --mm, --x
-  -n
+  -n NUM
   -h, --help                  Display this help message and exit
       --usage                 Display a short usage message and exit
 
@@ -105,6 +106,6 @@ Usage: options [options]
 
 $ node options.js --usage
 
-Usage: options [-n] [-c C] [-d D] [-e E] [-f F] [-i[I]] [-a|--aaaa] [--b]
+Usage: options [-c C] [-d D] [-e E] [-f F] [-i[I]] [-n NUM] [-a|--aaaa] [--b]
          [--g=G] [--j[=J]] [-k|--kkkk=K] [-m|--mm|--x] [-h|--help] [--usage]
 */

@@ -2,6 +2,8 @@
 
 require ("../lib")
 		.description ("Sample app.")
+		.footer ("The program exits with a status code of 0 if no error, " +
+				"otherwise 99.")
 		.email ("a@b.c")
 		.exitStatus (99)
 		.body ()
@@ -21,8 +23,6 @@ require ("../lib")
 				.text ("\n Informational options:")
 				.help ()
 				.version ("v1.2.3")
-				.text ("\nThe program exits with a status code of 0 if no error, " +
-						"otherwise 99.")
 		.argv ();
 
 /*
