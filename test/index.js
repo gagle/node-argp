@@ -1,7 +1,7 @@
 "use strict";
 
 var assert = require ("assert");
-var Argp = require ("../lib").constructor;
+var argp = require ("../lib");
 
 var debug = process.argv[1] === "debug";
 
@@ -10,11 +10,12 @@ var argv = function (arr){
 };
 
 var n = function (){
-	return new Argp ();
+	return argp.createParser ();
 };
 
 var a = function (){
-	return new Argp ().allowUndefinedArguments ().allowUndefinedOptions ();
+	return argp.createParser ().allowUndefinedArguments ()
+			.allowUndefinedOptions ();
 };
 
 console.error = function (){};

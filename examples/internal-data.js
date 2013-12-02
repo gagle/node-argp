@@ -1,9 +1,9 @@
 "use strict";
 
 var util = require ("util");
-var argp = require ("../lib");
 
-argp
+var parser = require ("../lib").createParser ({ once: true });
+parser
 		.main ()
 				.body ()
 						.argument ("arg1")
@@ -23,22 +23,26 @@ argp
 						.argument ("c", { trailing: {} })
 						.usage ();
 
-console.log (argp.arguments ());
+console.log (parser.arguments ());
 
 /*
 {
 	arg1: {
 		hidden: false,
+		synopsis: null,
+		trailing: null,
 		description: null
 	},
 	arg2: {
 		hidden: false,
+		synopsis: null,
+		trailing: null,
 		description: null
 	}
 }
 */
 
-console.log (argp.options ());
+console.log (parser.options ());
 
 /*
 {
@@ -49,6 +53,7 @@ console.log (argp.options ());
 		flag: true,
 		id: "aa",
 		hidden: false,
+		aliases: [],
 		negate: false,
 		default: false
 	},
@@ -58,6 +63,7 @@ console.log (argp.options ());
 		flag: true,
 		id: "bb",
 		hidden: false,
+		aliases: [],
 		negate: false,
 		default: false
 	},
@@ -65,25 +71,29 @@ console.log (argp.options ());
 		short: "c",
 		description: "cccc",
 		metavar: "cc",
+		aliases: ["dd"],
 		optional: true,
 		default: 5,
 		type: [Function: Number],
 		flag: false,
 		id: "c",
 		hidden: false,
-		reviver: null
+		reviver: null,
+		choices: null
 	},
 	dd: {
 		short: "c",
 		description: "cccc",
 		metavar: "cc",
+		aliases: ["dd"],
 		optional: true,
 		default: 5,
 		type: [Function: Number],
 		flag: false,
 		id: "c",
 		hidden: false,
-		reviver: null
+		reviver: null,
+		choices: null
 	},
 	help: {
 		short: "h",
@@ -92,6 +102,7 @@ console.log (argp.options ());
 		flag: true,
 		id: "help",
 		hidden: false,
+		aliases: [],
 		negate: false,
 		default: false
 	},
@@ -101,6 +112,7 @@ console.log (argp.options ());
 		flag: true,
 		id: "usage",
 		hidden: false,
+		aliases: [],
 		negate: false,
 		default: false
 	},
@@ -111,13 +123,14 @@ console.log (argp.options ());
 		flag: true,
 		id: "version",
 		hidden: false,
+		aliases: [],
 		negate: false,
 		default: false
 	}
 }
 */
 
-console.log (argp.options ({ short: true }));
+console.log (parser.options ({ short: true }));
 
 /*
 {
@@ -135,7 +148,7 @@ console.log (argp.options ({ short: true }));
 	}
 */
 
-console.log (argp.options ({ long: true }));
+console.log (parser.options ({ long: true }));
 
 /*
 {
@@ -160,7 +173,7 @@ console.log (argp.options ({ long: true }));
 }
 */
 
-console.log (util.inspect (argp.commands (), { depth: null }));
+console.log (util.inspect (parser.commands (), { depth: null }));
 
 /*
 {
@@ -174,7 +187,7 @@ console.log (util.inspect (argp.commands (), { depth: null }));
 				flag: true,
 				id: "help",
 				hidden: false,
-				aliases: null,
+				aliases: [],
 				negate: false,
 				default: false
 			}
@@ -183,9 +196,12 @@ console.log (util.inspect (argp.commands (), { depth: null }));
 	b: {
 		arguments: {
 			c: {
-				trailing: {},
+				trailing: {
+					min: 0,
+					max: Infinity
+				},
 				hidden: false,
-				help: null,
+				synopsis: null,
 				description: null
 			}
 		},
@@ -196,7 +212,7 @@ console.log (util.inspect (argp.commands (), { depth: null }));
 				flag: true,
 				id: "usage",
 				hidden: false,
-				aliases: null,
+				aliases: [],
 				negate: false,
 				default: false
 			}
@@ -204,3 +220,6 @@ console.log (util.inspect (argp.commands (), { depth: null }));
 	}
 }
 */
+
+//Note: In this example "argv()" is not called, so the module is never uncached
+parser = null;

@@ -4,7 +4,7 @@
 Converts to upper case any phrase if the -u option is passed.
 */
 
-require ("../lib")
+require ("../lib").createParser ({ once: true })
 		.on ("start", function (argv){
 			argv.phrase = [];
 		})

@@ -1,10 +1,10 @@
 "use strict";
 
-require ("../lib")
+require ("../lib").createParser ({ once: true })
 		.readPackage ("../package.json")
 		//If you use readPackage(), you can write text lines between the ---version
-		//option and the email using the footer() function
-		.footer ("Sample footer");
+		//and the email using the footer() function
+		.footer ("Sample footer")
 		.body ()
 				.help ()
 				.usage ()

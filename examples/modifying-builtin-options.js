@@ -1,8 +1,7 @@
 "use strict";
 
-var argp = require ("../lib");
-
-argp
+var parser = require ("../lib").createParser ({ once: true });
+parser
 		.body ()
 				.option ({ short: "v", long: "verbose" })
 				.help ()
@@ -10,11 +9,12 @@ argp
 				//Disable -v option
 				.version ("v1.2.3", { short: false });
 
-argp.options ().help.description = "???";
+parser.options ().help.description = "???";
 
-var argv = argp.argv ();
-//If you cache the module, remember to null it when you finish with it
-argp = null;
+var argv = parser.argv ();
+
+//Zero memory footprint!
+parser = null;
 
 console.log (argv);
 

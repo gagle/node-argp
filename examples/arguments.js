@@ -1,6 +1,6 @@
 "use strict";
 
-var argv = require ("../lib")
+var argv = require ("../lib").createParser ({ once: true })
 		.body ()
 				//Argument
 				.argument ("arg1")
@@ -21,6 +21,8 @@ console.log (argv);
 $ node options.js
 
 {
+	help: false,
+	usage: false,
 	arg1: false,
 	arg2: false,
 	arg3: false

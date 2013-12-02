@@ -1,6 +1,6 @@
 "use strict";
 
-require ("../lib")
+require ("../lib").createParser ({ once: true })
 		.description ("Sample app.")
 		.body ()
 				.help ()

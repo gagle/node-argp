@@ -14,7 +14,7 @@ it prints 3 dots.
 --point is a pure alias and --ellipsis is a defined alias.
 */
 
-var argv = require ("../lib")
+var argv = require ("../lib").createParser ({ once: true })
 		.on ("end", function (argv){
 			if (argv.ellipsis) argv.dot = 3;
 		})

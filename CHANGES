@@ -1,9 +1,18 @@
-v1.0.0 (01 Dec 2013)
+v1.0.0 (02 Dec 2013)
 	Added support for multiple parsers. Now the parser is created using
 		"createParser()".
-	Added "footer()".
+	In previous versions, passing an array to "argv()" didn't uncache the module
+		in order to reuse the parser. Now if you don't need to reuse it, pass an
+		object { once: true } to "createParser()".
+	Added an "error" event.
+	Added "footer()". Now you can write text between the --version and email text
+		lines when using the "readPackage()" function.
 	When "argv()" was called with an input array from inside a Body or Command
 		instance, the input array was not read.
+	Removed the second parameter from the "end" event. Now the functions
+		"printHelp()", "printUsage()" and "printVersion()" are accessible from the
+		Argp instance.
+	Minor bugfixes and improvements.
 
 v0.2.1 (25 Nov 2013)
 	The "fail()" function from the "end" event now prints the string message

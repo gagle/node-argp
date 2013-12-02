@@ -7,7 +7,13 @@ The events allow you to fully adapt the parser to your needs.
 See to-upper-case.js example.
 */
 
-require ("../lib")
+require ("../lib").createParser ({ once: true })
+		.on ("error", function (error){
+			//Emitted when an error occurs
+			//"argv()" returns null
+		
+			console.log (error);
+		})
 		.on ("start", function (argv){
 			//Emitted after the default values of the configured options and arguments
 			//have been set and before starting the read.
@@ -38,24 +44,14 @@ require ("../lib")
 			
 			console.log ("OPTION:", option, value, long);
 		})
-		.on ("end", function (argv, fns){
+		.on ("end", function (argv){
 			//Emitted when all the options and arguments have been read
-
-			//The "this" pointer is not available here in order to prevent memory
-			//leaks
 			
 			//"argv" is the final object
-			//"fns" is an object with the following functions: fns.printHelp(),
-			//fns.printUsage(), fns.printVersion(), fns.fail()
-			//"printHelp" prints the help message and exits
-			//"printUsage" prints the usage message and exits
-			//"printVersion" prints the version and exits
-			//"fail" prints the fail message and exits. It's the same as "this.fail()"
-			//but safe to use.
 			
 			console.log ("END");
 		})
-		.sort ()
+		//.sort ()
 		.allowUndefinedOptions ()
 		.allowUndefinedArguments ()
 		.argv ();

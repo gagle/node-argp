@@ -6,7 +6,7 @@ By default when the --help and --usage messages are printed there is only one
 usages() function.
 */
 
-require ("../lib")
+require ("../lib").createParser ({ once: true })
 		.usages ([
 			"custom-usages <input file> <output file>",
 			"custom-usages [word [word [word]]]"

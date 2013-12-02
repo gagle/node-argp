@@ -1,14 +1,16 @@
 "use strict";
 
 //Configure the main menu
-require ("../../lib")
+var parser = require ("../../lib").createParser ({ once: true });
+
+parser
 		//main() is optional, no-op, just for a better visual organization
 		.main ()
-				.on ("end", function (argv, fns){
+				.on ("end", function (argv){
 					if (argv.l){
 						fullInfo ();
 					}else{
-						fns.printHelp ();
+						this.printHelp ();
 					}
 				})
 				.usages (["npm <command>"])
@@ -22,14 +24,18 @@ require ("../../lib")
 						.version ("v1.2.3");
 
 //Configure comands
-require ("./config");
-require ("./install");
-require ("./whoami");
+require ("./config")(parser);
+require ("./install")(parser);
+require ("./whoami")(parser);
 
 //Start the parser
-require ("../../lib").argv ();
+parser.argv ();
+
+//Free the parser!
+parser = null;
 
 function fullInfo (){
 	//Code...
-	console.log ("full usage info")
+	console.log ("full usage info");
+	process.exit (0);
 };

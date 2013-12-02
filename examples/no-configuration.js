@@ -1,12 +1,9 @@
 "use strict";
 
-process.argv = ["node", __filename, "-abc", "d", "--e=f", "g", "-i", "j", "--",
-		"--k", "l"];
-
-var argv = require ("../lib")
+var argv = require ("../lib").createParser ({ once: true })
 		.allowUndefinedOptions ()
 		.allowUndefinedArguments ()
-		.argv ();
+		.argv (["-abc", "d", "--e=f", "g", "-i", "j", "--", "--k", "l"]);
 
 console.log (argv);
 

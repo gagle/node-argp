@@ -1,6 +1,6 @@
 "use strict";
 
-require ("../lib")
+require ("../lib").createParser ({ once: true })
 		.description ("Sample app.")
 		.footer ("The program exits with a status code of 0 if no error, " +
 				"otherwise 99.")

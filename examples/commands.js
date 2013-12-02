@@ -1,6 +1,6 @@
 "use script";
 
-var argv = require ("../lib")
+var argv = require ("../lib").createParser ({ once: true })
     .main ()
         .description ("Main menu.")
         .body ()
@@ -8,8 +8,10 @@ var argv = require ("../lib")
             .usage ()
     .command ("config")
         .body ()
-            .argument ("set", { synopsis: "set <key> [<value>]",
-                trailing: { min: 1, max: 2 } })
+            .argument ("set", {
+							synopsis: "set <key> [<value>]",
+              trailing: { min: 1, max: 2 }
+						})
             .help ()
     .command ("install", { trailing: {} })
         .body ()

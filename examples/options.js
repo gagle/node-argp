@@ -1,6 +1,6 @@
 "use strict";
 
-var argv = require ("../lib")
+var argv = require ("../lib").createParser ({ once: true })
 		.body ()
 				//Positive flag because it doesn't define the "argument" property
 				.option ({ short: "a", long: "aaaa" })

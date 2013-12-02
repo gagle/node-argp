@@ -1,6 +1,6 @@
 "use strict";
 
-var argv = require ("../lib")
+var argv = require ("../lib").createParser ({ once: true })
 		.description ("Create the DIRECTORY(ies), if they do not already exist.")
 		.usages (["mkdir [OPTION]... DIRECTORY..."])
 		.allowUndefinedArguments ()

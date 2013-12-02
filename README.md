@@ -1,13 +1,12 @@
 argp
 ====
 
-_Node.js project_
-
 #### Command-line option parser ####
 
 [![NPM version](https://badge.fury.io/js/argp.png)](http://badge.fury.io/js/argp "Fury Version Badge")
 [![Build Status](https://secure.travis-ci.org/gagle/node-argp.png)](http://travis-ci.org/gagle/node-argp "Travis CI Badge")
 
+[![NPM installation](https://nodei.co/npm/argp.png?mini=true)](https://nodei.co/npm/argp "NodeICO Badge")
 
 Inspired by the extremly well-known [argp C library](http://www.gnu.org/software/libc/manual/html_node/Argp.html), this module parses GNU-style command-line options. Help, usage and version messages are automatically generated and line-wrapped at 80 columns. The module checks for errors, can be easily adapted to your needs thanks to its evented system and it also works when Node.js is in debug mode. The module is uncached and each property is deleted once all the input parameters have been parsed, so there's no memory footprint.
 
@@ -22,8 +21,10 @@ This module it's made for you if you want:
 A common configuration looks like this:
 
 ```javascript
-//If you can, don't cache the module
-var argv = require ("argp")
+//If you're not going to use multiple parser instances or you don't need to
+//reuse a parser, don't cache the module, this will guarantee a zero memory
+//footprint
+var argv = require ("argp").createParser ({ once: true })
     .description ("Sample app.")
     .email ("a@b.c")
     .body ()
@@ -82,23 +83,68 @@ var argv = require ("argp")
     .argv ();
 ```
 
-#### Installation ####
-
-```
-npm install argp
-```
-
 #### Documentation ####
 
+- [What's new in v1?](#new)
 - [Quick examples with no configuration](#quick)
 - [Configuring options](#options)
 - [Configuring arguments](#arguments)
 - [Configuring commands](#commands)
 - [Real examples](#examples)
 
+#### Functions ####
+
+- [_module_.createParser([options]) : Argp](#createparser)
+
 #### Objects ####
 
 - [Argp](#argp_object)
+
+---
+
+<a name="new"></a>
+__What's new in v1?__
+
+Two things will break your code:
+
+- Parser instances are introduced. To create one you need to call to [createParser()](#createparser).
+  In most cases you only need to append `.createParser ({ once: true })`, for example:
+
+  ```javascript
+  var argv = require ("argp").createParser ({ once: true })
+      ...
+      argv ();
+  ```
+  
+  The `once` option will uncache the module when [argv()](#argp_argv) is called.
+
+- The second argument from the [end](#event_end) event is removed.
+  
+  Before:
+
+  ```javascript
+  .on ("end", function (argv, fns){
+    /*
+    fns.printHelp ();
+    fns.printUsage ();
+    fns.printVersion ();
+    fns.fail ();
+    */
+  })
+  ```
+  
+  After:
+
+  ```javascript
+  .on ("end", function (argv){
+    /*
+    this.printHelp ();
+    this.printUsage ();
+    this.printVersion ();
+    this.fail ();
+    */
+  })
+  ```
 
 ---
 
@@ -110,7 +156,7 @@ If an option has not been defined the type of the value is converted automatical
 By default the parser doesn't allow undefined arguments and options because you typically want to have an absolute control over the calls to your program in order to avoid unexpected behaviours. Allowing undefined arguments and options is as simple as this:
 
 ```javascript
-var argv = require ("argp")
+var argv = require ("argp").createParser ({ once: true })
     .allowUndefinedArguments ()
     .allowUndefinedOptions ()
     .argv ();
@@ -401,7 +447,7 @@ Note that an argument is just a flag but it can be present without any prefixed 
 As you can see, the arguments are also stored in a hash like regular options, undefined arguments inclusive. For example:
 
 ```javascript
-var argv = require ("argp")
+var argv = require ("argp").createParser ({ once: true })
     .allowUndefinedArguments ()
     .allowUndefinedOptions ()
     .argv ();
@@ -510,6 +556,18 @@ __Real examples__
 
 ---
 
+<a name="createparser"></a>
+___module_.createParser([options]) : Argp__
+
+Returns a new [Argp](#argp_object) instance.
+
+Options:
+
+- __once__ - _Boolean_  
+  Set it to true if you want to uncache the whole module when [argv()](#argp_argv) finishes. This will guarantee a zero memory footprint. Default is false.
+
+---
+
 <a name="argp_object"></a>
 __Argp__
 
@@ -520,7 +578,7 @@ The parser follows the GNU-style rules: `-a`, `-abc`, `--a`, `--no-a`, `--a=b`, 
 If you don't want to configure anything simply require the module, allow undefined arguments and options and call to `argv()`.
 
 ```javascript
-var argv = require ("argp")
+var argv = require ("argp").createParser ({ once: true })
     .allowUndefinedArguments ()
     .allowUndefinedOptions ()
     .argv ();
@@ -534,6 +592,7 @@ With the event system you can fully adapt this module to yours needs. Examples: 
 
 - [argument](#event_argument)
 - [end](#event_end)
+- [error](#event_error)
 - [option](#event_option)
 - [start](#event_start)
 
@@ -553,6 +612,9 @@ __Methods__
 - [Argp#fail(str[, code]) : undefined](#argp_fail)
 - [Argp#main() : Argp](#argp_main)
 - [Argp#options([filter]) : Object](#argp_options)
+- [Argp#printHelp([code]) : undefined](#argp_printhelp)
+- [Argp#printUsage([code]) : undefined](#argp_printusage)
+- [Argp#printVersion([code]) : undefined](#argp_printversion)
 - [Argp#readPackage([path]) : Argp](#argp_readpackage)
 - [Argp#sort() : Argp](#argp_sort)
 - [Argp#usages(usages) : Argp](#argp_usage)
@@ -586,17 +648,23 @@ Parameters:
 
 - __argv__ - _Object_  
   The final object.
-- __fns__ - _Object_  
-  An object with the following properties:
 
-  - __printHelp__ - _Function_  
-    Prints the help message and exits with code 0.
-  - __printUsage__ - _Function_  
-    Prints the usage and exits with code 0.
-  - __printVersion__ - _Function_  
-    Prints the version, if it was configured, and exits with code 0.
-  - __fail__ - _Function_  
-    Same as [fail()](#argp_fail).
+<a name="event_error"></a>
+__error__
+
+Emitted when an error occurs. If you don't listen to `error` events, the message will be printed to stderr and the process will exit. If you attach an error handler and an error occurs, [argv()](#argp_argv) returns null.
+
+You typically want to listen to `error` events when you need to do something with the error and then quit the process, or simply because you want to continue executing the process (maybe because you are executing a shell prompt) and display the error in the console.
+
+```javascript
+.on ("error", function (error){
+  doSomethingWith (error);
+  //This will end the process
+  this.fail (error);
+})
+```
+
+For example, the [ntftp](https://github.com/gagle/node-ntftp/blob/master/bin/ntftp.js) module uses two parsers. One is the main parser. If something is not correct, it prints the error to stderr and finishes. The second parser is used when the program is executing a shell prompt. It is being reused and the errors are simply printed to console.
 
 <a name="event_option"></a>
 __option__
@@ -644,23 +712,31 @@ __Argp#arguments() : Object__
 Returns the configured arguments. Look at the [internal-data.js](https://github.com/gagle/node-argp/blob/master/examples/internal-data.js) example for further details.
 
 <a name="argp_argv"></a>
-__Argp#argv([input]) : Object__
+__Argp#argv([input]) : Object | null__
 
-Parses the `process.argv` array. The module is removed from the cache and all its properties are deleted, so even if you store the module in a variable (`var argp = require ("argp")`) and forget to free it (`argp = null`) you won't introduce any memory leak, just an empty object (`{}`) will remain in memory.
+Parses the `process.argv` array or the given input array.
 
-You can also pass an array with the arguments and options, but then the module won't be freed, so you can reuse the same configuration to parse multiple arrays.
+If you don't need to reuse the parser and want a zero memory footprint, you shouldn't cache the module and the parser instance. Remember to also set `once` to true.
+
+```javascript
+var argv = require ("argp").createParser ({ once: true })
+    ...
+    argv ();
+```
+
+If you need to reuse a parser, you probably want to listen to [error](#event_error) events. If an error occurs, [argv()](#arg_argv) returns null.
 
 ```javascript
 var argp = require ("argp");
 
 //Configuration
-argp
-    .description ()
-    ...
+var parser = argp.createParser ()
+    .on ("error", ...)
+    ...;
 
 var argv;
-argv = argp.argv (["-a", "--b", ...]);
-argv = argp.argv (["c", "d", ...]);
+argv = parser.argv (["-a", "--b", ...]);
+argv = parser.argv (["c", "d", ...]);
 ```
 
 <a name="argp_body"></a>
@@ -698,12 +774,12 @@ Sets a contact email. The email is printed at the end of the --help message.
 <a name="argp_exitstatus"></a>
 __Argp#exitStatus(code) : Argp__
 
-Sets the exit code when the process finishes due to an error. Default is 1.
+Sets the exit code that will be used is some methods. Default is 1.
 
 <a name="argp_fail"></a>
 __Argp#fail(str[, code]) : undefined__
 
-Prints a message to the stderr and exits with code `code`, the one configured with [exitStatus()](#argp_exitstatus) or 1.
+Prints a message to the stderr and exits with the given code number or if not given, uses the code configured with [exitStatus()](#argp_exitstatus) or if not configured, exits with code 1.
 
 <a name="argp_main"></a>
 __Argp#main() : Argp__
@@ -724,6 +800,21 @@ Returns the configured options. `filter` is an object which can be used to retur
 ```
 
 Look at the [internal-data.js](https://github.com/gagle/node-argp/blob/master/examples/internal-data.js) example for further details.
+
+<a name="argp_printhelp"></a>
+__Argp#printHelp([code]) : undefined__
+
+Prints the help message and exits with the given code number or if not given, uses the code configured with [exitStatus()](#argp_exitstatus) or if not configured, exits with code 1.
+
+<a name="argp_printusage"></a>
+__Argp#printUsage([code]) : undefined__
+
+Prints the usage message and exits with the given code number or if not given, uses the code configured with [exitStatus()](#argp_exitstatus) or if not configured, exits with code 1.
+
+<a name="argp_printversion"></a>
+__Argp#printVersion([code]) : undefined__
+
+Prints the version message (if it was configured) and exits with the given code number or if not given, uses the code configured with [exitStatus()](#argp_exitstatus) or if not configured, exits with code 1.
 
 <a name="argp_readpackage"></a>
 __Argp#readPackage([path]) : Argp__
