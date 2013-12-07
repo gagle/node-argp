@@ -2,12 +2,12 @@
 
 var parser = require ("../lib").createParser ({ once: true });
 parser
-		.body ()
-				.option ({ short: "v", long: "verbose" })
-				.help ()
-				.usage ()
-				//Disable -v option
-				.version ("v1.2.3", { short: false });
+    .body ()
+        .option ({ short: "v", long: "verbose" })
+        .help ()
+        .usage ()
+        //Disable -v option
+        .version ("v1.2.3", { short: false });
 
 parser.options ().help.description = "???";
 

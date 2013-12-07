@@ -1,14 +1,14 @@
 "use strict";
 
 require ("../lib").createParser ({ once: true })
-		.readPackage ("../package.json")
-		//If you use readPackage(), you can write text lines between the ---version
-		//and the email using the footer() function
-		.footer ("Sample footer")
-		.body ()
-				.help ()
-				.usage ()
-		.argv ();
+    .readPackage ("../package.json")
+    //If you use readPackage(), you can write text lines between the ---version
+    //and the email using the footer() function
+    .footer ("Sample footer")
+    .body ()
+        .help ()
+        .usage ()
+    .argv ();
 
 /*
 $ node read-package.js --help
