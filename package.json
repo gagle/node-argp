@@ -1,17 +1,17 @@
 {
-	"name": "argp",
-	"version": "1.0.0",
-	"description": "Command-line option parser",
-	"keywords": ["cli", "options", "parser", "commands", "arguments", "getopt",
-			"argparse"],
-	"author": "Gabriel Llamas <gagle@outlook.com>",
-	"repository": "git://github.com/gagle/node-argp.git",
-	"engines": {
-		"node": ">=0.10"
-	},
-	"scripts": {
-		"test": "node test/index"
-	},
-	"license": "MIT",
-	"main": "lib"
+  "name": "argp",
+  "version": "1.0.0",
+  "description": "Command-line option parser",
+  "keywords": ["cli", "options", "parser", "commands", "arguments", "getopt",
+      "argparse"],
+  "author": "Gabriel Llamas <gagle@outlook.com>",
+  "repository": "git://github.com/gagle/node-argp.git",
+  "engines": {
+    "node": ">=0.10"
+  },
+  "scripts": {
+    "test": "node test/index"
+  },
+  "license": "MIT",
+  "main": "lib"
 }
