@@ -804,17 +804,17 @@ Look at the [internal-data.js](https://github.com/gagle/node-argp/blob/master/ex
 <a name="argp_printhelp"></a>
 __Argp#printHelp([code]) : undefined__
 
-Prints the help message and exits with the given code number or if not given, uses the code configured with [exitStatus()](#argp_exitstatus) or if not configured, exits with code 1.
+Prints the help message and exits with the given code number or if not given, uses the code configured with [exitStatus()](#argp_exitstatus) or if not configured, exits with code 0.
 
 <a name="argp_printusage"></a>
 __Argp#printUsage([code]) : undefined__
 
-Prints the usage message and exits with the given code number or if not given, uses the code configured with [exitStatus()](#argp_exitstatus) or if not configured, exits with code 1.
+Prints the usage message and exits with the given code number or if not given, uses the code configured with [exitStatus()](#argp_exitstatus) or if not configured, exits with code 0.
 
 <a name="argp_printversion"></a>
 __Argp#printVersion([code]) : undefined__
 
-Prints the version message (if it was configured) and exits with the given code number or if not given, uses the code configured with [exitStatus()](#argp_exitstatus) or if not configured, exits with code 1.
+Prints the version message (if it was configured) and exits with the given code number or if not given, uses the code configured with [exitStatus()](#argp_exitstatus) or if not configured, exits with code 0.
 
 <a name="argp_readpackage"></a>
 __Argp#readPackage([path]) : Argp__

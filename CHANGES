@@ -1,119 +1,123 @@
+v1.0.1 (21 Dec 2013)
+  "printHelp()", "printUsage()" and "printVersion()" now exits correctly by
+    default with code 0.
+
 v1.0.0 (02 Dec 2013)
-	Added support for multiple parsers. Now the parser is created using
-		"createParser()".
-	In previous versions, passing an array to "argv()" didn't uncache the module
-		in order to reuse the parser. Now if you don't need to reuse it, pass an
-		object { once: true } to "createParser()".
-	Added an "error" event.
-	Added "footer()". Now you can write text between the --version and email text
-		lines when using the "readPackage()" function.
-	When "argv()" was called with an input array from inside a Body or Command
-		instance, the input array was not read.
-	Removed the second parameter from the "end" event. Now the functions
-		"printHelp()", "printUsage()" and "printVersion()" are accessible from the
-		Argp instance.
-	Minor bugfixes and improvements.
+  Added support for multiple parsers. Now the parser is created using
+    "createParser()".
+  In previous versions, passing an array to "argv()" didn't uncache the module
+    in order to reuse the parser. Now if you don't need to reuse it, pass an
+    object { once: true } to "createParser()".
+  Added an "error" event.
+  Added "footer()". Now you can write text between the --version and email text
+    lines when using the "readPackage()" function.
+  When "argv()" was called with an input array from inside a Body or Command
+    instance, the input array was not read.
+  Removed the second parameter from the "end" event. Now the functions
+    "printHelp()", "printUsage()" and "printVersion()" are accessible from the
+    Argp instance.
+  Minor bugfixes and improvements.
 
 v0.2.1 (25 Nov 2013)
-	The "fail()" function from the "end" event now prints the string message
-		correctly.
+  The "fail()" function from the "end" event now prints the string message
+    correctly.
 
 v0.2.0 (25 Nov 2013)
-	The "end" event now receives a second parameter with an object with the
-		previous functions "printHelp()", "printUsage()", "printVersion()" and
-		"fail()".
-	Improved README.
-	Added Travis integration.
-	Some bugfixes.
+  The "end" event now receives a second parameter with an object with the
+    previous functions "printHelp()", "printUsage()", "printVersion()" and
+    "fail()".
+  Improved README.
+  Added Travis integration.
+  Some bugfixes.
 
 v0.1.3 (25 Oct 2013)
-	Added a fifth parameter ("fail") to the "end" event.
-	Minor improvements and bugfixes.
+  Added a fifth parameter ("fail") to the "end" event.
+  Minor improvements and bugfixes.
 
 v0.1.2 (04 Oct 2013)
-	Minor speed improvements and bugfixes.
+  Minor speed improvements and bugfixes.
 
 v0.1.1 (30 Sep 2013)
-	An array with options can be passed to "argv()".
+  An array with options can be passed to "argv()".
 
 v0.1.0 (29 Sep 2013)
-	Bump version.
+  Bump version.
 
 v0.0.16 (28 Sep 2013)
-	Added a new parameter to "help()" and "version()" to disable the short option.
-	Added "exitStatus()".
+  Added a new parameter to "help()" and "version()" to disable the short option.
+  Added "exitStatus()".
 
 v0.0.15 (27 Sep 2013)
-	Renamed "help" to "synopsis", property of "argument()".
-	Renamed "argument" to "metavar", property of "option()".
-	Minor improvements.
+  Renamed "help" to "synopsis", property of "argument()".
+  Renamed "argument" to "metavar", property of "option()".
+  Minor improvements.
 
 v0.0.14 (26 Sep 2013)
-	Added "command()", "main()" and "argv()" to the Body instance.
-	Removed "end()".
+  Added "command()", "main()" and "argv()" to the Body instance.
+  Removed "end()".
 
 v0.0.13 (26 Sep 2013)
-	Removed "line()", "paragraph()", "group()".
-	Added "text()".
+  Removed "line()", "paragraph()", "group()".
+  Added "text()".
 
 v0.0.12 (26 Sep 2013)
-	Minor bugfixes.
+  Minor bugfixes.
 
 v0.0.11 (25 Sep 2013)
-	Added commands ("trailing" and "help" properties to "argument()").
-	The "end" event now receives 3 new parameters: "printHelp()", "printUsage()"
-		and "printVersion()".
-	Removed "_debug" and "_filename" properties from the final object.
-	Minor improvements.
+  Added commands ("trailing" and "help" properties to "argument()").
+  The "end" event now receives 3 new parameters: "printHelp()", "printUsage()"
+    and "printVersion()".
+  Removed "_debug" and "_filename" properties from the final object.
+  Minor improvements.
 
 v0.0.10 (23 Sep 2013)
-	The default value of an option is now set with "default" instead of "value".
-	Code inside the "end" event was preventing the parser from being gc'ed.
-	Allowed negated flags with a short name.
-	Added aliases.
-	Added choices.
-	Improved --usage message.
-	Minor improvements.
+  The default value of an option is now set with "default" instead of "value".
+  Code inside the "end" event was preventing the parser from being gc'ed.
+  Allowed negated flags with a short name.
+  Added aliases.
+  Added choices.
+  Improved --usage message.
+  Minor improvements.
 
 v0.0.9 (20 Sep 2013)
-	Added "columns()".
-	Minor bugfixes.
+  Added "columns()".
+  Minor bugfixes.
 
 v0.0.8 (19 Sep 2013)
-	Fixed "readPackage()" with a missing default file.
-	Added "prefix" parameter to the "text()" function.
-	"usages()" now replaces the whole "usage" string.
-	Added "line()" function. It differs from "text()" in that it isn't a new
-		paragraph.
-	Renamed "text()" to "paragraph()".
-	Added "filter" parameter to "options()".
-	Minor improvements.
+  Fixed "readPackage()" with a missing default file.
+  Added "prefix" parameter to the "text()" function.
+  "usages()" now replaces the whole "usage" string.
+  Added "line()" function. It differs from "text()" in that it isn't a new
+    paragraph.
+  Renamed "text()" to "paragraph()".
+  Added "filter" parameter to "options()".
+  Minor improvements.
 
 v0.0.7 (18 Sep 2013)
-	The api has been refactored to be more fluent.
-	Some bugfixes.
+  The api has been refactored to be more fluent.
+  Some bugfixes.
 
 v0.0.6 (16 Sep 2013)
-	Options with a negative Number value are parsed correctly.
-	The "argument()" function has been moved from the Argp to the Body and now
-		accepts a second configuration parameter.
+  Options with a negative Number value are parsed correctly.
+  The "argument()" function has been moved from the Argp to the Body and now
+    accepts a second configuration parameter.
 
 v0.0.5 (15 Sep 2013)
-	Added a "type" setting to the option configuration.
+  Added a "type" setting to the option configuration.
 
 v0.0.4 (15 Sep 2013)
-	Added "footer()".
-	The "fail()" function now prints the "try" message.
+  Added "footer()".
+  The "fail()" function now prints the "try" message.
 
 v0.0.3 (15 Sep 2013)
-	An 80 columns length was hardcoded.
+  An 80 columns length was hardcoded.
 
 v0.0.2 (14 Sep 2013)
-	Added automatic string conversion.
-	Added "hidden" option configuration.
-	When the input is parsed the first time "argv()" frees any resource; only
-		the final object is needed.
-	Minor bugfixes.
+  Added automatic string conversion.
+  Added "hidden" option configuration.
+  When the input is parsed the first time "argv()" frees any resource; only
+    the final object is needed.
+  Minor bugfixes.
 
 v0.0.1 (13 Sep 2013)
-	First release.
+  First release.

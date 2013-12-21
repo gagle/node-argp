@@ -1,6 +1,6 @@
 {
   "name": "argp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Command-line option parser",
   "keywords": ["cli", "options", "parser", "commands", "arguments", "getopt",
       "argparse"],
