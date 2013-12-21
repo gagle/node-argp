@@ -911,7 +911,7 @@ Defines an option. See [Configuring options](#options).
 <a name="body_text"></a>
 __Body#text(str[, prefix]) : Body__
 
-Prints a text message. By default it's line-wrapped at 80 columns and supports multilines (line breaks, `\n`). The `prefix` is mainly used to indent the text with some spaces.
+Prints a text message. By default it's line-wrapped at 80 columns and supports multilines (line breaks, `\n`). The `prefix` is a string that is printed before each line. It's mainly used to indent the text with some spaces.
 
 <a name="body_usage"></a>
 __Body#usage() : Body__
