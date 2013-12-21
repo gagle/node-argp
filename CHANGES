@@ -1,6 +1,8 @@
 v1.0.1 (21 Dec 2013)
   "printHelp()", "printUsage()" and "printVersion()" now exits correctly by
     default with code 0.
+  When "argv()" is called with an input array, "printHelp()", "printUsage()" and
+    "printVersion()" don't terminate the process.
 
 v1.0.0 (02 Dec 2013)
   Added support for multiple parsers. Now the parser is created using

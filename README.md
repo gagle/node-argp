@@ -652,9 +652,9 @@ Parameters:
 <a name="event_error"></a>
 __error__
 
-Emitted when an error occurs. If you don't listen to `error` events, the message will be printed to stderr and the process will exit. If you attach an error handler and an error occurs, [argv()](#argp_argv) returns null.
+Emitted when an error occurs. If you don't listen for `error` events, the message will be printed to stderr and the process will exit. If you attach an error handler and an error occurs, [argv()](#argp_argv) returns null.
 
-You typically want to listen to `error` events when you need to do something with the error and then quit the process, or simply because you want to continue executing the process (maybe because you are executing a shell prompt) and display the error in the console.
+You typically want to listen for `error` events when you need to do something with the error and then quit the process, or simply because you want to continue executing the process (maybe because you are executing a shell prompt) and display the error in the console.
 
 ```javascript
 .on ("error", function (error){
@@ -724,7 +724,7 @@ var argv = require ("argp").createParser ({ once: true })
     argv ();
 ```
 
-If you need to reuse a parser, you probably want to listen to [error](#event_error) events. If an error occurs, [argv()](#arg_argv) returns null.
+If you need to reuse a parser, you probably want to listen for [error](#event_error) events. If an error occurs, [argv()](#arg_argv) returns null.
 
 ```javascript
 var argp = require ("argp");
@@ -738,6 +738,8 @@ var argv;
 argv = parser.argv (["-a", "--b", ...]);
 argv = parser.argv (["c", "d", ...]);
 ```
+
+If you pass an input array, then the functions [printHelp()](#argp_printhelp), [printUsage()](#argp_printusage) and [printVersion()](#argp_printversion) will print the message but won't terminate the process.
 
 <a name="argp_body"></a>
 __Argp#body() : Argp__
@@ -806,15 +808,21 @@ __Argp#printHelp([code]) : undefined__
 
 Prints the help message and exits with the given code number or if not given, uses the code configured with [exitStatus()](#argp_exitstatus) or if not configured, exits with code 0.
 
+If [argv()](#argp_argv) is called with an input array, the process doesn't exit.
+
 <a name="argp_printusage"></a>
 __Argp#printUsage([code]) : undefined__
 
 Prints the usage message and exits with the given code number or if not given, uses the code configured with [exitStatus()](#argp_exitstatus) or if not configured, exits with code 0.
 
+If [argv()](#argp_argv) is called with an input array, the process doesn't exit.
+
 <a name="argp_printversion"></a>
 __Argp#printVersion([code]) : undefined__
 
 Prints the version message (if it was configured) and exits with the given code number or if not given, uses the code configured with [exitStatus()](#argp_exitstatus) or if not configured, exits with code 0.
+
+If [argv()](#argp_argv) is called with an input array, the process doesn't exit.
 
 <a name="argp_readpackage"></a>
 __Argp#readPackage([path]) : Argp__
