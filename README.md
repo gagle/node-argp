@@ -191,26 +191,26 @@ Considerations:
 
 1. By default the options are flags. If the option requires a value, the `metavar` property must be defined. This property is a string and can be seen when the --help and --usage messages are printed.
 
-	```bash
-	$ node script.js --help
-	...
-	  o, --opt=STR               Sample option
-	...
-	```
+  ```bash
+  $ node script.js --help
+  ...
+    o, --opt=STR               Sample option
+  ...
+  ```
   
   Where `STR` is the `metavar` property.
 
 2. By default, the value of the options is a string. Configure the `type` property if the value is a number, boolean (rarely used, use a flag instead) or array (comma-separated values and multiple assignments).
 3. Each option has an id which is used to store the value in the final object. This id is the long name. If the long name has not been defined then the id is the short name.
 
-	```javascript
-	.option ({ short: "a", long: "aa" })
-	//{ aa: false }
-	.option ({ long: "aa" })
-	//{ aa: false }
-	.option ({ short: "a" })
-	//{ a: false }
-	```
+  ```javascript
+  .option ({ short: "a", long: "aa" })
+  //{ aa: false }
+  .option ({ long: "aa" })
+  //{ aa: false }
+  .option ({ short: "a" })
+  //{ a: false }
+  ```
 4. Mandatory options (aka `required`) are not implemented because options are _optional_. Use a [command](#commands) if you need mandatory parameters.
 
 Common properties between flags and options with a value:
@@ -229,119 +229,119 @@ Flags:
 - __negate__ - _Boolean_  
   If true, the flag is negated. The default value is true and it becomes false when the short name or the negated long name (eg. --no-flag) is present.
 
-	```javascript
-	.option ({ short: "a", long: "aaa" })
-	.option ({ short: "b", long: "bbb", negate: true })
-	```
-	```bash
-	$ node script.js
-	{ aaa: false, bbb: true }
-	
-	$ node script.js -a -b
-	{ aaa: true, bbb: false }
-	
-	$ node script.js --aaa --bbb
-	{ aaa: true, bbb: true }
-	
-	$ node script.js --no-aaa --no-bbb
-	{ aaa: false, bbb: false }
-	```
+  ```javascript
+  .option ({ short: "a", long: "aaa" })
+  .option ({ short: "b", long: "bbb", negate: true })
+  ```
+  ```bash
+  $ node script.js
+  { aaa: false, bbb: true }
+  
+  $ node script.js -a -b
+  { aaa: true, bbb: false }
+  
+  $ node script.js --aaa --bbb
+  { aaa: true, bbb: true }
+  
+  $ node script.js --no-aaa --no-bbb
+  { aaa: false, bbb: false }
+  ```
 
 Options with a value:
 
 - __aliases__ - _Array_  
   An alias it's a long-name option that points to another option.
 
-	```javascript
-	.body ()
-	    .option ({ long: "name", aliases: ["foo", "bar"] })
-	    .help ()
-	    .usage ()
-	```
-	```bash
-	$ node script.js --foo
-	{ name: true }
-	
-	$ node script.js --usage
-	Usage: script [--name|--foo|--bar] [-h|--help] [--usage]
-	
-	$ node script.js --help
-	Usage: script [options]
-	
+  ```javascript
+  .body ()
+      .option ({ long: "name", aliases: ["foo", "bar"] })
+      .help ()
+      .usage ()
+  ```
+  ```bash
+  $ node script.js --foo
+  { name: true }
+  
+  $ node script.js --usage
+  Usage: script [--name|--foo|--bar] [-h|--help] [--usage]
+  
+  $ node script.js --help
+  Usage: script [options]
+  
         --name, --foo, --bar
     -h, --help                  Display this help message and exit
         --usage                 Display a short usage message and exit
-	```
-	
-	The `options()` function returns an object with all the configured options:
-	
-	```javascript
-	{
-	  name: { ... },
-	  foo: { ... },
-	  bar: { ... },
-	  help: { ... },
-	  usage: { ... }
-	}
-	```
-	Where `name`, `foo` and `bar` point to the same object:
-	
-	```javascript
-	.on ("start", function (){
-	  var options = this.options ();
-	  assert.ok (options.name === options.foo && options.name === options.bar);
-	})
-	```
+  ```
+  
+  The `options()` function returns an object with all the configured options:
+  
+  ```javascript
+  {
+    name: { ... },
+    foo: { ... },
+    bar: { ... },
+    help: { ... },
+    usage: { ... }
+  }
+  ```
+  Where `name`, `foo` and `bar` point to the same object:
+  
+  ```javascript
+  .on ("start", function (){
+    var options = this.options ();
+    assert.ok (options.name === options.foo && options.name === options.bar);
+  })
+  ```
 - __choices__ - _Array_  
   The input value must be one of these choices. If the option is `optional`, the `choices` property is ignored.
 
-	```javascript
-	.option ({ long: "opt", metavar: "NUM", type: Number, choices: [1, 2, 3] })
-	```
-	```bash
-	$ node script.js --opt=1
-	{ opt: 1 }
-	
-	$ node script.js --opt=7 # Error!
-	```
-	
-	When `default` and `choices` are defined in the same option the default value doesn't need to match any choice:
-	
-	```javascript
-	.option ({ long: "opt", metavar: "STR", default: "d", choices: ["a", "b", "c"] })
-	```
-	```bash
-	$ node script.js
-	{ opt: "d" }
-	```
+  ```javascript
+  .option ({ long: "opt", metavar: "NUM", type: Number, choices: [1, 2, 3] })
+  ```
+  ```bash
+  $ node script.js --opt=1
+  { opt: 1 }
+  
+  $ node script.js --opt=7 # Error!
+  ```
+  
+  When `default` and `choices` are defined in the same option the default value doesn't need to match any choice:
+  
+  ```javascript
+  .option ({ long: "opt", metavar: "STR", default: "d", choices: ["a", "b", "c"] })
+  ```
+  ```bash
+  $ node script.js
+  { opt: "d" }
+  ```
 - __default__ - _Object_  
   The default value.
 
-	```javascript
-	.option ({ long: "name", metavar: "STR", default: "bar", optional: true })
-	```
-	```bash
-	$ node script.js
-	{ name: "bar" }
-	
-	$ node script.js --name
-	{ name: "bar" }
-	
-	$ node script.js --name foo
-	{ name: "foo" }
-	```
+  ```javascript
+  .option ({ long: "name", metavar: "STR", default: "bar", optional: true })
+  ```
+  ```bash
+  $ node script.js
+  { name: "bar" }
+  
+  $ node script.js --name
+  { name: "bar" }
+  
+  $ node script.js --name foo
+  { name: "foo" }
+  ```
 - __metavar__ - _String_  
   Must be defined if the option requires a value. If `metavar` is not defined, the option is a flag. The string is used when the --help and --usage messages are printed.
 
-	```javascript
-	.option ({ long: "name", metavar: "STR" })
-	```
-	```bash
-	$ node script.js --help
-	...
+  ```javascript
+  .option ({ long: "name", metavar: "STR" })
+  ```
+  ```bash
+  $ node script.js --help
+  ...
        --name=STR
   ...
-	```
+  ```
 - __optional__ - _Boolean_  
   If true, the value is optional. Default is false. If the option doesn't receive any value the default value is set and it depends on the `default` and `type` properties.
 
@@ -351,62 +351,62 @@ Options with a value:
   - Array: `[]`
   - Boolean: `false`
 
-	```javascript
-	.option ({ long: "name1", metavar: "STR", optional: true })
-	.option ({ long: "name2", metavar: "STR", optional: true, type: String })
-	.option ({ long: "name3", metavar: "NUM", optional: true, type: Number })
-	.option ({ long: "name4", metavar: "ARR", optional: true, type: Array })
-	//Boolean type is rarely used, use a flag instead
-	.option ({ long: "name5", metavar: "BOOL", optional: true, type: Boolean })
-	```
-	```bash
-	$ node script.js --name1 --name2 --name3 --name4 --name5
-	{ name1: null, name2: null, name3: 0, name4: [], name5: false }
-	```
-	```bash
-	$ node script.js --name1 foo --name2 bar --name3 12 --name4 -12.34,foo,true --name4 false --name5 true
-	{ name1: "foo", ame2: "bar", name3: 12, name4: [-12.34, "foo", true, false], name5: true }
-	```
+  ```javascript
+  .option ({ long: "name1", metavar: "STR", optional: true })
+  .option ({ long: "name2", metavar: "STR", optional: true, type: String })
+  .option ({ long: "name3", metavar: "NUM", optional: true, type: Number })
+  .option ({ long: "name4", metavar: "ARR", optional: true, type: Array })
+  //Boolean type is rarely used, use a flag instead
+  .option ({ long: "name5", metavar: "BOOL", optional: true, type: Boolean })
+  ```
+  ```bash
+  $ node script.js --name1 --name2 --name3 --name4 --name5
+  { name1: null, name2: null, name3: 0, name4: [], name5: false }
+  ```
+  ```bash
+  $ node script.js --name1 foo --name2 bar --name3 12 --name4 -12.34,foo,true --name4 false --name5 true
+  { name1: "foo", ame2: "bar", name3: 12, name4: [-12.34, "foo", true, false], name5: true }
+  ```
 - __reviver__ - _Function_  
   The function is executed when the option is parsed. It is similar to the reviver parameter of the `JSON.parse()` function. This is the right place where you can validate the input data and `fail()` if it's not valid. For example, if the option requires a number you can validate the range here.
 
-	```javascript
-	.option ({ long: "name", metavar: "STR", reviver: function (value){
-	  return value + "bar";
-	}})
-	```
-	```bash
-	$ node script.js --name foo
-	{ name: "foobar" }
-	```
-	```javascript
-	.option ({ long: "opt", metavar: "NUM", type: Number,
-	    reviver: function (value){
+  ```javascript
+  .option ({ long: "name", metavar: "STR", reviver: function (value){
+    return value + "bar";
+  }})
+  ```
+  ```bash
+  $ node script.js --name foo
+  { name: "foobar" }
+  ```
+  ```javascript
+  .option ({ long: "opt", metavar: "NUM", type: Number,
+      reviver: function (value){
     //The "value" parameter is already a number
     if (value < 1 || value > 3){
       this.fail ("Option 'opt': Invalid range.");
     }
     return value;
-	}})
-	```
+  }})
+  ```
 - __type__ - _String | Number | Boolean | Array_  
   The type of the value. Default is String.
 
   If the type is an Array, comma-separated values are automatically stored in an array and each element is converted to the type it represents. Multiple assignments are also supported.
 
-	```javascript
-	.option ({ long: "name", metavar: "ARR", type: Array })
-	```
-	```bash
-	$ node script.js --name 1,true,foo
-	{ name: [1, true, "foo"] }
-	
-	$ node script.js --name 1 --name true --name foo
-	{ name: [1, true, "foo"] }
-	
-	$ node script.js --name 1,2 --name true,false --name foo,bar
-	{ name: [1, 2, true, false, "foo", "bar"] }
-	```
+  ```javascript
+  .option ({ long: "name", metavar: "ARR", type: Array })
+  ```
+  ```bash
+  $ node script.js --name 1,true,foo
+  { name: [1, true, "foo"] }
+  
+  $ node script.js --name 1 --name true --name foo
+  { name: [1, true, "foo"] }
+  
+  $ node script.js --name 1,2 --name true,false --name foo,bar
+  { name: [1, 2, true, false, "foo", "bar"] }
+  ```
 
 Example: [options.js](https://github.com/gagle/node-argp/blob/master/examples/options.js).
 
@@ -825,9 +825,15 @@ Prints the version message (if it was configured) and exits with the given code 
 If [argv()](#argp_argv) is called with an input array, the process doesn't exit.
 
 <a name="argp_readpackage"></a>
-__Argp#readPackage([path]) : Argp__
+__Argp#readPackage([path][, options]) : Argp__
 
-Reads a `package.json` file and configures the parser with the description, email and version. If no path is provided it tries to read the `./package.json` path.
+Reads a `package.json` file and configures the parser with the description, email and version. If no path is provided it tries to read the `./package.json` path. The description, email and version labels can be ignored individually with the `options` parameter. For example, if you only want to ignore the email and read the description and version:
+
+```javascript
+.readPackage ("path/to/package.json", { email: false })
+```
+
+Options are: `description`, `version`, `email`. By default they are true. Set them to false to ignore them.
 
 <a name="argp_usages"></a>
 __Argp#usages(usages) : Argp__
