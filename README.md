@@ -187,6 +187,8 @@ $ node script.js --a -- -b --c d
 <a name="options"></a>
 __Configuring options__
 
+Example: [options.js](https://github.com/gagle/node-argp/blob/master/examples/options.js).
+
 Considerations:
 
 1. By default the options are flags. If the option requires a value, the `metavar` property must be defined. This property is a string and can be seen when the --help and --usage messages are printed.
@@ -408,12 +410,12 @@ Options with a value:
   { name: [1, 2, true, false, "foo", "bar"] }
   ```
 
-Example: [options.js](https://github.com/gagle/node-argp/blob/master/examples/options.js).
-
 ---
 
 <a name="arguments"></a>
 __Configuring arguments__
+
+Example: [arguments.js](https://github.com/gagle/node-argp/blob/master/examples/arguments.js).
 
 An argument is an individual name like `login`, `reset`, `build`, etc. They are basically flags.
 
@@ -461,8 +463,6 @@ $ node script.js a b c
 ```
 
 This feature is different from other cli parsers that store the arguments in an array. If you need to read undefined arguments and save them in an array you can use the events. For more details: [to-upper-case.js](https://github.com/gagle/node-argp/blob/master/examples/to-upper-case.js)
-
-Example: [arguments.js](https://github.com/gagle/node-argp/blob/master/examples/arguments.js).
 
 ---
 
