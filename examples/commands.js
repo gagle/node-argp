@@ -17,7 +17,7 @@ var argv = require ("../lib").createParser ({ once: true })
         .body ()
             .option ({ short: "g", long: "global" })
             .usage ()
-    .argv ()
+    .argv ();
 
 console.log (argv);
     
