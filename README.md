@@ -373,7 +373,7 @@ Options with a value:
   The function is executed when the option is parsed. It is similar to the reviver parameter of the `JSON.parse()` function. This is the right place where you can validate the input data and `fail()` if it's not valid. For example, if the option requires a number you can validate the range here.
 
   ```javascript
-  .option ({ long: "name", metavar: "STR", reviver: function (value){
+  .option ({ long: "name", metavar: "STR", reviver: function (value, option){
     return value + "bar";
   }})
   ```
